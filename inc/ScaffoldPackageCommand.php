@@ -43,11 +43,13 @@ class ScaffoldPackageCommand {
 		$assoc_args = array_merge( $defaults, $assoc_args );
 		$force = Utils\get_flag_value( $assoc_args, 'force' );
 
+		$template_path = dirname( dirname( __FILE__ ) ) . '/templates/';
+
 		$files_written = $this->create_files( array(
-			"{$package_dir}/.gitignore" => Utils\mustache_render( 'package-gitignore.mustache', $assoc_args ),
-			"{$package_dir}/.editorconfig" => file_get_contents( WP_CLI_ROOT . "/templates/.editorconfig" ),
-			"{$package_dir}/command.php" => Utils\mustache_render( 'package-command.mustache', $assoc_args ),
-			"{$package_dir}/composer.json" => Utils\mustache_render( 'package-composer.mustache', $assoc_args ),
+			"{$package_dir}/.gitignore" => Utils\mustache_render( "{$template_path}/gitignore.mustache", $assoc_args ),
+			"{$package_dir}/.editorconfig" => Utils\mustache_render( "{$template_path}/editorconfig.mustache", $assoc_args ),
+			"{$package_dir}/command.php" => Utils\mustache_render( "{$template_path}/command.mustache", $assoc_args ),
+			"{$package_dir}/composer.json" => Utils\mustache_render( "{$template_path}/composer.mustache", $assoc_args ),
 		), $force );
 
 		if ( empty( $files_written ) ) {
