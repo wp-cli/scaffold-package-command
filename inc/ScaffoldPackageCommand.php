@@ -1,9 +1,12 @@
 <?php
 
+namespace WP_CLI;
+
+use WP_CLI;
 use WP_CLI\Process;
 use WP_CLI\Utils;
 
-class WP_CLI_Scaffold_Package_Command {
+class ScaffoldPackageCommand {
 
 	/**
 	 * Generate the files needed for a basic WP-CLI command.
