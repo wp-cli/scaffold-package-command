@@ -20,6 +20,32 @@ Feature: Scaffold WP-CLI commands
       Success: Hello world.
       """
 
+  Scenario: Attempt to scaffold the same package twice
+    Given an empty directory
+    And a session file:
+      """
+      s
+      s
+      s
+      s
+      """
+
+    When I run `wp scaffold package foo --skip-tests`
+    Then STDOUT should contain:
+      """
+      Success: Created package files.
+      """
+
+    When I run `wp scaffold package foo --skip-tests < session`
+    And STDERR should contain:
+      """
+      Warning: File already exists
+      """
+    Then STDOUT should contain:
+      """
+      All package files were skipped
+      """
+
   Scenario: Scaffold a WP-CLI command with tests
     Given an empty directory
 
