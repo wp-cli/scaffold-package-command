@@ -48,6 +48,7 @@ class ScaffoldPackageCommand {
 		$files_written = $this->create_files( array(
 			"{$package_dir}/.gitignore" => Utils\mustache_render( "{$template_path}/gitignore.mustache", $assoc_args ),
 			"{$package_dir}/.editorconfig" => Utils\mustache_render( "{$template_path}/editorconfig.mustache", $assoc_args ),
+			"{$package_dir}/wp-cli.yml" => Utils\mustache_render( "{$template_path}/wp-cli.mustache", $assoc_args ),
 			"{$package_dir}/command.php" => Utils\mustache_render( "{$template_path}/command.mustache", $assoc_args ),
 			"{$package_dir}/composer.json" => Utils\mustache_render( "{$template_path}/composer.mustache", $assoc_args ),
 		), $force );
