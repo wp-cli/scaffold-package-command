@@ -21,6 +21,25 @@ Feature: Scaffold WP-CLI commands
       Success: Hello world.
       """
 
+    When I run `cat foo/wp-cli.yml`
+    Then STDOUT should contain:
+      """
+      require:
+        - command.php
+      """
+
+    When I run `cat foo/.gitignore`
+    Then STDOUT should contain:
+      """
+      .DS_Store
+      """
+
+    When I run `cat foo/.editorconfig`
+    Then STDOUT should contain:
+      """
+      This file is for unifying the coding style for different editors and IDEs
+      """
+
   Scenario: Attempt to scaffold the same package twice
     Given an empty directory
     And a session file:
