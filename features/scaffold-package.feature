@@ -12,6 +12,7 @@ Feature: Scaffold WP-CLI commands
     And the foo/.editorconfig file should exist
     And the foo/composer.json file should exist
     And the foo/command.php file should exist
+    And the foo/wp-cli.yml file should exist
     And the foo/.travis.yml file should not exist
 
     When I run `wp --require=foo/command.php hello-world`
@@ -24,6 +25,7 @@ Feature: Scaffold WP-CLI commands
     Given an empty directory
     And a session file:
       """
+      s
       s
       s
       s
@@ -58,6 +60,7 @@ Feature: Scaffold WP-CLI commands
     And the foo/.editorconfig file should exist
     And the foo/composer.json file should exist
     And the foo/command.php file should exist
+    And the foo/wp-cli.yml file should exist
     And the foo/.travis.yml file should exist
 
     When I run `wp --require=foo/command.php hello-world`
