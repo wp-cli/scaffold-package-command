@@ -43,14 +43,15 @@ class ScaffoldPackageCommand {
 		$assoc_args = array_merge( $defaults, $assoc_args );
 		$force = Utils\get_flag_value( $assoc_args, 'force' );
 
-		$template_path = dirname( dirname( __FILE__ ) ) . '/templates/';
+		$package_root = dirname( dirname( __FILE__ ) );
+		$template_path = $package_root . '/templates/';
 
 		$files_written = $this->create_files( array(
-			"{$package_dir}/.gitignore" => Utils\mustache_render( "{$template_path}/gitignore.mustache", $assoc_args ),
-			"{$package_dir}/.editorconfig" => Utils\mustache_render( "{$template_path}/editorconfig.mustache", $assoc_args ),
-			"{$package_dir}/wp-cli.yml" => Utils\mustache_render( "{$template_path}/wp-cli.mustache", $assoc_args ),
-			"{$package_dir}/command.php" => Utils\mustache_render( "{$template_path}/command.mustache", $assoc_args ),
-			"{$package_dir}/composer.json" => Utils\mustache_render( "{$template_path}/composer.mustache", $assoc_args ),
+			"{$package_dir}/.gitignore"     => file_get_contents( "{$package_root}/.gitignore" ),
+			"{$package_dir}/.editorconfig"  => file_get_contents( "{$package_root}/.editorconfig" ),
+			"{$package_dir}/wp-cli.yml"     => file_get_contents( "{$package_root}/wp-cli.yml" ),
+			"{$package_dir}/command.php"    => Utils\mustache_render( "{$template_path}/command.mustache", $assoc_args ),
+			"{$package_dir}/composer.json"  => Utils\mustache_render( "{$template_path}/composer.mustache", $assoc_args ),
 		), $force );
 
 		if ( empty( $files_written ) ) {
