@@ -74,7 +74,7 @@ class ScaffoldPackageCommand {
 		WP_CLI::log( $filename );
 		if ( ! $force ) {
 			do {
-				$answer = cli\prompt(
+				$answer = \cli\prompt(
 					'Skip this file, or replace it with scaffolding?',
 					$default = false,
 					$marker = '[s/r]: '
