@@ -31,7 +31,7 @@ class ScaffoldPackageCommand {
 	 *
 	 * @when before_wp_load
 	 */
-	public function __invoke( $args, $assoc_args ) {
+	public function package( $args, $assoc_args ) {
 
 		list( $package_dir ) = $args;
 
@@ -60,6 +60,115 @@ class ScaffoldPackageCommand {
 
 		if ( ! Utils\get_flag_value( $assoc_args, 'skip-tests' ) ) {
 			WP_CLI::run_command( array( 'scaffold', 'package-tests', $package_dir ), array( 'force' => $force ) );
+		}
+	}
+
+	/**
+	 * Generate files needed for writing Behat tests for your command.
+	 *
+	 * ## DESCRIPTION
+	 *
+	 * These are the files that are generated:
+	 *
+	 * * `.travis.yml` is the configuration file for Travis CI
+	 * * `bin/install-package-tests.sh` will configure environment to run tests. Script expects WP_CLI_BIN_DIR and WP_CLI_CONFIG_PATH environment variables.
+	 * * `features/load-wp-cli.feature` is a basic test to confirm WP-CLI can load.
+	 * * `features/bootstrap`, `features/steps`, `features/extra` are Behat configuration files.
+	 *
+	 * ## ENVIRONMENT
+	 *
+	 * The `features/bootstrap/FeatureContext.php` file expects the WP_CLI_BIN_DIR and WP_CLI_CONFIG_PATH environment variables.
+	 *
+	 * WP-CLI Behat framework uses Behat ~2.5.
+	 *
+	 * ## OPTIONS
+	 *
+	 * <dir>
+	 * : The package directory to generate tests for.
+	 *
+	 * [--force]
+	 * : Overwrite files that already exist.
+	 *
+	 * ## EXAMPLE
+	 *
+	 *     wp scaffold package-tests /path/to/command/dir/
+	 *
+	 * @when       before_wp_load
+	 * @subcommand package-tests
+	 */
+	public function package_tests( $args, $assoc_args ) {
+		list( $package_dir ) = $args;
+
+		if ( is_file( $package_dir ) ) {
+			$package_dir = dirname( $package_dir );
+		} else if ( is_dir( $package_dir ) ) {
+			$package_dir = rtrim( $package_dir, '/' );
+		}
+
+		if ( ! is_dir( $package_dir ) || ! file_exists( $package_dir . '/composer.json' ) ) {
+			WP_CLI::error( "Invalid package directory. composer.json file must be present." );
+		}
+
+		$package_dir .= '/';
+		$bin_dir       = $package_dir . 'bin/';
+		$utils_dir     = $package_dir . 'utils/';
+		$features_dir  = $package_dir . 'features/';
+		$bootstrap_dir = $features_dir . 'bootstrap/';
+		$steps_dir     = $features_dir . 'steps/';
+		$extra_dir     = $features_dir . 'extra/';
+		foreach ( array( $features_dir, $bootstrap_dir, $steps_dir, $extra_dir, $utils_dir, $bin_dir ) as $dir ) {
+			if ( ! is_dir( $dir ) ) {
+				Process::create( Utils\esc_cmd( 'mkdir %s', $dir ) )->run();
+			}
+		}
+
+		$wp_cli_root = WP_CLI_ROOT;
+		$package_root = dirname( dirname( __FILE__ ) );
+		$copy_source = array(
+			$wp_cli_root => array(
+				'features/bootstrap/FeatureContext.php'       => $bootstrap_dir,
+				'features/bootstrap/support.php'              => $bootstrap_dir,
+				'php/WP_CLI/Process.php'                      => $bootstrap_dir,
+				'php/utils.php'                               => $bootstrap_dir,
+				'ci/behat-tags.php'                           => $utils_dir,
+				'features/steps/given.php'                    => $steps_dir,
+				'features/steps/when.php'                     => $steps_dir,
+				'features/steps/then.php'                     => $steps_dir,
+				'features/extra/no-mail.php'                  => $extra_dir,
+			),
+			$package_root => array(
+				'.travis.yml'                                 => $package_dir,
+				'templates/load-wp-cli.feature'               => $features_dir,
+				'bin/install-package-tests.sh'                => $bin_dir,
+			),
+		);
+
+		$files_written = array();
+		foreach( $copy_source as $source => $to_copy ) {
+			foreach ( $to_copy as $file => $dir ) {
+				// file_get_contents() works with Phar-archived files
+				$contents  = file_get_contents( $source . "/{$file}" );
+				$file_path = $dir . basename( $file );
+
+				$force = \WP_CLI\Utils\get_flag_value( $assoc_args, 'force' );
+				$should_write_file = $this->prompt_if_files_will_be_overwritten( $file_path, $force );
+				if ( ! $should_write_file ) {
+					continue;
+				}
+				$files_written[] = $file_path;
+
+				$result = Process::create( Utils\esc_cmd( 'touch %s', $file_path ) )->run();
+				file_put_contents( $file_path, $contents );
+				if ( 'bin/install-package-tests.sh' === $file ) {
+					Process::create( Utils\esc_cmd( 'chmod +x %s', $file_path ) )->run();
+				}
+			}
+		}
+
+		if ( empty( $files_written ) ) {
+			WP_CLI::log( 'All package test files were skipped.' );
+		} else {
+			WP_CLI::success( 'Created package test files.' );
 		}
 	}
 

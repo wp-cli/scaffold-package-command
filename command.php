@@ -6,4 +6,5 @@ if ( ! class_exists( 'WP_CLI' ) ) {
 
 require_once __DIR__ . '/inc/ScaffoldPackageCommand.php';
 
-WP_CLI::add_command( 'scaffold package', 'WP_CLI\ScaffoldPackageCommand' );
+WP_CLI::add_command( 'scaffold package', array( 'WP_CLI\ScaffoldPackageCommand', 'package' ) );
+WP_CLI::add_command( 'scaffold package-tests', array( 'WP_CLI\ScaffoldPackageCommand', 'package_tests' ) );
