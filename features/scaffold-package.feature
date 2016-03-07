@@ -29,6 +29,7 @@ Feature: Scaffold WP-CLI commands
       s
       s
       s
+      s
       """
 
     When I run `wp scaffold package foo --skip-tests`
