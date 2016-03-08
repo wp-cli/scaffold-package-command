@@ -11,14 +11,14 @@ class ScaffoldPackageCommand {
 	/**
 	 * Generate the files needed for a basic WP-CLI command.
 	 *
-	 * <dir>
-	 * : Directory for the new package.
-	 *
-	 * [--name=<name>]
-	 * : Name to appear in the composer.json.
+	 * <name>
+	 * : Name for the new package. Expects <author>/<package> (e.g. 'wp-cli/scaffold-package').
 	 *
 	 * [--description=<description>]
 	 * : Human-readable description for the package.
+	 *
+	 * [--dir=<dir>]
+	 * : Specify a destination directory for the command. Defaults to WP-CLI's packages directory.
 	 *
 	 * [--license=<license>]
 	 * : License for the package. Default: MIT.
@@ -33,14 +33,25 @@ class ScaffoldPackageCommand {
 	 */
 	public function package( $args, $assoc_args ) {
 
-		list( $package_dir ) = $args;
-
 		$defaults = array(
-			'name'        => '',
+			'dir'         => '',
 			'description' => '',
 			'license'     => 'MIT',
 		);
 		$assoc_args = array_merge( $defaults, $assoc_args );
+		$assoc_args['name'] = $args[0];
+
+		$bits = explode( '/', $assoc_args['name'] );
+		if ( 2 !== count( $bits ) || empty( $bits[0] ) || empty( $bits[1] ) ) {
+			WP_CLI::error( "'{$assoc_args['name']}' is an invalid package name. Package scaffold expects '<author>/<package>'." );
+		}
+
+		if ( ! empty( $assoc_args['dir'] ) ) {
+			$package_dir = $assoc_args['dir'];
+		} else {
+			$package_dir = WP_CLI::get_runner()->get_packages_dir_path() . 'vendor/' . $assoc_args['name'];
+		}
+
 		$force = Utils\get_flag_value( $assoc_args, 'force' );
 
 		$package_root = dirname( dirname( __FILE__ ) );
