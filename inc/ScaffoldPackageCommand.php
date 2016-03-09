@@ -95,7 +95,7 @@ class ScaffoldPackageCommand {
 	 * @when before_wp_load
 	 * @subcommand package-readme
 	 */
-	public function package_readme( $args ) {
+	public function package_readme( $args, $assoc_args ) {
 
 		list( $package_dir ) = $args;
 
