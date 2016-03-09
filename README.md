@@ -1,18 +1,20 @@
-scaffold-package-command
-=============================
+wp-cli/wp-scaffold-package-command
+==================================
 
-Scaffold WP-CLI commands
+Scaffold WP-CLI commands with functional tests
 
-[![Build Status](https://travis-ci.org/wp-cli/scaffold-package-command.svg?branch=master)](https://travis-ci.org/wp-cli/scaffold-package-command)
+[![Build Status](https://travis-ci.org/wp-cli/wp-scaffold-package-command.svg?branch=master)](https://travis-ci.org/wp-cli/wp-scaffold-package-command)
 
 Quick links: [Installing](#installing) | [Contributing](#contributing)
 
-### Installing
+## Installing
 
-`wp scaffold package` requires the latest nightly version of WP-CLI. Update with `wp cli update --nightly`.
+This package requires the latest nightly version of WP-CLI. Update with `wp cli update --nightly`.
 
-Once you've done so, you can install `wp scaffold package` with `wp package install wp-cli/scaffold-package-command`
+Once you've done so, you can install this package with `wp package install wp-cli/wp-scaffold-package-command`
 
-### Contributing
+## Contributing
 
-Code and ideas are more than welcome. Please [open an issue](https://github.com/wp-cli/scaffold-package-command/issues) with questions, feedback, and violent dissent. Pull requests are expected to include test coverage.
+Code and ideas are more than welcome.
+
+Please [open an issue](https://github.com/wp-cli/wp-scaffold-package-command/issues) with questions, feedback, and violent dissent. Pull requests are expected to include test coverage.
