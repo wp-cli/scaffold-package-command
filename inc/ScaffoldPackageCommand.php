@@ -26,6 +26,9 @@ class ScaffoldPackageCommand {
 	 * [--skip-tests]
 	 * : Don't generate files for integration testing.
 	 *
+	 * [--skip-readme]
+	 * : Don't generate a README.md for the package.
+	 *
 	 * [--force]
 	 * : Overwrite files that already exist.
 	 *
@@ -73,6 +76,58 @@ class ScaffoldPackageCommand {
 
 		if ( ! Utils\get_flag_value( $assoc_args, 'skip-tests' ) ) {
 			WP_CLI::run_command( array( 'scaffold', 'package-tests', $package_dir ), array( 'force' => $force ) );
+		}
+
+		if ( ! Utils\get_flag_value( $assoc_args, 'skip-readme' ) ) {
+			WP_CLI::run_command( array( 'scaffold', 'package-readme', $package_dir ), array( 'force' => $force ) );
+		}
+	}
+
+	/**
+	 * Generate a README.md for your command.
+	 *
+	 * <dir>
+	 * : Directory of an existing command.
+	 *
+	 * [--force]
+	 * : Overwrite the readme if it already exists.
+	 *
+	 * @when before_wp_load
+	 * @subcommand package-readme
+	 */
+	public function package_readme( $args ) {
+
+		list( $package_dir ) = $args;
+
+		if ( ! is_dir( $package_dir ) || ! file_exists( $package_dir . '/composer.json' ) ) {
+			WP_CLI::error( "Invalid package directory. composer.json file must be present." );
+		}
+
+		$composer_obj = json_decode( file_get_contents( $package_dir . '/composer.json' ), true );
+		if ( ! $composer_obj ) {
+			WP_CLI::error( 'Invalid composer.json in package directory.' );
+		}
+
+		$force = Utils\get_flag_value( $assoc_args, 'force' );
+
+		$package_root = dirname( dirname( __FILE__ ) );
+		$template_path = $package_root . '/templates/';
+
+		$readme_args = array(
+			'package_name'        => $composer_obj['name'],
+			'package_name_border' => str_pad( '', strlen( $composer_obj['name'] ), '=' ),
+			'package_description' => $composer_obj['description'],
+			'has_travis'          => file_exists( $package_dir . '/.travis.yml' ),
+		);
+
+		$files_written = $this->create_files( array(
+			"{$package_dir}/README.md" => Utils\mustache_render( "{$template_path}/readme.mustache", $readme_args ),
+		), $force );
+
+		if ( empty( $files_written ) ) {
+			WP_CLI::log( 'Package readme generation skipped.' );
+		} else {
+			WP_CLI::success( 'Created package readme.' );
 		}
 	}
 
