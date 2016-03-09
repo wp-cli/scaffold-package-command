@@ -113,8 +113,10 @@ class ScaffoldPackageCommand {
 		$package_root = dirname( dirname( __FILE__ ) );
 		$template_path = $package_root . '/templates/';
 
+		$bits = explode( '/', $composer_obj['name'] );
 		$readme_args = array(
 			'package_name'        => $composer_obj['name'],
+			'package_short_name'  => $bits[1],
 			'package_name_border' => str_pad( '', strlen( $composer_obj['name'] ), '=' ),
 			'package_description' => $composer_obj['description'],
 			'has_travis'          => file_exists( $package_dir . '/.travis.yml' ),
