@@ -1,5 +1,5 @@
 {
-    "name": "wp-cli/wp-scaffold-package-command",
+    "name": "wp-cli/scaffold-package-command",
     "description": "Scaffold WP-CLI commands with functional tests",
     "license": "MIT",
     "authors": [],
