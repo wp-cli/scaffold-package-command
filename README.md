@@ -1,4 +1,4 @@
-wp-cli/wp-scaffold-package-command
+wp-scaffold-package-command
 ==================================
 
 Scaffold WP-CLI commands with functional tests
