@@ -15,6 +15,8 @@ Once you've done so, you can install this package with `wp package install wp-cl
 
 ## Using
 
+This package implements the following commands:
+
 ### wp scaffold package
 
 Generate the files needed for a basic WP-CLI command.
