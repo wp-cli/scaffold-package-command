@@ -145,11 +145,18 @@ class ScaffoldPackageCommand {
 					$command = array();
 
 					$help_docs = preg_replace( '#GLOBAL PARAMETERS(.+)#s', '', $ret->stdout );
-					$bits = preg_split( '#(^|\n)[A-Z]+#u', $help_docs, 4 );
+
+					preg_match( '#NAME(.+)DESCRIPTION#s', $help_docs, $matches );
+					$name = trim( $matches[1 ] );
+					preg_match( '#DESCRIPTION(.+)SYNOPSIS#s', $help_docs, $matches );
+					$description = trim( $matches[1 ] );
+					preg_match( '#SYNOPSIS\n\n(.+)#', $help_docs, $matches );
+					$synopsis = trim( $matches[1 ] );
+
 					$readme_args['commands'][] = array(
-						'name' => trim( $bits[1] ),
-						'description' => trim( $bits[2] ),
-						'synopsis' => trim( $bits[3] ),
+						'name' => $name,
+						'description' => $description,
+						'synopsis' => $synopsis,
 					);
 				}
 			}
