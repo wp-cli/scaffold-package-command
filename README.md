@@ -32,28 +32,30 @@ Default behavior is to create the following files:
 - README.md (via wp scaffold package-readme)
 - Test harness (via wp scaffold package-tests)
 
-#### OPTIONS
+**OPTIONS**
 
-<name>
-: Name for the new package. Expects <author>/<package> (e.g. 'wp-cli/scaffold-package').
+	<name>
+		Name for the new package. Expects <author>/<package> (e.g.
+		'wp-cli/scaffold-package').
 
-[--description=<description>]
-: Human-readable description for the package.
+	[--description=<description>]
+		Human-readable description for the package.
 
-[--dir=<dir>]
-: Specify a destination directory for the command. Defaults to WP-CLI's packages directory.
+	[--dir=<dir>]
+		Specify a destination directory for the command. Defaults to WP-CLI's
+		packages directory.
 
-[--license=<license>]
-: License for the package. Default: MIT.
+	[--license=<license>]
+		License for the package. Default: MIT.
 
-[--skip-tests]
-: Don't generate files for integration testing.
+	[--skip-tests]
+		Don't generate files for integration testing.
 
-[--skip-readme]
-: Don't generate a README.md for the package.
+	[--skip-readme]
+		Don't generate a README.md for the package.
 
-[--force]
-: Overwrite files that already exist.
+	[--force]
+		Overwrite files that already exist.
 
 
 
@@ -72,21 +74,21 @@ These are the files that are generated:
 * `features/load-wp-cli.feature` is a basic test to confirm WP-CLI can load.
 * `features/bootstrap`, `features/steps`, `features/extra` are Behat configuration files.
 
-#### ENVIRONMENT
+**ENVIRONMENT**
 
 The `features/bootstrap/FeatureContext.php` file expects the WP_CLI_BIN_DIR and WP_CLI_CONFIG_PATH environment variables.
 
 WP-CLI Behat framework uses Behat ~2.5.
 
-#### OPTIONS
+**OPTIONS**
 
-<dir>
-: The package directory to generate tests for.
+	<dir>
+		The package directory to generate tests for.
 
-[--force]
-: Overwrite files that already exist.
+	[--force]
+		Overwrite files that already exist.
 
-#### EXAMPLE
+**EXAMPLE**
 
     wp scaffold package-tests /path/to/command/dir/
 
@@ -106,13 +108,13 @@ based on the composer.json file for your WP-CLI package.
 Command-specific docs are generated based composer.json -> 'extras'
 -> 'commands'.
 
-#### OPTIONS
+**OPTIONS**
 
-<dir>
-: Directory of an existing command.
+	<dir>
+		Directory of an existing command.
 
-[--force]
-: Overwrite the readme if it already exists.
+	[--force]
+		Overwrite the readme if it already exists.
 
 
 
