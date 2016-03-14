@@ -34,26 +34,28 @@ Default behavior is to create the following files:
 
 **OPTIONS**
 
-&lt;name&gt;
-: Name for the new package. Expects &lt;author&gt;/&lt;package&gt; (e.g. 'wp-cli/scaffold-package').
+	<name>
+		Name for the new package. Expects <author>/<package> (e.g.
+		'wp-cli/scaffold-package').
 
-[--description=&lt;description&gt;]
-: Human-readable description for the package.
+	[--description=<description>]
+		Human-readable description for the package.
 
-[--dir=&lt;dir&gt;]
-: Specify a destination directory for the command. Defaults to WP-CLI's packages directory.
+	[--dir=<dir>]
+		Specify a destination directory for the command. Defaults to WP-CLI's
+		packages directory.
 
-[--license=&lt;license&gt;]
-: License for the package. Default: MIT.
+	[--license=<license>]
+		License for the package. Default: MIT.
 
-[--skip-tests]
-: Don't generate files for integration testing.
+	[--skip-tests]
+		Don't generate files for integration testing.
 
-[--skip-readme]
-: Don't generate a README.md for the package.
+	[--skip-readme]
+		Don't generate a README.md for the package.
 
-[--force]
-: Overwrite files that already exist.
+	[--force]
+		Overwrite files that already exist.
 
 
 
@@ -80,11 +82,11 @@ WP-CLI Behat framework uses Behat ~2.5.
 
 **OPTIONS**
 
-&lt;dir&gt;
-: The package directory to generate tests for.
+	<dir>
+		The package directory to generate tests for.
 
-[--force]
-: Overwrite files that already exist.
+	[--force]
+		Overwrite files that already exist.
 
 **EXAMPLE**
 
@@ -103,16 +105,16 @@ wp scaffold package-readme <dir> [--force]
 Creates a README.md with Installing, Using, and Contributing instructions
 based on the composer.json file for your WP-CLI package.
 
-Command-specific docs are generated based composer.json -&gt; 'extras'
--&gt; 'commands'.
+Command-specific docs are generated based composer.json -> 'extras'
+-> 'commands'.
 
 **OPTIONS**
 
-&lt;dir&gt;
-: Directory of an existing command.
+	<dir>
+		Directory of an existing command.
 
-[--force]
-: Overwrite the readme if it already exists.
+	[--force]
+		Overwrite the readme if it already exists.
 
 
 
