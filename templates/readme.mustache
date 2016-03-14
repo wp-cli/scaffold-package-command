@@ -17,11 +17,17 @@ Once you've done so, you can install this package with `wp package install {{pac
 
 {{#has_commands}}
 ## Using
+{{#has_multiple_commands}}
+
+This package implements the following commands:
+{{/has_multiple_commands}}
 
 {{#commands}}
+{{#has_multiple_commands}}
 ### {{name}}
 
 {{description}}
+{{/has_multiple_commands}}
 
 ~~~
 {{synopsis}}

@@ -161,6 +161,7 @@ class ScaffoldPackageCommand {
 				}
 			}
 			$readme_args['has_commands'] = true;
+			$readme_args['has_multiple_commands'] = count( $readme_args['commands'] ) > 1 ? true : false;
 		}
 
 		$files_written = $this->create_files( array(
