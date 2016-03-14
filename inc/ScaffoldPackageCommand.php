@@ -98,6 +98,9 @@ class ScaffoldPackageCommand {
 	 * Creates a README.md with Installing, Using, and Contributing instructions
 	 * based on the composer.json file for your WP-CLI package.
 	 *
+	 * Command-specific docs are generated based composer.json -> 'extras'
+	 * -> 'commands'.
+	 *
 	 * ## OPTIONS
 	 *
 	 * <dir>
@@ -139,26 +142,35 @@ class ScaffoldPackageCommand {
 
 		if ( ! empty( $composer_obj['extras']['commands'] ) ) {
 			$readme_args['commands'] = array();
+			$ret = WP_CLI::launch_self( "cli cmd-dump", array(), array(), false, true );
+			$cmd_dump = json_decode( $ret->stdout, true );
 			foreach( $composer_obj['extras']['commands'] as $command ) {
-				$ret = WP_CLI::launch_self( "help {$command}", array(), array(), false, true );
-				if ( ! empty( $ret->stdout ) ) {
-					$command = array();
+				$bits = explode( ' ', $command );
+				$parent_command = $cmd_dump;
+				do {
+					$cmd_bit = array_shift( $bits );
+					$found = false;
+					foreach( $parent_command['subcommands'] as $subcommand ) {
+						if ( $subcommand['name'] === $cmd_bit ) {
+							$parent_command = $subcommand;
+							$found = true;
+							break;
+						}
+					}
+					if ( ! $found ) {
+						$parent_command = false;
+					}
+				} while( $parent_command && $bits );
 
-					$help_docs = preg_replace( '#GLOBAL PARAMETERS(.+)#s', '', $ret->stdout );
+				$longdesc = preg_replace( '/## GLOBAL PARAMETERS(.+)/s', '', $parent_command['longdesc'] );
+				$longdesc = preg_replace( '/##\s/', '#### ', $longdesc );
 
-					preg_match( '#NAME\n\n(.+)#', $help_docs, $matches );
-					$name = trim( $matches[1 ] );
-					preg_match( '#DESCRIPTION\n\n(.+)#', $help_docs, $matches );
-					$description = trim( $matches[1 ] );
-					preg_match( '#SYNOPSIS\n\n(.+)#', $help_docs, $matches );
-					$synopsis = trim( $matches[1 ] );
-
-					$readme_args['commands'][] = array(
-						'name' => $name,
-						'description' => $description,
-						'synopsis' => $synopsis,
-					);
-				}
+				$readme_args['commands'][] = array(
+					'name' => "wp {$command}",
+					'shortdesc' => $parent_command['description'],
+					'synopsis' => "wp {$command} {$parent_command['synopsis']}",
+					'longdesc' => $longdesc,
+				);
 			}
 			$readme_args['has_commands'] = true;
 			$readme_args['has_multiple_commands'] = count( $readme_args['commands'] ) > 1 ? true : false;
