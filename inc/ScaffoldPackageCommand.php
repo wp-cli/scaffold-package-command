@@ -18,6 +18,9 @@ class ScaffoldPackageCommand {
 	 * - README.md (via wp scaffold package-readme)
 	 * - Test harness (via wp scaffold package-tests)
 	 *
+	 * Unless specified with `--dir=<dir>`, the command package is placed in the
+	 * WP-CLI package directory.
+	 *
 	 * ## OPTIONS
 	 *
 	 * <name>
@@ -80,7 +83,7 @@ class ScaffoldPackageCommand {
 		if ( empty( $files_written ) ) {
 			WP_CLI::log( 'All package files were skipped.' );
 		} else {
-			WP_CLI::success( 'Created package files.' );
+			WP_CLI::success( "Created package files in {$package_dir}" );
 		}
 
 		if ( ! Utils\get_flag_value( $assoc_args, 'skip-tests' ) ) {
