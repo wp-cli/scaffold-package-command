@@ -11,6 +11,15 @@ class ScaffoldPackageCommand {
 	/**
 	 * Generate the files needed for a basic WP-CLI command.
 	 *
+	 * Default behavior is to create the following files:
+	 * - command.php
+	 * - composer.json (with package name, description, and license)
+	 * - .gitignore and .editorconfig
+	 * - README.md (via wp scaffold package-readme)
+	 * - Test harness (via wp scaffold package-tests)
+	 *
+	 * ## OPTIONS
+	 *
 	 * <name>
 	 * : Name for the new package. Expects <author>/<package> (e.g. 'wp-cli/scaffold-package').
 	 *
@@ -120,7 +129,27 @@ class ScaffoldPackageCommand {
 			'package_name_border' => str_pad( '', strlen( $composer_obj['name'] ), '=' ),
 			'package_description' => $composer_obj['description'],
 			'has_travis'          => file_exists( $package_dir . '/.travis.yml' ),
+			'has_commands'        => false,
 		);
+
+		if ( ! empty( $composer_obj['extras']['commands'] ) ) {
+			$readme_args['commands'] = array();
+			foreach( $composer_obj['extras']['commands'] as $command ) {
+				$ret = WP_CLI::launch_self( "help {$command}", array(), array(), false, true );
+				if ( ! empty( $ret->stdout ) ) {
+					$command = array();
+
+					$help_docs = preg_replace( '#GLOBAL PARAMETERS(.+)#s', '', $ret->stdout );
+					$bits = preg_split( '#(^|\n)[A-Z]+#u', $help_docs, 4 );
+					$readme_args['commands'][] = array(
+						'name' => trim( $bits[1] ),
+						'description' => trim( $bits[2] ),
+						'synopsis' => trim( $bits[3] ),
+					);
+				}
+			}
+			$readme_args['has_commands'] = true;
+		}
 
 		$files_written = $this->create_files( array(
 			"{$package_dir}/README.md" => Utils\mustache_render( "{$template_path}/readme.mustache", $readme_args ),
