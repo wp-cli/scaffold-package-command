@@ -163,7 +163,10 @@ class ScaffoldPackageCommand {
 				} while( $parent_command && $bits );
 
 				$longdesc = preg_replace( '/## GLOBAL PARAMETERS(.+)/s', '', $parent_command['longdesc'] );
-				$longdesc = preg_replace( '/##\s/', '#### ', $longdesc );
+				$longdesc = preg_replace( '/##\s(.+)/', '**$1**', $longdesc );
+
+				// definition lists
+				$longdesc = preg_replace_callback( '/([^\n]+)\n: (.+?)(\n\n|$)/s', array( __CLASS__, 'rewrap_param_desc' ), $longdesc );
 
 				$readme_args['commands'][] = array(
 					'name' => "wp {$command}",
@@ -292,6 +295,20 @@ class ScaffoldPackageCommand {
 		} else {
 			WP_CLI::success( 'Created package test files.' );
 		}
+	}
+
+	private static function rewrap_param_desc( $matches ) {
+		$param = $matches[1];
+		$desc = self::indent( "\t\t", wordwrap( $matches[2] ) );
+		return "\t$param\n$desc\n\n";
+	}
+
+	private static function indent( $whitespace, $text ) {
+		$lines = explode( "\n", $text );
+		foreach ( $lines as &$line ) {
+			$line = $whitespace . $line;
+		}
+		return implode( $lines, "\n" );
 	}
 
 	private function prompt_if_files_will_be_overwritten( $filename, $force ) {
