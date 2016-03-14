@@ -25,14 +25,6 @@ wp scaffold package <name> [--description=<description>] [--dir=<dir>]
 
 ### wp scaffold package-tests
 
-DESCRIPTION
-
-  Generate files needed for writing Behat tests for your command.
-
-SYNOPSIS
-
-  wp scaffold package-tests <dir> [--force]
-
 Generate files needed for writing Behat tests for your command.
 
 ~~~
