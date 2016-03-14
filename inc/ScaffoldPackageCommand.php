@@ -95,6 +95,11 @@ class ScaffoldPackageCommand {
 	/**
 	 * Generate a README.md for your command.
 	 *
+	 * Creates a README.md with Installing, Using, and Contributing instructions
+	 * based on the composer.json file for your WP-CLI package.
+	 *
+	 * ## OPTIONS
+	 *
 	 * <dir>
 	 * : Directory of an existing command.
 	 *
