@@ -165,14 +165,11 @@ class ScaffoldPackageCommand {
 				$longdesc = preg_replace( '/## GLOBAL PARAMETERS(.+)/s', '', $parent_command['longdesc'] );
 				$longdesc = preg_replace( '/##\s(.+)/', '**$1**', $longdesc );
 
-				// definition lists
-				$longdesc = preg_replace_callback( '/([^\n]+)\n: (.+?)(\n\n|$)/s', array( __CLASS__, 'rewrap_param_desc' ), $longdesc );
-
 				$readme_args['commands'][] = array(
 					'name' => "wp {$command}",
 					'shortdesc' => $parent_command['description'],
 					'synopsis' => "wp {$command} {$parent_command['synopsis']}",
-					'longdesc' => $longdesc,
+					'longdesc' => htmlentities( $longdesc ),
 				);
 			}
 			$readme_args['has_commands'] = true;
