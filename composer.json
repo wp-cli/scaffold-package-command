@@ -10,5 +10,12 @@
     "require": {},
     "require-dev": {
         "behat/behat": "~2.5"
+    },
+    "extras": {
+        "commands": [
+            "scaffold package",
+            "scaffold package-tests",
+            "scaffold package-readme"
+        ]
     }
 }
