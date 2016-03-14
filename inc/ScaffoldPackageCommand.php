@@ -146,9 +146,9 @@ class ScaffoldPackageCommand {
 
 					$help_docs = preg_replace( '#GLOBAL PARAMETERS(.+)#s', '', $ret->stdout );
 
-					preg_match( '#NAME(.+)DESCRIPTION#s', $help_docs, $matches );
+					preg_match( '#NAME\n\n(.+)#', $help_docs, $matches );
 					$name = trim( $matches[1 ] );
-					preg_match( '#DESCRIPTION(.+)SYNOPSIS#s', $help_docs, $matches );
+					preg_match( '#DESCRIPTION\n\n(.+)#', $help_docs, $matches );
 					$description = trim( $matches[1 ] );
 					preg_match( '#SYNOPSIS\n\n(.+)#', $help_docs, $matches );
 					$synopsis = trim( $matches[1 ] );
@@ -176,8 +176,6 @@ class ScaffoldPackageCommand {
 
 	/**
 	 * Generate files needed for writing Behat tests for your command.
-	 *
-	 * ## DESCRIPTION
 	 *
 	 * These are the files that are generated:
 	 *
