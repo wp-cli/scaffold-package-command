@@ -104,9 +104,13 @@ load.
 * `features/bootstrap`, `features/steps`, `features/extra` are Behat
 configuration files.
 
+After running `bin/install-package-tests.sh`, you can run the tests with
+`./vendor/bin/behat`
+
 **ENVIRONMENT**
 
-The `features/bootstrap/FeatureContext.php` file expects the WP_CLI_BIN_DIR and WP_CLI_CONFIG_PATH environment variables.
+The `features/bootstrap/FeatureContext.php` file expects the
+WP_CLI_BIN_DIR environment variable.
 
 WP-CLI Behat framework uses Behat ~2.5.
 
