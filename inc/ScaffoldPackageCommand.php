@@ -11,6 +11,18 @@ class ScaffoldPackageCommand {
 	/**
 	 * Generate the files needed for a basic WP-CLI command.
 	 *
+	 * Default behavior is to create the following files:
+	 * - command.php
+	 * - composer.json (with package name, description, and license)
+	 * - .gitignore and .editorconfig
+	 * - README.md (via wp scaffold package-readme)
+	 * - Test harness (via wp scaffold package-tests)
+	 *
+	 * Unless specified with `--dir=<dir>`, the command package is placed in the
+	 * WP-CLI package directory.
+	 *
+	 * ## OPTIONS
+	 *
 	 * <name>
 	 * : Name for the new package. Expects <author>/<package> (e.g. 'wp-cli/scaffold-package').
 	 *
@@ -71,7 +83,7 @@ class ScaffoldPackageCommand {
 		if ( empty( $files_written ) ) {
 			WP_CLI::log( 'All package files were skipped.' );
 		} else {
-			WP_CLI::success( 'Created package files.' );
+			WP_CLI::success( "Created package files in {$package_dir}" );
 		}
 
 		if ( ! Utils\get_flag_value( $assoc_args, 'skip-tests' ) ) {
@@ -85,6 +97,14 @@ class ScaffoldPackageCommand {
 
 	/**
 	 * Generate a README.md for your command.
+	 *
+	 * Creates a README.md with Installing, Using, and Contributing instructions
+	 * based on the composer.json file for your WP-CLI package.
+	 *
+	 * Command-specific docs are generated based composer.json -> 'extras'
+	 * -> 'commands'.
+	 *
+	 * ## OPTIONS
 	 *
 	 * <dir>
 	 * : Directory of an existing command.
@@ -120,7 +140,47 @@ class ScaffoldPackageCommand {
 			'package_name_border' => str_pad( '', strlen( $composer_obj['name'] ), '=' ),
 			'package_description' => $composer_obj['description'],
 			'has_travis'          => file_exists( $package_dir . '/.travis.yml' ),
+			'has_commands'        => false,
 		);
+
+		if ( ! empty( $composer_obj['extras']['commands'] ) ) {
+			$readme_args['commands'] = array();
+			$ret = WP_CLI::launch_self( "cli cmd-dump", array(), array(), false, true );
+			$cmd_dump = json_decode( $ret->stdout, true );
+			foreach( $composer_obj['extras']['commands'] as $command ) {
+				$bits = explode( ' ', $command );
+				$parent_command = $cmd_dump;
+				do {
+					$cmd_bit = array_shift( $bits );
+					$found = false;
+					foreach( $parent_command['subcommands'] as $subcommand ) {
+						if ( $subcommand['name'] === $cmd_bit ) {
+							$parent_command = $subcommand;
+							$found = true;
+							break;
+						}
+					}
+					if ( ! $found ) {
+						$parent_command = false;
+					}
+				} while( $parent_command && $bits );
+
+				$longdesc = preg_replace( '/## GLOBAL PARAMETERS(.+)/s', '', $parent_command['longdesc'] );
+				$longdesc = preg_replace( '/##\s(.+)/', '**$1**', $longdesc );
+
+				// definition lists
+				$longdesc = preg_replace_callback( '/([^\n]+)\n: (.+?)(\n\n|$)/s', array( __CLASS__, 'rewrap_param_desc' ), $longdesc );
+
+				$readme_args['commands'][] = array(
+					'name' => "wp {$command}",
+					'shortdesc' => $parent_command['description'],
+					'synopsis' => "wp {$command} {$parent_command['synopsis']}",
+					'longdesc' => $longdesc,
+				);
+			}
+			$readme_args['has_commands'] = true;
+			$readme_args['has_multiple_commands'] = count( $readme_args['commands'] ) > 1 ? true : false;
+		}
 
 		$files_written = $this->create_files( array(
 			"{$package_dir}/README.md" => Utils\mustache_render( "{$template_path}/readme.mustache", $readme_args ),
@@ -135,8 +195,6 @@ class ScaffoldPackageCommand {
 
 	/**
 	 * Generate files needed for writing Behat tests for your command.
-	 *
-	 * ## DESCRIPTION
 	 *
 	 * These are the files that are generated:
 	 *
@@ -240,6 +298,20 @@ class ScaffoldPackageCommand {
 		} else {
 			WP_CLI::success( 'Created package test files.' );
 		}
+	}
+
+	private static function rewrap_param_desc( $matches ) {
+		$param = $matches[1];
+		$desc = self::indent( "\t\t", wordwrap( $matches[2] ) );
+		return "\t$param\n$desc\n\n";
+	}
+
+	private static function indent( $whitespace, $text ) {
+		$lines = explode( "\n", $text );
+		foreach ( $lines as &$line ) {
+			$line = $whitespace . $line;
+		}
+		return implode( $lines, "\n" );
 	}
 
 	private function prompt_if_files_will_be_overwritten( $filename, $force ) {
