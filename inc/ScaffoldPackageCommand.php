@@ -203,12 +203,32 @@ class ScaffoldPackageCommand {
 	 * * The tests interface with your command in the same manner as your users
 	 * interface with your command.
 	 *
-	 * These are the files that are generated:
+	 * Behat tests live in the `features/` directory of your project. When you
+	 * use this command, it will generate a default test that looks like this:
 	 *
-	 * * `.travis.yml` is the configuration file for Travis CI
-	 * * `bin/install-package-tests.sh` will configure environment to run tests. Script expects WP_CLI_BIN_DIR and WP_CLI_CONFIG_PATH environment variables.
-	 * * `features/load-wp-cli.feature` is a basic test to confirm WP-CLI can load.
-	 * * `features/bootstrap`, `features/steps`, `features/extra` are Behat configuration files.
+	 * ```
+	 * Feature: Test that WP-CLI loads.
+	 *
+	 *   Scenario: WP-CLI loads for your tests
+	 *     Given a WP install
+	 *
+	 *     When I run `wp eval 'echo "Hello world.";'`
+	 *     Then STDOUT should contain:
+	 *       """
+	 *       Hello world.
+	 *       """
+	 * ```
+	 *
+	 * This command generates all of the files needed for you to write Behat
+	 * tests for your own command. Specifically:
+	 *
+	 * * `.travis.yml` is the configuration file for Travis CI.
+	 * * `bin/install-package-tests.sh` will configure your environment to run
+	 * the tests.
+	 * * `features/load-wp-cli.feature` is a basic test to confirm WP-CLI can
+	 * load.
+	 * * `features/bootstrap`, `features/steps`, `features/extra` are Behat
+	 * configuration files.
 	 *
 	 * ## ENVIRONMENT
 	 *
