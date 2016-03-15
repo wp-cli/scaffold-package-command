@@ -6,7 +6,7 @@ Feature: Scaffold WP-CLI commands
     When I run `WP_CLI_PACKAGES_DIR=packages wp scaffold package wp-cli/foo --skip-tests`
     Then STDOUT should contain:
       """
-      Success: Created package files.
+      Success: Created package files
       """
     And the packages/vendor/wp-cli/foo/.gitignore file should exist
     And the packages/vendor/wp-cli/foo/.editorconfig file should exist
@@ -55,7 +55,7 @@ Feature: Scaffold WP-CLI commands
     When I run `WP_CLI_PACKAGES_DIR=packages wp scaffold package wp-cli/foo --dir=foo --skip-tests`
     Then STDOUT should contain:
       """
-      Success: Created package files.
+      Success: Created package files
       """
     And the foo/.gitignore file should exist
     And the foo/.editorconfig file should exist
@@ -85,7 +85,7 @@ Feature: Scaffold WP-CLI commands
     When I run `WP_CLI_PACKAGES_DIR=packages wp scaffold package wp-cli/foo --skip-tests`
     Then STDOUT should contain:
       """
-      Success: Created package files.
+      Success: Created package files
       """
 
     When I run `WP_CLI_PACKAGES_DIR=packages wp scaffold package wp-cli/foo --skip-tests < session`
@@ -104,7 +104,7 @@ Feature: Scaffold WP-CLI commands
     When I run `WP_CLI_PACKAGES_DIR=packages wp scaffold package wp-cli/foo`
     Then STDOUT should contain:
       """
-      Success: Created package files.
+      Success: Created package files
       """
     And the packages/vendor/wp-cli/foo/.gitignore file should exist
     And the packages/vendor/wp-cli/foo/.editorconfig file should exist

@@ -7,7 +7,7 @@
 [![Build Status](https://travis-ci.org/{{package_name}}.svg?branch=master)](https://travis-ci.org/{{package_name}})
 {{/has_travis}}
 
-Quick links: [Installing](#installing) | [Contributing](#contributing)
+Quick links: [Installing](#installing) {{#has_commands}}|[Using](#using){{/has_commands}}| [Contributing](#contributing)
 
 ## Installing
 
@@ -15,6 +15,29 @@ This package requires the latest nightly version of WP-CLI. Update with `wp cli 
 
 Once you've done so, you can install this package with `wp package install {{package_name}}`
 
+{{#has_commands}}
+## Using
+{{#has_multiple_commands}}
+
+This package implements the following commands:
+{{/has_multiple_commands}}
+
+{{#commands}}
+{{#has_multiple_commands}}
+### {{name}}
+
+{{shortdesc}}
+{{/has_multiple_commands}}
+
+~~~
+{{synopsis}}
+~~~
+
+{{longdesc}}
+
+{{/commands}}
+
+{{/has_commands}}
 ## Contributing
 
 Code and ideas are more than welcome.
