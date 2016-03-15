@@ -32,6 +32,9 @@ Default behavior is to create the following files:
 - README.md (via wp scaffold package-readme)
 - Test harness (via wp scaffold package-tests)
 
+Unless specified with `--dir=<dir>`, the command package is placed in the
+WP-CLI package directory.
+
 **OPTIONS**
 
 	<name>
@@ -66,6 +69,13 @@ Generate files needed for writing Behat tests for your command.
 ~~~
 wp scaffold package-tests <dir> [--force]
 ~~~
+
+WP-CLI makes use of a Behat-based testing framework, which you should use
+too. Behat is a great choice for your WP-CLI commands because:
+
+* It’s easy to write new tests, which means they’ll actually get written.
+* The tests interface with your command in the same manner as your users
+interface with your command.
 
 These are the files that are generated:
 

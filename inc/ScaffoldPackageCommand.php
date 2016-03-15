@@ -196,6 +196,13 @@ class ScaffoldPackageCommand {
 	/**
 	 * Generate files needed for writing Behat tests for your command.
 	 *
+	 * WP-CLI makes use of a Behat-based testing framework, which you should use
+	 * too. Behat is a great choice for your WP-CLI commands because:
+	 *
+	 * * It’s easy to write new tests, which means they’ll actually get written.
+	 * * The tests interface with your command in the same manner as your users
+	 * interface with your command.
+	 *
 	 * These are the files that are generated:
 	 *
 	 * * `.travis.yml` is the configuration file for Travis CI
