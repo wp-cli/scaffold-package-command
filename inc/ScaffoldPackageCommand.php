@@ -333,7 +333,7 @@ class ScaffoldPackageCommand {
 
 	private static function rewrap_param_desc( $matches ) {
 		$param = $matches[1];
-		$desc = self::indent( "\t\t", wordwrap( $matches[2] ) );
+		$desc = self::indent( "\t\t", $matches[2] );
 		return "\t$param\n$desc\n\n";
 	}
 

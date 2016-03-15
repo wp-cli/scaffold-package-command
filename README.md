@@ -38,15 +38,13 @@ WP-CLI package directory.
 **OPTIONS**
 
 	<name>
-		Name for the new package. Expects <author>/<package> (e.g.
-		'wp-cli/scaffold-package').
+		Name for the new package. Expects <author>/<package> (e.g. 'wp-cli/scaffold-package').
 
 	[--description=<description>]
 		Human-readable description for the package.
 
 	[--dir=<dir>]
-		Specify a destination directory for the command. Defaults to WP-CLI's
-		packages directory.
+		Specify a destination directory for the command. Defaults to WP-CLI's packages directory.
 
 	[--license=<license>]
 		License for the package. Default: MIT.
