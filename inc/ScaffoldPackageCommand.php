@@ -196,16 +196,47 @@ class ScaffoldPackageCommand {
 	/**
 	 * Generate files needed for writing Behat tests for your command.
 	 *
-	 * These are the files that are generated:
+	 * WP-CLI makes use of a Behat-based testing framework, which you should use
+	 * too. Behat is a great choice for your WP-CLI commands because:
 	 *
-	 * * `.travis.yml` is the configuration file for Travis CI
-	 * * `bin/install-package-tests.sh` will configure environment to run tests. Script expects WP_CLI_BIN_DIR and WP_CLI_CONFIG_PATH environment variables.
-	 * * `features/load-wp-cli.feature` is a basic test to confirm WP-CLI can load.
-	 * * `features/bootstrap`, `features/steps`, `features/extra` are Behat configuration files.
+	 * * It’s easy to write new tests, which means they’ll actually get written.
+	 * * The tests interface with your command in the same manner as your users
+	 * interface with your command.
+	 *
+	 * Behat tests live in the `features/` directory of your project. When you
+	 * use this command, it will generate a default test that looks like this:
+	 *
+	 * ```
+	 * Feature: Test that WP-CLI loads.
+	 *
+	 *   Scenario: WP-CLI loads for your tests
+	 *     Given a WP install
+	 *
+	 *     When I run `wp eval 'echo "Hello world.";'`
+	 *     Then STDOUT should contain:
+	 *       """
+	 *       Hello world.
+	 *       """
+	 * ```
+	 *
+	 * This command generates all of the files needed for you to write Behat
+	 * tests for your own command. Specifically:
+	 *
+	 * * `.travis.yml` is the configuration file for Travis CI.
+	 * * `bin/install-package-tests.sh` will configure your environment to run
+	 * the tests.
+	 * * `features/load-wp-cli.feature` is a basic test to confirm WP-CLI can
+	 * load.
+	 * * `features/bootstrap`, `features/steps`, `features/extra` are Behat
+	 * configuration files.
+	 *
+	 * After running `bin/install-package-tests.sh`, you can run the tests with
+	 * `./vendor/bin/behat`
 	 *
 	 * ## ENVIRONMENT
 	 *
-	 * The `features/bootstrap/FeatureContext.php` file expects the WP_CLI_BIN_DIR and WP_CLI_CONFIG_PATH environment variables.
+	 * The `features/bootstrap/FeatureContext.php` file expects the
+	 * WP_CLI_BIN_DIR environment variable.
 	 *
 	 * WP-CLI Behat framework uses Behat ~2.5.
 	 *
