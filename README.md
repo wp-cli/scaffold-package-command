@@ -5,7 +5,7 @@ Scaffold WP-CLI commands with functional tests
 
 [![Build Status](https://travis-ci.org/wp-cli/scaffold-package-command.svg?branch=master)](https://travis-ci.org/wp-cli/scaffold-package-command)
 
-Quick links: [Installing](#installing) | [Using](#using) | [Contributing](#contributing)
+Quick links: [Using](#using) | [Installing](#installing) | [Contributing](#contributing)
 
 ## Using
 
