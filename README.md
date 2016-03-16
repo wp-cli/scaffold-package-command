@@ -7,12 +7,6 @@ Scaffold WP-CLI commands with functional tests
 
 Quick links: [Installing](#installing) | [Using](#using) | [Contributing](#contributing)
 
-## Installing
-
-This package requires the latest nightly version of WP-CLI. Update with `wp cli update --nightly`.
-
-Once you've done so, you can install this package with `wp package install wp-cli/scaffold-package-command`
-
 ## Using
 
 This package implements the following commands:
@@ -152,6 +146,11 @@ Command-specific docs are generated based composer.json -> 'extras'
 
 
 
+## Installing
+
+This package requires the latest nightly version of WP-CLI. Update with `wp cli update --nightly`.
+
+Once you've done so, you can install this package with `wp package install wp-cli/scaffold-package-command`
 
 ## Contributing
 
