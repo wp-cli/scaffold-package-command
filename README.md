@@ -85,6 +85,12 @@ Feature: Test that WP-CLI loads.
       """
 ```
 
+Functional tests typically follow this pattern:
+
+* **Given** some background,
+* **When** a user performs a specific action,
+* **Then** the end result should be X (and Y and Z).
+
 This command generates all of the files needed for you to write Behat
 tests for your own command. Specifically:
 
