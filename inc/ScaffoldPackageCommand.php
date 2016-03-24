@@ -145,8 +145,10 @@ class ScaffoldPackageCommand {
 
 		if ( ! empty( $composer_obj['extras']['commands'] ) ) {
 			$readme_args['commands'] = array();
-			$ret = WP_CLI::launch_self( "cli cmd-dump", array(), array(), false, true );
-			$cmd_dump = json_decode( $ret->stdout, true );
+			ob_start();
+			WP_CLI::run_command( array( 'cli', 'cmd-dump' ) );
+			$ret = ob_get_clean();
+			$cmd_dump = json_decode( $ret, true );
 			foreach( $composer_obj['extras']['commands'] as $command ) {
 				$bits = explode( ' ', $command );
 				$parent_command = $cmd_dump;
