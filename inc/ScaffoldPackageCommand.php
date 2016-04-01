@@ -199,11 +199,14 @@ class ScaffoldPackageCommand {
 	 * Generate files needed for writing Behat tests for your command.
 	 *
 	 * WP-CLI makes use of a Behat-based testing framework, which you should use
-	 * too. Behat is a great choice for your WP-CLI commands because:
+	 * too. Functional tests are an integral ingredient of highly-quality,
+	 * maintainable commands. Behat is a great choice as a testing framework
+	 * because:
 	 *
 	 * * It’s easy to write new tests, which means they’ll actually get written.
 	 * * The tests interface with your command in the same manner as your users
-	 * interface with your command.
+	 * interface with your command, and they describe how the command is
+	 * expected to work in human-readable terms.
 	 *
 	 * Behat tests live in the `features/` directory of your project. When you
 	 * use this command, it will generate a default test that looks like this:
