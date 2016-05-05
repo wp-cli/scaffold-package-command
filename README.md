@@ -157,7 +157,7 @@ Command-specific docs are generated based composer.json -> 'extras'
 
 Installing this package requires WP-CLI v0.23.0 or greater. Update to the latest stable release with `wp cli update`.
 
-Once you've done so, you can install this package with `wp package install wp-cli/scaffold-package-command`
+Once you've done so, you can install this package with `wp package install wp-cli/scaffold-package-command`.
 
 ## Contributing
 
