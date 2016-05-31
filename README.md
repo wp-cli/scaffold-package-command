@@ -109,7 +109,8 @@ After running `bin/install-package-tests.sh`, you can run the tests with
 `./vendor/bin/behat`. If you find yourself using Behat on a number of
 projects and don't want to install a copy with each one, you can
 `composer global require behat/behat` to install Behat globally on your
-machine. Once you've done so, you can run the tests for a project by
+machine. Make sure `~/.composer/vendor/bin` has also been added to your
+`$PATH`. Once you've done so, you can run the tests for a project by
 calling `behat`.
 
 **ENVIRONMENT**
