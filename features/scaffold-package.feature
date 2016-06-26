@@ -11,6 +11,10 @@ Feature: Scaffold WP-CLI commands
     And the packages/vendor/wp-cli/foo/.gitignore file should exist
     And the packages/vendor/wp-cli/foo/.editorconfig file should exist
     And the packages/vendor/wp-cli/foo/composer.json file should exist
+    And the packages/vendor/wp-cli/foo/composer.json file should contain:
+      """
+      "homepage": "https://github.com/wp-cli/foo",
+      """
     And the packages/vendor/wp-cli/foo/command.php file should exist
     And the packages/vendor/wp-cli/foo/wp-cli.yml file should exist
     And the packages/vendor/wp-cli/foo/.travis.yml file should not exist
@@ -190,4 +194,18 @@ Feature: Scaffold WP-CLI commands
     Then STDERR should be:
       """
       Error: Invalid package directory. composer.json file must be present.
+      """
+
+  Scenario: Scaffold a command with a custom homepage
+    Given an empty directory
+
+    When I run `WP_CLI_PACKAGES_DIR=packages wp scaffold package wp-cli/bar --homepage='http://apple.com'`
+    Then STDOUT should contain:
+      """
+      Success: Created package files
+      """
+    And the packages/vendor/wp-cli/bar/composer.json file should exist
+    And the packages/vendor/wp-cli/bar/composer.json file should contain:
+      """
+      "homepage": "http://apple.com",
       """
