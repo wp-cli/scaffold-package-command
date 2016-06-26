@@ -16,7 +16,7 @@ This package implements the following commands:
 Generate the files needed for a basic WP-CLI command.
 
 ~~~
-wp scaffold package <name> [--description=<description>] [--dir=<dir>] [--license=<license>] [--skip-tests] [--skip-readme] [--force]
+wp scaffold package <name> [--description=<description>] [--homepage=<homepage>] [--dir=<dir>] [--license=<license>] [--skip-tests] [--skip-readme] [--force]
 ~~~
 
 Default behavior is to create the following files:
@@ -36,6 +36,9 @@ WP-CLI package directory.
 
 	[--description=<description>]
 		Human-readable description for the package.
+
+	[--homepage=<homepage>]
+		Homepage for the package. Defaults to 'https://github.com/<name>'
 
 	[--dir=<dir>]
 		Specify a destination directory for the command. Defaults to WP-CLI's packages directory.
