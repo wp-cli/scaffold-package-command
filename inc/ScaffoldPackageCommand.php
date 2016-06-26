@@ -29,6 +29,9 @@ class ScaffoldPackageCommand {
 	 * [--description=<description>]
 	 * : Human-readable description for the package.
 	 *
+	 * [--homepage=<homepage>]
+	 * : Homepage for the package. Defaults to 'https://github.com/<name>'
+	 *
 	 * [--dir=<dir>]
 	 * : Specify a destination directory for the command. Defaults to WP-CLI's packages directory.
 	 *
@@ -52,6 +55,7 @@ class ScaffoldPackageCommand {
 			'dir'         => '',
 			'description' => '',
 			'license'     => 'MIT',
+			'homepage'     => '',
 		);
 		$assoc_args = array_merge( $defaults, $assoc_args );
 		$assoc_args['name'] = $args[0];
@@ -65,6 +69,10 @@ class ScaffoldPackageCommand {
 			$package_dir = $assoc_args['dir'];
 		} else {
 			$package_dir = WP_CLI::get_runner()->get_packages_dir_path() . 'vendor/' . $assoc_args['name'];
+		}
+
+		if ( empty( $assoc_args['homepage'] ) ) {
+			$assoc_args['homepage'] = 'https://github.com/' . $assoc_args['name'];
 		}
 
 		$force = Utils\get_flag_value( $assoc_args, 'force' );
