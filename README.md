@@ -62,7 +62,7 @@ WP-CLI package directory.
 Generate files needed for writing Behat tests for your command.
 
 ~~~
-wp scaffold package-tests <dir> [--force]
+wp scaffold package-tests <dir> [--ci=<provider>] [--force]
 ~~~
 
 WP-CLI makes use of a Behat-based testing framework, which you should use
@@ -127,6 +127,15 @@ WP-CLI Behat framework uses Behat ~2.5.
 
 	<dir>
 		The package directory to generate tests for.
+
+	[--ci=<provider>]
+		Create a configuration file for a specific CI provider.
+		---
+		default: travis
+		options:
+		  - travis
+		  - circle
+		---
 
 	[--force]
 		Overwrite files that already exist.
