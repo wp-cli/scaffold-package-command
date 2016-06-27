@@ -269,6 +269,15 @@ class ScaffoldPackageCommand {
 	 * <dir>
 	 * : The package directory to generate tests for.
 	 *
+	 * [--ci=<provider>]
+	 * : Create a configuration file for a specific CI provider.
+	 * ---
+	 * default: travis
+	 * options:
+	 *   - travis
+	 *   - circle
+	 * ---
+	 *
 	 * [--force]
 	 * : Overwrite files that already exist.
 	 *
@@ -320,11 +329,16 @@ class ScaffoldPackageCommand {
 				'features/extra/no-mail.php'                  => $extra_dir,
 			),
 			$package_root => array(
-				'.travis.yml'                                 => $package_dir,
 				'templates/load-wp-cli.feature'               => $features_dir,
 				'bin/install-package-tests.sh'                => $bin_dir,
 			),
 		);
+
+		if ( 'travis' === $assoc_args['ci'] ) {
+			$copy_source[ $package_root ]['.travis.yml'] = $package_dir;
+		} else if ( 'circle' === $assoc_args['ci'] ) {
+			$copy_source[ $package_root ]['circle.yml'] = $package_dir;
+		}
 
 		$files_written = array();
 		foreach( $copy_source as $source => $to_copy ) {
