@@ -38,6 +38,12 @@ class ScaffoldPackageCommand {
 	 * [--license=<license>]
 	 * : License for the package. Default: MIT.
 	 *
+	 * [--require_wp_cli=<version>]
+	 * : Required WP-CLI version for the package.
+	 * ---
+	 * default: ~0.23.0
+	 * ---
+	 *
 	 * [--skip-tests]
 	 * : Don't generate files for integration testing.
 	 *
@@ -147,9 +153,16 @@ class ScaffoldPackageCommand {
 			'package_short_name'  => $bits[1],
 			'package_name_border' => str_pad( '', strlen( $composer_obj['name'] ), '=' ),
 			'package_description' => $composer_obj['description'],
+			'required_wp_cli_version' => ! empty( $composer_obj['require']['wp-cli/wp-cli'] ) ? str_replace( '~', 'v', $composer_obj['require']['wp-cli/wp-cli'] ) : 'v0.23.0',
 			'has_travis'          => file_exists( $package_dir . '/.travis.yml' ),
 			'has_commands'        => false,
 		);
+
+		if ( false !== stripos( $readme_args['required_wp_cli_version'], 'alpha' ) ) {
+			$readme_args['wp_cli_update_to_instructions'] = 'the latest nightly release with `wp cli update --nightly`';
+		} else {
+			$readme_args['wp_cli_update_to_instructions'] = 'the latest stable release with `wp cli update`';
+		}
 
 		if ( ! empty( $composer_obj['extras']['commands'] ) ) {
 			$readme_args['commands'] = array();
