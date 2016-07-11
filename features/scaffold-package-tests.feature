@@ -24,6 +24,57 @@ Feature: Scaffold the test suite for an existing package
       }
       """
 
+  Scenario: Scaffold package tests
+    Given a invalid-command/command.php file:
+      """
+      <?php
+      """
+
+    When I run `wp scaffold package-tests community-command`
+    Then STDOUT should not be empty
+    And the community-command/.travis.yml file should exist
+    And the community-command/bin/install-package-tests.sh file should exist
+    And the community-command/utils/behat-tags.php file should contain:
+      """
+      require-wp
+      """
+    And the community-command/features directory should contain:
+      """
+      bootstrap
+      extra
+      load-wp-cli.feature
+      steps
+      """
+    And the community-command/features/bootstrap directory should contain:
+      """
+      FeatureContext.php
+      Process.php
+      support.php
+      utils.php
+      """
+    And the community-command/features/steps directory should contain:
+      """
+      given.php
+      then.php
+      when.php
+      """
+    And the community-command/features/extra directory should contain:
+      """
+      no-mail.php
+      """
+
+    When I run `wp eval "if ( is_executable( 'community-command/bin/install-package-tests.sh' ) ) { echo 'executable'; } else { exit( 1 ); }"`
+    Then STDOUT should be:
+      """
+      executable
+      """
+
+    When I try `wp scaffold package-tests invalid-command`
+    Then STDERR should be:
+      """
+      Error: Invalid package directory. composer.json file must be present.
+      """
+
   Scenario: Scaffolds .travis.yml configuration file by default
     When I run `wp scaffold package-tests community-command`
     Then STDOUT should not be empty
