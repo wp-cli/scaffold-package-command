@@ -16,7 +16,7 @@ This package implements the following commands:
 Generate the files needed for a basic WP-CLI command.
 
 ~~~
-wp scaffold package <name> [--description=<description>] [--homepage=<homepage>] [--dir=<dir>] [--license=<license>] [--skip-tests] [--skip-readme] [--force]
+wp scaffold package <name> [--description=<description>] [--homepage=<homepage>] [--dir=<dir>] [--license=<license>] [--require_wp_cli=<version>] [--skip-tests] [--skip-readme] [--force]
 ~~~
 
 Default behavior is to create the following files:
@@ -45,6 +45,12 @@ WP-CLI package directory.
 
 	[--license=<license>]
 		License for the package. Default: MIT.
+
+	[--require_wp_cli=<version>]
+		Required WP-CLI version for the package.
+		---
+		default: ~0.23.0
+		---
 
 	[--skip-tests]
 		Don't generate files for integration testing.
