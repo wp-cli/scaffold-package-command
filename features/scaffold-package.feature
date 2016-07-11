@@ -15,6 +15,12 @@ Feature: Scaffold WP-CLI commands
       """
       "homepage": "https://github.com/wp-cli/foo",
       """
+    And the packages/vendor/wp-cli/foo/composer.json file should contain:
+      """
+          "require": {
+              "wp-cli/wp-cli": "~0.23.0"
+          },
+      """
     And the packages/vendor/wp-cli/foo/command.php file should exist
     And the packages/vendor/wp-cli/foo/wp-cli.yml file should exist
     And the packages/vendor/wp-cli/foo/.travis.yml file should not exist
