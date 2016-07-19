@@ -160,11 +160,27 @@ Generate a README.md for your command.
 wp scaffold package-readme <dir> [--force]
 ~~~
 
-Creates a README.md with Installing, Using, and Contributing instructions
-based on the composer.json file for your WP-CLI package.
+Creates a README.md with Using, Installing, and Contributing instructions
+based on the composer.json file for your WP-CLI package. Run this command
+at the beginning of your project, and then every time your usage docs
+change.
 
-Command-specific docs are generated based composer.json -> 'extras'
--> 'commands'.
+These command-specific docs are generated based composer.json -> 'extras'
+-> 'commands'. For instance, this package's composer.json includes:
+
+```
+{
+  "name": "wp-cli/scaffold-package-command",
+   // [...]
+   "extras": {
+       "commands": [
+           "scaffold package",
+           "scaffold package-tests",
+           "scaffold package-readme"
+       ]
+   }
+}
+```
 
 **OPTIONS**
 
@@ -173,8 +189,6 @@ Command-specific docs are generated based composer.json -> 'extras'
 
 	[--force]
 		Overwrite the readme if it already exists.
-
-
 
 ## Installing
 
