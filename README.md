@@ -44,7 +44,10 @@ WP-CLI package directory.
 		Specify a destination directory for the command. Defaults to WP-CLI's packages directory.
 
 	[--license=<license>]
-		License for the package. Default: MIT.
+		License for the package.
+		---
+		default: MIT
+		---
 
 	[--require_wp_cli=<version>]
 		Required WP-CLI version for the package.

@@ -17,6 +17,10 @@ Feature: Scaffold WP-CLI commands
       """
     And the packages/vendor/wp-cli/foo/composer.json file should contain:
       """
+      "license": "MIT",
+      """
+    And the packages/vendor/wp-cli/foo/composer.json file should contain:
+      """
           "require": {
               "wp-cli/wp-cli": "~0.23.0"
           },
