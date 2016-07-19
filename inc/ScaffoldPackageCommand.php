@@ -179,21 +179,6 @@ class ScaffoldPackageCommand {
 			$readme_args['wp_cli_update_to_instructions'] = 'the latest nightly release with `wp cli update --nightly`';
 		}
 
-		$readme_sections = array(
-			'package_description' => array(
-				'body' => $composer_obj['description'],
-			),
-			'using'               => array(
-				'body' => dirname( dirname( __FILE__ ) ) . '/templates/readme-using.mustache',
-			),
-			'installing'          => array(
-				'body' => dirname( dirname( __FILE__ ) ) . '/templates/readme-installing.mustache',
-			),
-			'contributing'        => array(
-				'body' => dirname( dirname( __FILE__ ) ) . '/templates/readme-contributing.mustache',
-			),
-		);
-
 		if ( ! empty( $composer_obj['extras']['commands'] ) ) {
 			$readme_args['commands'] = array();
 			ob_start();
@@ -234,6 +219,21 @@ class ScaffoldPackageCommand {
 			$readme_args['has_commands'] = true;
 			$readme_args['has_multiple_commands'] = count( $readme_args['commands'] ) > 1 ? true : false;
 		}
+
+		$readme_sections = array(
+			'package_description' => array(
+				'body' => $composer_obj['description'],
+			),
+			'using'               => array(
+				'body' => dirname( dirname( __FILE__ ) ) . '/templates/readme-using.mustache',
+			),
+			'installing'          => array(
+				'body' => dirname( dirname( __FILE__ ) ) . '/templates/readme-installing.mustache',
+			),
+			'contributing'        => array(
+				'body' => dirname( dirname( __FILE__ ) ) . '/templates/readme-contributing.mustache',
+			),
+		);
 
 		foreach( $readme_sections as $section => $section_args ) {
 			$value = '';
