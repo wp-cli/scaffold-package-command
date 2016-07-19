@@ -235,20 +235,21 @@ class ScaffoldPackageCommand {
 			),
 		);
 
+		$ext_regex = '#\.(md|mustache)$#i';
 		foreach( $readme_sections as $section => $section_args ) {
 			$value = '';
 			foreach( array( 'pre', 'body', 'post' ) as $k ) {
 				$v = '';
-				if ( isset( $composer_obj['extras']['readme'][ $section][ $k ] ) ) {
+				if ( isset( $composer_obj['extras']['readme'][ $section ][ $k ] ) ) {
 					$v = $composer_obj['extras']['readme'][ $section][ $k ];
-					if ( preg_match( '#\.(md|mustache)$#i', $v ) ) {
+					if ( preg_match( $ext_regex, $v ) ) {
 						$v = $package_dir . '/' . $v;
 					}
 				} else if ( isset( $section_args[ $k ] ) ) {
 					$v = $section_args[ $k ];
 				}
 				if ( $v ) {
-					if ( preg_match( '#\.(md|mustache)$#i', $v ) ) {
+					if ( preg_match( $ext_regex, $v ) ) {
 						$v = Utils\mustache_render( $v, $readme_args );
 					}
 					$value .= $v;
