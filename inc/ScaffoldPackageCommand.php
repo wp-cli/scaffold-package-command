@@ -237,7 +237,7 @@ class ScaffoldPackageCommand {
 
 		$ext_regex = '#\.(md|mustache)$#i';
 		foreach( $readme_sections as $section => $section_args ) {
-			$value = '';
+			$value = array();
 			foreach( array( 'pre', 'body', 'post' ) as $k ) {
 				$v = '';
 				if ( isset( $composer_obj['extras']['readme'][ $section ][ $k ] ) ) {
@@ -252,11 +252,11 @@ class ScaffoldPackageCommand {
 					if ( preg_match( $ext_regex, $v ) ) {
 						$v = Utils\mustache_render( $v, $readme_args );
 					}
-					$value .= $v;
+					$value[] = trim( $v );
 				}
 			}
 			$section_key = 'package_description' === $section ? 'package_description' : $section . '_section';
-			$readme_args[ $section_key ] = $value;
+			$readme_args[ $section_key ] = trim( implode( PHP_EOL . PHP_EOL, $value ) );
 			$readme_args[ 'has_' . $section ] = ! empty( $value );
 		}
 
