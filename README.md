@@ -9,6 +9,7 @@ Quick links: [Using](#using) | [Installing](#installing) | [Contributing](#contr
 
 ## Using
 
+
 This package implements the following commands:
 
 ### wp scaffold package
@@ -160,11 +161,27 @@ Generate a README.md for your command.
 wp scaffold package-readme <dir> [--force]
 ~~~
 
-Creates a README.md with Installing, Using, and Contributing instructions
-based on the composer.json file for your WP-CLI package.
+Creates a README.md with Using, Installing, and Contributing instructions
+based on the composer.json file for your WP-CLI package. Run this command
+at the beginning of your project, and then every time your usage docs
+change.
 
-Command-specific docs are generated based composer.json -> 'extras'
--> 'commands'.
+These command-specific docs are generated based composer.json -> 'extras'
+-> 'commands'. For instance, this package's composer.json includes:
+
+```
+{
+  "name": "wp-cli/scaffold-package-command",
+   // [...]
+   "extras": {
+       "commands": [
+           "scaffold package",
+           "scaffold package-tests",
+           "scaffold package-readme"
+       ]
+   }
+}
+```
 
 **OPTIONS**
 
@@ -176,11 +193,14 @@ Command-specific docs are generated based composer.json -> 'extras'
 
 
 
+
+
 ## Installing
 
 Installing this package requires WP-CLI v0.23.0 or greater. Update to the latest stable release with `wp cli update`.
 
 Once you've done so, you can install this package with `wp package install wp-cli/scaffold-package-command`.
+
 
 ## Contributing
 
@@ -212,5 +232,6 @@ Once you've decided to commit the time to seeing your pull request through, plea
 2. Submit your pull request early for feedback.
 3. Include functional tests with your changes. [Read the WP-CLI documentation](https://wp-cli.org/docs/pull-requests/#functional-tests) for an introduction.
 4. Follow the [WordPress Coding Standards](http://make.wordpress.org/core/handbook/coding-standards/).
+
 
 *This README.md is generated dynamically from the project's codebase using `wp scaffold package-readme` ([doc](https://github.com/wp-cli/scaffold-package-command#wp-scaffold-package-readme)). To suggest changes, please submit a pull request against the corresponding part of the codebase.*
