@@ -112,11 +112,27 @@ class ScaffoldPackageCommand {
 	/**
 	 * Generate a README.md for your command.
 	 *
-	 * Creates a README.md with Installing, Using, and Contributing instructions
-	 * based on the composer.json file for your WP-CLI package.
+	 * Creates a README.md with Using, Installing, and Contributing instructions
+	 * based on the composer.json file for your WP-CLI package. Run this command
+	 * at the beginning of your project, and then every time your usage docs
+	 * change.
 	 *
-	 * Command-specific docs are generated based composer.json -> 'extras'
-	 * -> 'commands'.
+	 * These command-specific docs are generated based composer.json -> 'extras'
+	 * -> 'commands'. For instance, this package's composer.json includes:
+	 *
+	 * ```
+	 * {
+	 *   "name": "wp-cli/scaffold-package-command",
+	 *    // [...]
+	 *    "extras": {
+	 *        "commands": [
+	 *            "scaffold package",
+	 *            "scaffold package-tests",
+	 *            "scaffold package-readme"
+	 *        ]
+	 *    }
+	 * }
+	 * ```
 	 *
 	 * ## OPTIONS
 	 *
@@ -156,13 +172,27 @@ class ScaffoldPackageCommand {
 			'required_wp_cli_version' => ! empty( $composer_obj['require']['wp-cli/wp-cli'] ) ? str_replace( '~', 'v', $composer_obj['require']['wp-cli/wp-cli'] ) : 'v0.23.0',
 			'has_travis'          => file_exists( $package_dir . '/.travis.yml' ),
 			'has_commands'        => false,
+			'wp_cli_update_to_instructions' => 'the latest stable release with `wp cli update`',
 		);
 
 		if ( false !== stripos( $readme_args['required_wp_cli_version'], 'alpha' ) ) {
 			$readme_args['wp_cli_update_to_instructions'] = 'the latest nightly release with `wp cli update --nightly`';
-		} else {
-			$readme_args['wp_cli_update_to_instructions'] = 'the latest stable release with `wp cli update`';
 		}
+
+		$readme_sections = array(
+			'package_description' => array(
+				'body' => $composer_obj['description'],
+			),
+			'using'               => array(
+				'body' => dirname( dirname( __FILE__ ) ) . '/templates/readme-using.mustache',
+			),
+			'installing'          => array(
+				'body' => dirname( dirname( __FILE__ ) ) . '/templates/readme-installing.mustache',
+			),
+			'contributing'        => array(
+				'body' => dirname( dirname( __FILE__ ) ) . '/templates/readme-contributing.mustache',
+			),
+		);
 
 		if ( ! empty( $composer_obj['extras']['commands'] ) ) {
 			$readme_args['commands'] = array();
@@ -203,6 +233,30 @@ class ScaffoldPackageCommand {
 			}
 			$readme_args['has_commands'] = true;
 			$readme_args['has_multiple_commands'] = count( $readme_args['commands'] ) > 1 ? true : false;
+		}
+
+		foreach( $readme_sections as $section => $section_args ) {
+			$value = '';
+			foreach( array( 'pre', 'body', 'post' ) as $k ) {
+				$v = '';
+				if ( isset( $composer_obj['extras']['readme'][ $section][ $k ] ) ) {
+					$v = $composer_obj['extras']['readme'][ $section][ $k ];
+					if ( preg_match( '#\.(md|mustache)$#i', $v ) ) {
+						$v = $package_dir . '/' . $v;
+					}
+				} else if ( isset( $section_args[ $k ] ) ) {
+					$v = $section_args[ $k ];
+				}
+				if ( $v ) {
+					if ( preg_match( '#\.(md|mustache)$#i', $v ) ) {
+						$v = Utils\mustache_render( $v, $readme_args );
+					}
+					$value .= $v;
+				}
+			}
+			$section_key = 'package_description' === $section ? 'package_description' : $section . '_section';
+			$readme_args[ $section_key ] = $value;
+			$readme_args[ 'has_' . $section ] = ! empty( $value );
 		}
 
 		$files_written = $this->create_files( array(
