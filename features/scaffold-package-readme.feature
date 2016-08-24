@@ -13,6 +13,10 @@ Feature: Scaffold a README.md file for an existing package
       """
       Installing this package requires WP-CLI v0.23.0 or greater. Update to the latest stable release with `wp cli update`.
       """
+    And the foo/README.md file should contain:
+      """
+      [![Build Status](https://travis-ci.org/wp-cli/foo.svg?branch=master)
+      """
 
   Scenario: Scaffold a README.md requiring a nightly build
     Given an empty directory
