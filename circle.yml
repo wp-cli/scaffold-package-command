@@ -12,4 +12,4 @@ test:
   pre:
     - bash bin/install-package-tests.sh
   override:
-    - ./vendor/bin/behat
+    - ./vendor/bin/behat --strict
