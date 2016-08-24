@@ -3,7 +3,7 @@ wp-cli/scaffold-package-command
 
 Scaffold WP-CLI commands with functional tests
 
-[![Build Status](https://travis-ci.org/wp-cli/scaffold-package-command.svg?branch=master)](https://travis-ci.org/wp-cli/scaffold-package-command)
+[![Build Status](https://travis-ci.org/wp-cli/scaffold-package-command.svg?branch=master)](https://travis-ci.org/wp-cli/scaffold-package-command) [![CircleCI](https://circleci.com/gh/wp-cli/scaffold-package-command/tree/master.svg?style=svg)](https://circleci.com/gh/wp-cli/scaffold-package-command/tree/master)
 
 Quick links: [Using](#using) | [Installing](#installing) | [Contributing](#contributing)
 
