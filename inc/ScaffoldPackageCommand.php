@@ -172,21 +172,25 @@ class ScaffoldPackageCommand {
 			'package_name_border' => str_pad( '', strlen( $composer_obj['name'] ), '=' ),
 			'package_description' => $composer_obj['description'],
 			'required_wp_cli_version' => ! empty( $composer_obj['require']['wp-cli/wp-cli'] ) ? str_replace( '~', 'v', $composer_obj['require']['wp-cli/wp-cli'] ) : 'v0.23.0',
-			'build_status'        => '',
+			'shields'             => '',
 			'has_commands'        => false,
 			'wp_cli_update_to_instructions' => 'the latest stable release with `wp cli update`',
 		);
 
-		$build_status = array();
-		if ( file_exists( $package_dir . '/.travis.yml' ) ) {
-			$build_status[] = "[![Build Status](https://travis-ci.org/{$readme_args['package_name']}.svg?branch=master)](https://travis-ci.org/{$readme_args['package_name']})";
-		}
-		if ( file_exists( $package_dir . '/circle.yml' ) ) {
-			$build_status[] = "[![CircleCI](https://circleci.com/gh/{$readme_args['package_name']}/tree/master.svg?style=svg)](https://circleci.com/gh/{$readme_args['package_name']}/tree/master)";
-		}
+		if ( isset( $composer_obj['extras']['readme']['shields'] ) ) {
+			$readme_args['shields'] = implode( ' ', $composer_obj['extras']['readme']['shields'] );
+		} else {
+			$shields = array();
+			if ( file_exists( $package_dir . '/.travis.yml' ) ) {
+				$shields[] = "[![Build Status](https://travis-ci.org/{$readme_args['package_name']}.svg?branch=master)](https://travis-ci.org/{$readme_args['package_name']})";
+			}
+			if ( file_exists( $package_dir . '/circle.yml' ) ) {
+				$shields[] = "[![CircleCI](https://circleci.com/gh/{$readme_args['package_name']}/tree/master.svg?style=svg)](https://circleci.com/gh/{$readme_args['package_name']}/tree/master)";
+			}
 
-		if ( count( $build_status ) ) {
-			$readme_args['build_status'] = implode( ' ', $build_status );
+			if ( count( $shields ) ) {
+				$readme_args['shields'] = implode( ' ', $shields );
+			}
 		}
 
 		if ( false !== stripos( $readme_args['required_wp_cli_version'], 'alpha' ) ) {
