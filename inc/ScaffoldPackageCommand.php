@@ -260,7 +260,10 @@ class ScaffoldPackageCommand {
 				$v = '';
 				if ( isset( $composer_obj['extras']['readme'][ $section ][ $k ] ) ) {
 					$v = $composer_obj['extras']['readme'][ $section][ $k ];
-					if ( preg_match( $ext_regex, $v ) ) {
+					if ( false !== stripos( $v, '://' ) ) {
+						$response = Utils\http_request( 'GET', $v );
+						$v = $response->body;
+					} else if ( preg_match( $ext_regex, $v ) ) {
 						$v = $package_dir . '/' . $v;
 					}
 				} else if ( isset( $section_args[ $k ] ) ) {
