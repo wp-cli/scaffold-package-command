@@ -74,3 +74,30 @@ Feature: Scaffold a README.md file for an existing package
       """
       tree/master.svg?style=svg&circle-token=
       """
+
+  Scenario: Scaffold a readme with a remote support body
+    Given an empty directory
+    And a foo/composer.json file:
+      """
+      {
+          "name": "runcommand/profile",
+          "description": "Quickly identify what's slow with WordPress.",
+          "homepage": "https://runcommand.io/wp/profile/",
+          "extras": {
+              "readme": {
+                  "contributing": {
+                    "body": "https://gist.githubusercontent.com/danielbachhuber/bb652b1b744cea541705ee9c13605dad/raw/195c17ebb8cf25e947a9df6e02de1e96a084c287/support.md"
+                  }
+              }
+          }
+      }
+      """
+
+    When I run `wp scaffold package-readme foo`
+    Then the foo/README.md file should exist
+    And the foo/README.md file should contain:
+      """
+      ## Contributing
+
+      Support isn't free!
+      """
