@@ -22,7 +22,7 @@ wp scaffold package <name> [--description=<description>] [--homepage=<homepage>]
 Default behavior is to create the following files:
 - command.php
 - composer.json (with package name, description, and license)
-- .gitignore and .editorconfig
+- .gitignore, .editorconfig, and .distignore
 - README.md (via wp scaffold package-readme)
 - Test harness (via wp scaffold package-tests)
 
