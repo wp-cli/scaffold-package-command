@@ -14,7 +14,7 @@ class ScaffoldPackageCommand {
 	 * Default behavior is to create the following files:
 	 * - command.php
 	 * - composer.json (with package name, description, and license)
-	 * - .gitignore and .editorconfig
+	 * - .gitignore, .editorconfig, and .distignore
 	 * - README.md (via wp scaffold package-readme)
 	 * - Test harness (via wp scaffold package-tests)
 	 *
@@ -91,6 +91,7 @@ class ScaffoldPackageCommand {
 		$files_written = $this->create_files( array(
 			"{$package_dir}/.gitignore"     => file_get_contents( "{$package_root}/.gitignore" ),
 			"{$package_dir}/.editorconfig"  => file_get_contents( "{$package_root}/.editorconfig" ),
+			"{$package_dir}/.distignore"    => file_get_contents( "{$package_root}/.distignore" ),
 			"{$package_dir}/wp-cli.yml"     => file_get_contents( "{$package_root}/wp-cli.yml" ),
 			"{$package_dir}/command.php"    => Utils\mustache_render( "{$template_path}/command.mustache", $assoc_args ),
 			"{$package_dir}/composer.json"  => Utils\mustache_render( "{$template_path}/composer.mustache", $assoc_args ),
