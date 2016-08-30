@@ -239,21 +239,44 @@ class ScaffoldPackageCommand {
 			$readme_args['has_multiple_commands'] = count( $readme_args['commands'] ) > 1 ? true : false;
 		}
 
-		$readme_sections = array(
-			'package_description' => array(
-				'body' => $composer_obj['description'],
-			),
-			'using'               => array(
-				'body' => dirname( dirname( __FILE__ ) ) . '/templates/readme-using.mustache',
-			),
-			'installing'          => array(
-				'body' => dirname( dirname( __FILE__ ) ) . '/templates/readme-installing.mustache',
-			),
-			'contributing'        => array(
-				'body' => dirname( dirname( __FILE__ ) ) . '/templates/readme-contributing.mustache',
-			),
+		if ( isset( $composer_obj['extras']['readme']['sections'] ) ) {
+			$readme_section_headings = $composer_obj['extras']['readme']['sections'];
+		} else {
+			$readme_section_headings = array(
+				'Using',
+				'Installing',
+				'Contributing',
+			);
+		}
+
+		$readme_sections = array();
+		foreach( $readme_section_headings as $section_heading ) {
+			$key = strtolower( preg_replace( '#[^\da-z-_]#i', '', $section_heading ) );
+			$readme_sections[ $key ] = array(
+				'heading'      => $section_heading,
+			);
+		}
+		foreach( array( 'using', 'installing', 'contributing' ) as $key ) {
+			if ( isset( $readme_sections[ $key ] ) ) {
+				$readme_sections[ $key ]['body'] = dirname( dirname( __FILE__ ) ) . '/templates/readme-' . $key . '.mustache';
+			}
+		}
+
+		$readme_sections['package_description'] = array(
+			'body' => $composer_obj['description'],
 		);
 
+		$readme_args['quick_links'] = '';
+		foreach( $readme_sections as $key => $section ) {
+			if ( ! empty( $section['heading'] ) ) {
+				$readme_args['quick_links'] .= '[' . $section['heading'] . '](#' . $key . ') | ';
+			}
+		}
+		if ( ! empty( $readme_args['quick_links'] ) ) {
+			$readme_args['quick_links'] = 'Quick links: ' . rtrim( $readme_args['quick_links'], '| ' );
+		}
+
+		$readme_args['sections'] = array();
 		$ext_regex = '#\.(md|mustache)$#i';
 		foreach( $readme_sections as $section => $section_args ) {
 			$value = array();
@@ -277,9 +300,15 @@ class ScaffoldPackageCommand {
 					$value[] = trim( $v );
 				}
 			}
-			$section_key = 'package_description' === $section ? 'package_description' : $section . '_section';
-			$readme_args[ $section_key ] = trim( implode( PHP_EOL . PHP_EOL, $value ) );
-			$readme_args[ 'has_' . $section ] = ! empty( $value );
+			$value = trim( implode( PHP_EOL . PHP_EOL, $value ) );
+			if ( 'package_description' === $section ) {
+				$readme_args['package_description'] = $value;
+			} else {
+				$readme_args['sections'][] = array(
+					'heading'      => $section_args['heading'],
+					'body'         => $value,
+				);
+			}
 		}
 
 		$files_written = $this->create_files( array(
