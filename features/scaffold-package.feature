@@ -10,6 +10,11 @@ Feature: Scaffold WP-CLI commands
       """
     And the packages/vendor/wp-cli/foo/.gitignore file should exist
     And the packages/vendor/wp-cli/foo/.editorconfig file should exist
+    And the packages/vendor/wp-cli/foo/.distignore file should exist
+    And the packages/vendor/wp-cli/foo/.distignore file should contain:
+      """
+      .gitignore
+      """
     And the packages/vendor/wp-cli/foo/composer.json file should exist
     And the packages/vendor/wp-cli/foo/composer.json file should contain:
       """
@@ -88,6 +93,7 @@ Feature: Scaffold WP-CLI commands
     Given an empty directory
     And a session file:
       """
+      s
       s
       s
       s
