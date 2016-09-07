@@ -286,7 +286,14 @@ class ScaffoldPackageCommand {
 					$v = $composer_obj['extras']['readme'][ $section][ $k ];
 					if ( false !== stripos( $v, '://' ) ) {
 						$response = Utils\http_request( 'GET', $v );
-						$v = $response->body;
+						if ( preg_match( $ext_regex, $v ) ) {
+							$m = new \Mustache_Engine( array(
+								'escape' => function ( $val ) { return $val; }
+							) );
+							$v = $m->render( $response->body, $readme_args );
+						} else {
+							$v = $response->body;
+						}
 					} else if ( preg_match( $ext_regex, $v ) ) {
 						$v = $package_dir . '/' . $v;
 					}
