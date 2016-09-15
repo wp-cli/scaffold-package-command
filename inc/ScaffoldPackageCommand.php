@@ -176,6 +176,7 @@ class ScaffoldPackageCommand {
 			'shields'             => '',
 			'has_commands'        => false,
 			'wp_cli_update_to_instructions' => 'the latest stable release with `wp cli update`',
+			'show_powered_by'     => isset( $composer_obj['extras']['readme']['show_powered_by'] ) ? (bool) $composer_obj['extras']['readme']['show_powered_by'] : true,
 		);
 
 		if ( isset( $composer_obj['extras']['readme']['shields'] ) ) {
