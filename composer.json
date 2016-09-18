@@ -21,7 +21,7 @@
     "require-dev": {
         "behat/behat": "~2.5"
     },
-    "extras": {
+    "extra": {
         "commands": [
             "scaffold package",
             "scaffold package-tests",
