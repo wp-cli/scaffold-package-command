@@ -58,7 +58,7 @@ Feature: Scaffold a README.md file for an existing package
           "require-dev": {
               "behat/behat": "~2.5"
           },
-          "extras": {
+          "extra": {
               "readme": {
                   "shields": [
                     "[![CircleCI](https://circleci.com/gh/runcommand/profile/tree/master.svg?style=svg&circle-token=d916e588bf7c8ac469a3bd01930cf9eed886debe)](https://circleci.com/gh/runcommand/profile/tree/master)"
@@ -83,7 +83,7 @@ Feature: Scaffold a README.md file for an existing package
           "name": "runcommand/profile",
           "description": "Quickly identify what's slow with WordPress.",
           "homepage": "https://runcommand.io/wp/profile/",
-          "extras": {
+          "extra": {
               "readme": {
                   "contributing": {
                     "body": "https://gist.githubusercontent.com/danielbachhuber/bb652b1b744cea541705ee9c13605dad/raw/195c17ebb8cf25e947a9df6e02de1e96a084c287/support.md"
@@ -110,7 +110,7 @@ Feature: Scaffold a README.md file for an existing package
           "name": "runcommand/profile",
           "description": "Quickly identify what's slow with WordPress.",
           "homepage": "https://runcommand.io/wp/profile/",
-          "extras": {
+          "extra": {
               "readme": {
                   "sections": [
                     "Installing",
