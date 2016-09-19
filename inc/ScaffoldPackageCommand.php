@@ -120,14 +120,14 @@ class ScaffoldPackageCommand {
 	 * at the beginning of your project, and then every time your usage docs
 	 * change.
 	 *
-	 * These command-specific docs are generated based composer.json -> 'extras'
+	 * These command-specific docs are generated based composer.json -> 'extra'
 	 * -> 'commands'. For instance, this package's composer.json includes:
 	 *
 	 * ```
 	 * {
 	 *   "name": "wp-cli/scaffold-package-command",
 	 *    // [...]
-	 *    "extras": {
+	 *    "extra": {
 	 *        "commands": [
 	 *            "scaffold package",
 	 *            "scaffold package-tests",
@@ -178,8 +178,8 @@ class ScaffoldPackageCommand {
 			'wp_cli_update_to_instructions' => 'the latest stable release with `wp cli update`',
 		);
 
-		if ( isset( $composer_obj['extras']['readme']['shields'] ) ) {
-			$readme_args['shields'] = implode( ' ', $composer_obj['extras']['readme']['shields'] );
+		if ( isset( $composer_obj['extra']['readme']['shields'] ) ) {
+			$readme_args['shields'] = implode( ' ', $composer_obj['extra']['readme']['shields'] );
 		} else {
 			$shields = array();
 			if ( file_exists( $package_dir . '/.travis.yml' ) ) {
@@ -198,13 +198,13 @@ class ScaffoldPackageCommand {
 			$readme_args['wp_cli_update_to_instructions'] = 'the latest nightly release with `wp cli update --nightly`';
 		}
 
-		if ( ! empty( $composer_obj['extras']['commands'] ) ) {
+		if ( ! empty( $composer_obj['extra']['commands'] ) ) {
 			$readme_args['commands'] = array();
 			ob_start();
 			WP_CLI::run_command( array( 'cli', 'cmd-dump' ) );
 			$ret = ob_get_clean();
 			$cmd_dump = json_decode( $ret, true );
-			foreach( $composer_obj['extras']['commands'] as $command ) {
+			foreach( $composer_obj['extra']['commands'] as $command ) {
 				$bits = explode( ' ', $command );
 				$parent_command = $cmd_dump;
 				do {
@@ -239,8 +239,8 @@ class ScaffoldPackageCommand {
 			$readme_args['has_multiple_commands'] = count( $readme_args['commands'] ) > 1 ? true : false;
 		}
 
-		if ( isset( $composer_obj['extras']['readme']['sections'] ) ) {
-			$readme_section_headings = $composer_obj['extras']['readme']['sections'];
+		if ( isset( $composer_obj['extra']['readme']['sections'] ) ) {
+			$readme_section_headings = $composer_obj['extra']['readme']['sections'];
 		} else {
 			$readme_section_headings = array(
 				'Using',
@@ -282,8 +282,8 @@ class ScaffoldPackageCommand {
 			$value = array();
 			foreach( array( 'pre', 'body', 'post' ) as $k ) {
 				$v = '';
-				if ( isset( $composer_obj['extras']['readme'][ $section ][ $k ] ) ) {
-					$v = $composer_obj['extras']['readme'][ $section][ $k ];
+				if ( isset( $composer_obj['extra']['readme'][ $section ][ $k ] ) ) {
+					$v = $composer_obj['extra']['readme'][ $section][ $k ];
 					if ( false !== stripos( $v, '://' ) ) {
 						$response = Utils\http_request( 'GET', $v );
 						$v = $response->body;
