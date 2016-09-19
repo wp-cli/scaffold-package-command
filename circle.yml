@@ -10,6 +10,7 @@ dependencies:
 
 test:
   pre:
+    - composer validate --strict
     - bash bin/install-package-tests.sh
   override:
     - ./vendor/bin/behat --strict

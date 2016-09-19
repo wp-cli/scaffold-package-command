@@ -52,7 +52,7 @@ WP-CLI package directory.
 	[--require_wp_cli=<version>]
 		Required WP-CLI version for the package.
 		---
-		default: ~0.23.0
+		default: ^0.23.0
 		---
 
 	[--skip-tests]
@@ -168,14 +168,14 @@ based on the composer.json file for your WP-CLI package. Run this command
 at the beginning of your project, and then every time your usage docs
 change.
 
-These command-specific docs are generated based composer.json -> 'extras'
+These command-specific docs are generated based composer.json -> 'extra'
 -> 'commands'. For instance, this package's composer.json includes:
 
 ```
 {
   "name": "wp-cli/scaffold-package-command",
    // [...]
-   "extras": {
+   "extra": {
        "commands": [
            "scaffold package",
            "scaffold package-tests",
