@@ -61,7 +61,9 @@ Feature: Scaffold a README.md file for an existing package
           "extra": {
               "readme": {
                   "shields": [
-                    "[![CircleCI](https://circleci.com/gh/runcommand/profile/tree/master.svg?style=svg&circle-token=d916e588bf7c8ac469a3bd01930cf9eed886debe)](https://circleci.com/gh/runcommand/profile/tree/master)"
+                    "shield 1",
+                    "shield 2",
+                    "shield 3"
                   ]
               }
           }
@@ -72,7 +74,9 @@ Feature: Scaffold a README.md file for an existing package
     Then the foo/README.md file should exist
     And the foo/README.md file should contain:
       """
-      tree/master.svg?style=svg&circle-token=
+      shield 1
+      shield 2
+      shield 3
       """
 
   Scenario: Scaffold a readme with a remote support body
