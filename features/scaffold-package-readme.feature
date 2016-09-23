@@ -17,6 +17,10 @@ Feature: Scaffold a README.md file for an existing package
       """
       [![Build Status](https://travis-ci.org/wp-cli/foo.svg?branch=master)
       """
+    And the foo/README.md file should contain:
+      """
+      *This README.md is generated dynamically from the project's codebase
+      """
 
   Scenario: Scaffold a README.md requiring a nightly build
     Given an empty directory
@@ -139,4 +143,27 @@ Feature: Scaffold a README.md file for an existing package
       ## Donating
 
       Give me money!
+      """
+
+  Scenario: Scaffold a readme without the powered by
+    Given an empty directory
+    And a foo/composer.json file:
+      """
+      {
+          "name": "runcommand/profile",
+          "description": "Quickly identify what's slow with WordPress.",
+          "homepage": "https://runcommand.io/wp/profile/",
+          "extras": {
+              "readme": {
+                  "show_powered_by": false
+              }
+          }
+      }
+      """
+
+    When I run `wp scaffold package-readme foo`
+    Then the foo/README.md file should exist
+    And the foo/README.md file should not contain:
+      """
+      *This README.md is generated dynamically from the project's codebase
       """
