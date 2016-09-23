@@ -440,6 +440,7 @@ class ScaffoldPackageCommand {
 				'features/bootstrap/FeatureContext.php'       => $bootstrap_dir,
 				'features/bootstrap/support.php'              => $bootstrap_dir,
 				'php/WP_CLI/Process.php'                      => $bootstrap_dir,
+				'php/WP_CLI/ProcessRun.php'                   => $bootstrap_dir,
 				'php/utils.php'                               => $bootstrap_dir,
 				'ci/behat-tags.php'                           => $utils_dir,
 				'features/steps/given.php'                    => $steps_dir,
@@ -462,6 +463,9 @@ class ScaffoldPackageCommand {
 		$files_written = array();
 		foreach( $copy_source as $source => $to_copy ) {
 			foreach ( $to_copy as $file => $dir ) {
+				if ( 'php/WP_CLI/ProcessRun.php' === $file && ! file_exists( $source . "/{$file}" ) ) {
+					continue;
+				}
 				// file_get_contents() works with Phar-archived files
 				$contents  = file_get_contents( $source . "/{$file}" );
 				$file_path = $dir . basename( $file );

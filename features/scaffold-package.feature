@@ -132,6 +132,8 @@ Feature: Scaffold WP-CLI commands
     And the packages/vendor/wp-cli/foo/command.php file should exist
     And the packages/vendor/wp-cli/foo/wp-cli.yml file should exist
     And the packages/vendor/wp-cli/foo/.travis.yml file should exist
+    And the packages/vendor/wp-cli/foo/features/bootstrap/Process.php file should exist
+    And the packages/vendor/wp-cli/foo/features/bootstrap/ProcessRun.php file should exist
 
     When I run `WP_CLI_PACKAGES_DIR=packages wp --require=packages/vendor/wp-cli/foo/command.php hello-world`
     Then STDOUT should be:
