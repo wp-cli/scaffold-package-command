@@ -49,6 +49,7 @@ Feature: Scaffold the test suite for an existing package
       """
       FeatureContext.php
       Process.php
+      ProcessRun.php
       support.php
       utils.php
       """
