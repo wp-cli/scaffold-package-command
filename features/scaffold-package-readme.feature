@@ -153,7 +153,7 @@ Feature: Scaffold a README.md file for an existing package
           "name": "runcommand/profile",
           "description": "Quickly identify what's slow with WordPress.",
           "homepage": "https://runcommand.io/wp/profile/",
-          "extras": {
+          "extra": {
               "readme": {
                   "show_powered_by": false
               }
