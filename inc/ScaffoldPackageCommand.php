@@ -223,6 +223,10 @@ class ScaffoldPackageCommand {
 					}
 				} while( $parent_command && $bits );
 
+				if ( empty( $parent_command ) ) {
+					WP_CLI::error( 'Missing one or more commands defined in composer.json -> extras -> commands.' );
+				}
+
 				$longdesc = preg_replace( '/## GLOBAL PARAMETERS(.+)/s', '', $parent_command['longdesc'] );
 				$longdesc = preg_replace( '/##\s(.+)/', '**$1**', $longdesc );
 
