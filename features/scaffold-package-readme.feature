@@ -167,3 +167,25 @@ Feature: Scaffold a README.md file for an existing package
       """
       *This README.md is generated dynamically from the project's codebase
       """
+
+  Scenario: Error when commands are specified but not present
+    Given an empty directory
+    And a foo/composer.json file:
+      """
+      {
+          "name": "runcommand/profile",
+          "description": "Quickly identify what's slow with WordPress.",
+          "homepage": "https://runcommand.io/wp/profile/",
+          "extra": {
+              "commands": [
+                "profile"
+              ]
+          }
+      }
+      """
+
+    When I try `wp scaffold package-readme foo`
+    Then STDERR should be:
+      """
+      Error: Missing one or more commands defined in composer.json -> extras -> commands.
+      """
