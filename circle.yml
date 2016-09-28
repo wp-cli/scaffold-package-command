@@ -10,7 +10,7 @@ dependencies:
 
 test:
   pre:
-    - composer validate --strict
+    - composer validate
     - bash bin/install-package-tests.sh
   override:
     - WP_VERSION=latest ./vendor/bin/behat --strict
