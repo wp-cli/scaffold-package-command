@@ -3,7 +3,8 @@ wp-cli/scaffold-package-command
 
 Scaffold WP-CLI commands with functional tests
 
-[![Build Status](https://travis-ci.org/wp-cli/scaffold-package-command.svg?branch=master)](https://travis-ci.org/wp-cli/scaffold-package-command) [![CircleCI](https://circleci.com/gh/wp-cli/scaffold-package-command/tree/master.svg?style=svg)](https://circleci.com/gh/wp-cli/scaffold-package-command/tree/master)
+[![Build Status](https://travis-ci.org/wp-cli/scaffold-package-command.svg?branch=master)](https://travis-ci.org/wp-cli/scaffold-package-command)
+[![CircleCI](https://circleci.com/gh/wp-cli/scaffold-package-command/tree/master.svg?style=svg)](https://circleci.com/gh/wp-cli/scaffold-package-command/tree/master)
 
 Quick links: [Using](#using) | [Installing](#installing) | [Contributing](#contributing)
 
@@ -52,7 +53,7 @@ WP-CLI package directory.
 	[--require_wp_cli=<version>]
 		Required WP-CLI version for the package.
 		---
-		default: ^0.23.0
+		default: >=0.23.0
 		---
 
 	[--skip-tests]
@@ -184,6 +185,41 @@ These command-specific docs are generated based composer.json -> 'extra'
    }
 }
 ```
+
+You can also customize the rendering of README.md generally with
+composer.json -> 'extra' -> 'readme'. For example, runcommand/hook's
+composer.json includes:
+
+```
+{
+    "extra": {
+        "commands": [
+            "hook"
+        ],
+        "readme": {
+            "shields": [
+                "[![Build Status](https://travis-ci.org/runcommand/reset-password.svg?branch=master)](https://travis-ci.org/runcommand/reset-password)"
+            ],
+            "sections": [
+                "Using",
+                "Installing",
+                "Support"
+            ],
+            "support": {
+                "body": "https://raw.githubusercontent.com/runcommand/runcommand-theme/master/bin/readme-partials/support-open-source.md"
+            },
+            "show_powered_by": false
+        }
+    }
+}
+```
+
+In this example:
+
+* "shields" supports arbitrary images as shields to display.
+* "sections" permits defining arbitrary sections (instead of default Using, Installing and Contributing).
+* "support" -> "body" uses a remote Markdown file as the section contents. This can also be a local file path, or a string.
+* "show_powered_by" shows or hides the Powered By mention at the end of the readme.
 
 **OPTIONS**
 
