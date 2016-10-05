@@ -24,7 +24,7 @@ env:
     - WP_CLI_BIN_DIR=/tmp/wp-cli-phar
 
 before_script:
-  - composer validate --strict
+  - composer validate
   - bash bin/install-package-tests.sh
 
 script: ./vendor/bin/behat --strict
