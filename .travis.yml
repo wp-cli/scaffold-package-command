@@ -22,6 +22,9 @@ cache:
 env:
   global:
     - WP_CLI_BIN_DIR=/tmp/wp-cli-phar
+  matrix:
+    - WP_VERSION=latest
+    - WP_VERSION=trunk
 
 before_script:
   - composer validate
