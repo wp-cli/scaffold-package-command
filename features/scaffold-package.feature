@@ -18,6 +18,10 @@ Feature: Scaffold WP-CLI commands
     And the packages/vendor/wp-cli/foo/composer.json file should exist
     And the packages/vendor/wp-cli/foo/composer.json file should contain:
       """
+      "type": "wp-cli-package",
+      """
+    And the packages/vendor/wp-cli/foo/composer.json file should contain:
+      """
       "homepage": "https://github.com/wp-cli/foo",
       """
     And the packages/vendor/wp-cli/foo/composer.json file should contain:
