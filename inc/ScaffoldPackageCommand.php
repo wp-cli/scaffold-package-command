@@ -76,7 +76,7 @@ class ScaffoldPackageCommand {
 		if ( ! empty( $assoc_args['dir'] ) ) {
 			$package_dir = $assoc_args['dir'];
 		} else {
-			$package_dir = WP_CLI::get_runner()->get_packages_dir_path() . 'vendor/' . $assoc_args['name'];
+			$package_dir = WP_CLI::get_runner()->get_packages_dir_path() . 'src/' . $assoc_args['name'];
 		}
 
 		if ( empty( $assoc_args['homepage'] ) ) {
