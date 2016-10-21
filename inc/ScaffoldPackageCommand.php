@@ -19,7 +19,7 @@ class ScaffoldPackageCommand {
 	 * - Test harness (via wp scaffold package-tests)
 	 *
 	 * Unless specified with `--dir=<dir>`, the command package is placed in the
-	 * WP-CLI package directory.
+	 * WP-CLI `packages/local/` directory.
 	 *
 	 * ## OPTIONS
 	 *
@@ -33,7 +33,7 @@ class ScaffoldPackageCommand {
 	 * : Homepage for the package. Defaults to 'https://github.com/<name>'
 	 *
 	 * [--dir=<dir>]
-	 * : Specify a destination directory for the command. Defaults to WP-CLI's packages directory.
+	 * : Specify a destination directory for the command. Defaults to WP-CLI's `packages/local/` directory.
 	 *
 	 * [--license=<license>]
 	 * : License for the package.
