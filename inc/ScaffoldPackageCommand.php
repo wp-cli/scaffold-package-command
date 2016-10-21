@@ -110,6 +110,8 @@ class ScaffoldPackageCommand {
 		if ( ! Utils\get_flag_value( $assoc_args, 'skip-readme' ) ) {
 			WP_CLI::run_command( array( 'scaffold', 'package-readme', $package_dir ), array( 'force' => $force ) );
 		}
+
+		WP_CLI::run_command( array( 'package', 'install', $package_dir ) );
 	}
 
 	/**
