@@ -8,56 +8,56 @@ Feature: Scaffold WP-CLI commands
       """
       Success: Created package files
       """
-    And the packages/vendor/wp-cli/foo/.gitignore file should exist
-    And the packages/vendor/wp-cli/foo/.editorconfig file should exist
-    And the packages/vendor/wp-cli/foo/.distignore file should exist
-    And the packages/vendor/wp-cli/foo/.distignore file should contain:
+    And the packages/local/wp-cli/foo/.gitignore file should exist
+    And the packages/local/wp-cli/foo/.editorconfig file should exist
+    And the packages/local/wp-cli/foo/.distignore file should exist
+    And the packages/local/wp-cli/foo/.distignore file should contain:
       """
       .gitignore
       """
-    And the packages/vendor/wp-cli/foo/composer.json file should exist
-    And the packages/vendor/wp-cli/foo/composer.json file should contain:
+    And the packages/local/wp-cli/foo/composer.json file should exist
+    And the packages/local/wp-cli/foo/composer.json file should contain:
       """
       "type": "wp-cli-package",
       """
-    And the packages/vendor/wp-cli/foo/composer.json file should contain:
+    And the packages/local/wp-cli/foo/composer.json file should contain:
       """
       "homepage": "https://github.com/wp-cli/foo",
       """
-    And the packages/vendor/wp-cli/foo/composer.json file should contain:
+    And the packages/local/wp-cli/foo/composer.json file should contain:
       """
       "license": "MIT",
       """
-    And the packages/vendor/wp-cli/foo/composer.json file should contain:
+    And the packages/local/wp-cli/foo/composer.json file should contain:
       """
           "require": {
               "wp-cli/wp-cli": ">=0.23.0"
           },
       """
-    And the packages/vendor/wp-cli/foo/command.php file should exist
-    And the packages/vendor/wp-cli/foo/wp-cli.yml file should exist
-    And the packages/vendor/wp-cli/foo/.travis.yml file should not exist
+    And the packages/local/wp-cli/foo/command.php file should exist
+    And the packages/local/wp-cli/foo/wp-cli.yml file should exist
+    And the packages/local/wp-cli/foo/.travis.yml file should not exist
 
-    When I run `WP_CLI_PACKAGES_DIR=packages wp --require=packages/vendor/wp-cli/foo/command.php hello-world`
+    When I run `WP_CLI_PACKAGES_DIR=packages wp --require=packages/local/wp-cli/foo/command.php hello-world`
     Then STDOUT should be:
       """
       Success: Hello world.
       """
 
-    When I run `cat packages/vendor/wp-cli/foo/wp-cli.yml`
+    When I run `cat packages/local/wp-cli/foo/wp-cli.yml`
     Then STDOUT should contain:
       """
       require:
         - command.php
       """
 
-    When I run `cat packages/vendor/wp-cli/foo/.gitignore`
+    When I run `cat packages/local/wp-cli/foo/.gitignore`
     Then STDOUT should contain:
       """
       .DS_Store
       """
 
-    When I run `cat packages/vendor/wp-cli/foo/.editorconfig`
+    When I run `cat packages/local/wp-cli/foo/.editorconfig`
     Then STDOUT should contain:
       """
       This file is for unifying the coding style for different editors and IDEs
@@ -130,16 +130,16 @@ Feature: Scaffold WP-CLI commands
       """
       Success: Created package files
       """
-    And the packages/vendor/wp-cli/foo/.gitignore file should exist
-    And the packages/vendor/wp-cli/foo/.editorconfig file should exist
-    And the packages/vendor/wp-cli/foo/composer.json file should exist
-    And the packages/vendor/wp-cli/foo/command.php file should exist
-    And the packages/vendor/wp-cli/foo/wp-cli.yml file should exist
-    And the packages/vendor/wp-cli/foo/.travis.yml file should exist
-    And the packages/vendor/wp-cli/foo/features/bootstrap/Process.php file should exist
-    And the packages/vendor/wp-cli/foo/features/bootstrap/ProcessRun.php file should exist
+    And the packages/local/wp-cli/foo/.gitignore file should exist
+    And the packages/local/wp-cli/foo/.editorconfig file should exist
+    And the packages/local/wp-cli/foo/composer.json file should exist
+    And the packages/local/wp-cli/foo/command.php file should exist
+    And the packages/local/wp-cli/foo/wp-cli.yml file should exist
+    And the packages/local/wp-cli/foo/.travis.yml file should exist
+    And the packages/local/wp-cli/foo/features/bootstrap/Process.php file should exist
+    And the packages/local/wp-cli/foo/features/bootstrap/ProcessRun.php file should exist
 
-    When I run `WP_CLI_PACKAGES_DIR=packages wp --require=packages/vendor/wp-cli/foo/command.php hello-world`
+    When I run `WP_CLI_PACKAGES_DIR=packages wp --require=packages/local/wp-cli/foo/command.php hello-world`
     Then STDOUT should be:
       """
       Success: Hello world.
@@ -153,8 +153,8 @@ Feature: Scaffold WP-CLI commands
       """
       Success: Created package files
       """
-    And the packages/vendor/wp-cli/bar/composer.json file should exist
-    And the packages/vendor/wp-cli/bar/composer.json file should contain:
+    And the packages/local/wp-cli/bar/composer.json file should exist
+    And the packages/local/wp-cli/bar/composer.json file should contain:
       """
       "homepage": "http://apple.com",
       """
