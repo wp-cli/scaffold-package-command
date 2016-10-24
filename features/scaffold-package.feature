@@ -109,13 +109,13 @@ Feature: Scaffold WP-CLI commands
       s
       """
 
-    When I run `wp scaffold package wp-cli/foo --skip-tests`
+    When I run `wp scaffold package wp-cli/same-package --skip-tests`
     Then STDOUT should contain:
       """
       Success: Created package files
       """
 
-    When I run `wp scaffold package wp-cli/foo --skip-tests < session`
+    When I run `wp scaffold package wp-cli/same-package --skip-tests < session`
     And STDERR should contain:
       """
       Warning: File already exists
@@ -131,21 +131,21 @@ Feature: Scaffold WP-CLI commands
     When I run `wp package path`
     Then save STDOUT as {PACKAGE_PATH}
 
-    When I run `wp scaffold package wp-cli/foo`
+    When I run `wp scaffold package wp-cli/with-tests`
     Then STDOUT should contain:
       """
       Success: Created package files
       """
-    And the {PACKAGE_PATH}/local/wp-cli/foo/.gitignore file should exist
-    And the {PACKAGE_PATH}/local/wp-cli/foo/.editorconfig file should exist
-    And the {PACKAGE_PATH}/local/wp-cli/foo/composer.json file should exist
-    And the {PACKAGE_PATH}/local/wp-cli/foo/command.php file should exist
-    And the {PACKAGE_PATH}/local/wp-cli/foo/wp-cli.yml file should exist
-    And the {PACKAGE_PATH}/local/wp-cli/foo/.travis.yml file should exist
-    And the {PACKAGE_PATH}/local/wp-cli/foo/features/bootstrap/Process.php file should exist
-    And the {PACKAGE_PATH}/local/wp-cli/foo/features/bootstrap/ProcessRun.php file should exist
+    And the {PACKAGE_PATH}/local/wp-cli/with-tests/.gitignore file should exist
+    And the {PACKAGE_PATH}/local/wp-cli/with-tests/.editorconfig file should exist
+    And the {PACKAGE_PATH}/local/wp-cli/with-tests/composer.json file should exist
+    And the {PACKAGE_PATH}/local/wp-cli/with-tests/command.php file should exist
+    And the {PACKAGE_PATH}/local/wp-cli/with-tests/wp-cli.yml file should exist
+    And the {PACKAGE_PATH}/local/wp-cli/with-tests/.travis.yml file should exist
+    And the {PACKAGE_PATH}/local/wp-cli/with-tests/features/bootstrap/Process.php file should exist
+    And the {PACKAGE_PATH}/local/wp-cli/with-tests/features/bootstrap/ProcessRun.php file should exist
 
-    When I run `wp --require={PACKAGE_PATH}/local/wp-cli/foo/command.php hello-world`
+    When I run `wp --require={PACKAGE_PATH}/local/wp-cli/with-tests/command.php hello-world`
     Then STDOUT should be:
       """
       Success: Hello world.
