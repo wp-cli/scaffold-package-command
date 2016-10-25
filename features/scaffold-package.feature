@@ -144,6 +144,11 @@ Feature: Scaffold WP-CLI commands
       """
       All package files were skipped
       """
+    When I run `wp package uninstall wp-cli/same-package`
+    Then STDOUT should contain:
+      """
+      Success: Uninstalled package.
+      """
 
   Scenario: Scaffold a WP-CLI command with tests
     Given an empty directory
@@ -170,6 +175,11 @@ Feature: Scaffold WP-CLI commands
       """
       Success: Hello world.
       """
+    When I run `wp package uninstall wp-cli/with-tests`
+    Then STDOUT should contain:
+      """
+      Success: Uninstalled package.
+      """
 
   Scenario: Scaffold a command with a custom homepage
     Given an empty directory
@@ -186,4 +196,9 @@ Feature: Scaffold WP-CLI commands
     And the {PACKAGE_PATH}/local/wp-cli/bar/composer.json file should contain:
       """
       "homepage": "http://apple.com",
+      """
+    When I run `wp package uninstall wp-cli/bar`
+    Then STDOUT should contain:
+      """
+      Success: Uninstalled package.
       """
