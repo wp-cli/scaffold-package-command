@@ -66,6 +66,12 @@ Feature: Scaffold WP-CLI commands
       This file is for unifying the coding style for different editors and IDEs
       """
 
+    When I run `wp package uninstall wp-cli/foo`
+    Then STDOUT should contain:
+      """
+      Success: Uninstalled package.
+      """
+
   Scenario: Scaffold a WP-CLI command without using --require
     Given an empty directory
 
