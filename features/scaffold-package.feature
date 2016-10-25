@@ -78,19 +78,19 @@ Feature: Scaffold WP-CLI commands
   Scenario: Scaffold a WP-CLI command to a custom directory
     Given an empty directory
 
-    When I run `wp scaffold package wp-cli/foo --dir=foo --skip-tests`
+    When I run `wp scaffold package wp-cli/custom-directory --dir=custom-directory --skip-tests`
     Then STDOUT should contain:
       """
       Success: Created package files
       """
-    And the foo/.gitignore file should exist
-    And the foo/.editorconfig file should exist
-    And the foo/composer.json file should exist
-    And the foo/command.php file should exist
-    And the foo/wp-cli.yml file should exist
-    And the foo/.travis.yml file should not exist
+    And the custom-directory/.gitignore file should exist
+    And the custom-directory/.editorconfig file should exist
+    And the custom-directory/composer.json file should exist
+    And the custom-directory/command.php file should exist
+    And the custom-directory/wp-cli.yml file should exist
+    And the custom-directory/.travis.yml file should not exist
 
-    When I run `wp --require=foo/command.php hello-world`
+    When I run `wp --require=custom-directory/command.php hello-world`
     Then STDOUT should be:
       """
       Success: Hello world.
