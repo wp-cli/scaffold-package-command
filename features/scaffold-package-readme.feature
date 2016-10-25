@@ -24,6 +24,11 @@ Feature: Scaffold a README.md file for an existing package
       """
       *This README.md is generated dynamically from the project's codebase
       """
+    When I run `wp package uninstall wp-cli/default-readme`
+    Then STDOUT should contain:
+      """
+      Success: Uninstalled package.
+      """
 
   Scenario: Scaffold a README.md requiring a nightly build
     Given an empty directory
