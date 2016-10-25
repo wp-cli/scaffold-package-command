@@ -95,6 +95,11 @@ Feature: Scaffold WP-CLI commands
       """
       Success: Hello world.
       """
+    When I run `wp package uninstall wp-cli/custom-directory`
+    Then STDOUT should contain:
+      """
+      Success: Uninstalled package.
+      """
 
   Scenario: Attempt to scaffold the same package twice
     Given an empty directory
