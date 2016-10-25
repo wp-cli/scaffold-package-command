@@ -66,6 +66,15 @@ Feature: Scaffold WP-CLI commands
       This file is for unifying the coding style for different editors and IDEs
       """
 
+  Scenario: Scaffold a WP-CLI command without using --require
+    Given an empty directory
+
+    When I run `wp hello-world`
+    Then STDOUT should be:
+      """
+      Success: Hello world.
+      """
+
   Scenario: Scaffold a package with an invalid name
     Given an empty directory
 
