@@ -75,10 +75,22 @@ Feature: Scaffold WP-CLI commands
   Scenario: Scaffold a WP-CLI command without using --require
     Given an empty directory
 
+    When I run `wp scaffold package wp-cli/without-require --skip-tests`
+    Then STDOUT should contain:
+      """
+      Success: Created package files
+      """
+
     When I run `wp hello-world`
     Then STDOUT should be:
       """
       Success: Hello world.
+      """
+
+    When I run `wp package uninstall wp-cli/without-require`
+    Then STDOUT should contain:
+      """
+      Success: Uninstalled package.
       """
 
   Scenario: Scaffold a package with an invalid name
