@@ -78,9 +78,7 @@ Feature: Scaffold a README.md file for an existing package
     Then the foo/README.md file should exist
     And the foo/README.md file should contain:
       """
-      shield 1
-      shield 2
-      shield 3
+      shield 1 shield 2 shield 3
       """
 
   Scenario: Scaffold a readme with a remote support body
