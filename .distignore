@@ -7,3 +7,5 @@ circle.yml
 bin/
 features/
 utils/
+*.zip
+*.tar.gz
