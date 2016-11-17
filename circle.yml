@@ -12,6 +12,9 @@ dependencies:
     - echo "date.timezone = 'US/Central'" > /opt/circleci/php/$(phpenv global)/etc/conf.d/wp-cli-timezone.ini
     # Disable xdebug, which makes Composer slower.
     - echo ""  > /opt/circleci/php/$(phpenv global)/etc/conf.d/xdebug.ini
+    # Increase memory limit
+    - echo "memory_limit = 256M" > /opt/circleci/php/$(phpenv global)/etc/conf.d/memory.ini
+
 
 test:
   pre:
