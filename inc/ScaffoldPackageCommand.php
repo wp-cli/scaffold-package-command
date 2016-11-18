@@ -19,7 +19,7 @@ class ScaffoldPackageCommand {
 	 * - Test harness (via wp scaffold package-tests)
 	 *
 	 * Unless specified with `--dir=<dir>`, the command package is placed in the
-	 * WP-CLI package directory.
+	 * WP-CLI `packages/local/` directory.
 	 *
 	 * ## OPTIONS
 	 *
@@ -33,7 +33,7 @@ class ScaffoldPackageCommand {
 	 * : Homepage for the package. Defaults to 'https://github.com/<name>'
 	 *
 	 * [--dir=<dir>]
-	 * : Specify a destination directory for the command. Defaults to WP-CLI's packages directory.
+	 * : Specify a destination directory for the command. Defaults to WP-CLI's `packages/local/` directory.
 	 *
 	 * [--license=<license>]
 	 * : License for the package.
@@ -76,7 +76,7 @@ class ScaffoldPackageCommand {
 		if ( ! empty( $assoc_args['dir'] ) ) {
 			$package_dir = $assoc_args['dir'];
 		} else {
-			$package_dir = WP_CLI::get_runner()->get_packages_dir_path() . 'vendor/' . $assoc_args['name'];
+			$package_dir = WP_CLI::get_runner()->get_packages_dir_path() . 'local/' . $assoc_args['name'];
 		}
 
 		if ( empty( $assoc_args['homepage'] ) ) {
@@ -110,6 +110,8 @@ class ScaffoldPackageCommand {
 		if ( ! Utils\get_flag_value( $assoc_args, 'skip-readme' ) ) {
 			WP_CLI::run_command( array( 'scaffold', 'package-readme', $package_dir ), array( 'force' => $force ) );
 		}
+
+		WP_CLI::run_command( array( 'package', 'install', $package_dir ) );
 	}
 
 	/**
