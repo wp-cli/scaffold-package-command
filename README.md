@@ -42,7 +42,7 @@ WP-CLI package directory.
 		Homepage for the package. Defaults to 'https://github.com/<name>'
 
 	[--dir=<dir>]
-		Specify a destination directory for the command. Defaults to WP-CLI's packages directory.
+		Specify a destination directory for the command. Defaults to WP-CLI's `packages/local/` directory.
 
 	[--license=<license>]
 		License for the package.
