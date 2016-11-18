@@ -217,7 +217,7 @@ class ScaffoldPackageCommand {
 		);
 
 		if ( isset( $composer_obj['extra']['readme']['shields'] ) ) {
-			$readme_args['shields'] = implode( "\n", $composer_obj['extra']['readme']['shields'] );
+			$readme_args['shields'] = implode( ' ', $composer_obj['extra']['readme']['shields'] );
 		} else {
 			$shields = array();
 			if ( file_exists( $package_dir . '/.travis.yml' ) ) {
@@ -228,7 +228,7 @@ class ScaffoldPackageCommand {
 			}
 
 			if ( count( $shields ) ) {
-				$readme_args['shields'] = implode( "\n", $shields );
+				$readme_args['shields'] = implode( ' ', $shields );
 			}
 		}
 
