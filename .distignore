@@ -1,8 +1,10 @@
 .DS_Store
 .git
 .gitignore
+.gitlab-ci.yml
 .editorconfig
 .travis.yml
+behat.yml
 circle.yml
 bin/
 features/
