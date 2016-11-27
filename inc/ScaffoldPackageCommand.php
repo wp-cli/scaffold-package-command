@@ -423,7 +423,7 @@ class ScaffoldPackageCommand {
 	 * The `features/bootstrap/FeatureContext.php` file expects the
 	 * WP_CLI_BIN_DIR environment variable.
 	 *
-	 * WP-CLI Behat framework uses Behat ~2.5.
+	 * WP-CLI Behat framework uses Behat ~2.5, which is installed with Composer.
 	 *
 	 * ## OPTIONS
 	 *

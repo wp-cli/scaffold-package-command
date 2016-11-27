@@ -26,9 +26,7 @@ install_wp_cli() {
 download_behat() {
 
 	cd $PACKAGE_DIR
-	download https://getcomposer.org/installer installer
-	php installer
-	php composer.phar require --dev behat/behat='~2.5'
+	composer require --dev behat/behat='~2.5'
 
 }
 
