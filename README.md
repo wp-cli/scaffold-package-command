@@ -3,8 +3,7 @@ wp-cli/scaffold-package-command
 
 Scaffold WP-CLI commands with functional tests
 
-[![Build Status](https://travis-ci.org/wp-cli/scaffold-package-command.svg?branch=master)](https://travis-ci.org/wp-cli/scaffold-package-command)
-[![CircleCI](https://circleci.com/gh/wp-cli/scaffold-package-command/tree/master.svg?style=svg)](https://circleci.com/gh/wp-cli/scaffold-package-command/tree/master)
+[![Build Status](https://travis-ci.org/wp-cli/scaffold-package-command.svg?branch=master)](https://travis-ci.org/wp-cli/scaffold-package-command) [![CircleCI](https://circleci.com/gh/wp-cli/scaffold-package-command/tree/master.svg?style=svg)](https://circleci.com/gh/wp-cli/scaffold-package-command/tree/master)
 
 Quick links: [Using](#using) | [Installing](#installing) | [Contributing](#contributing)
 
@@ -28,7 +27,7 @@ Default behavior is to create the following files:
 - Test harness (via wp scaffold package-tests)
 
 Unless specified with `--dir=<dir>`, the command package is placed in the
-WP-CLI package directory.
+WP-CLI `packages/local/` directory.
 
 **OPTIONS**
 
@@ -131,7 +130,7 @@ calling `behat`.
 The `features/bootstrap/FeatureContext.php` file expects the
 WP_CLI_BIN_DIR environment variable.
 
-WP-CLI Behat framework uses Behat ~2.5.
+WP-CLI Behat framework uses Behat ~2.5, which is installed with Composer.
 
 **OPTIONS**
 
