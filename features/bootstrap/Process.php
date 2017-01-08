@@ -44,7 +44,9 @@ class Process {
 		$command = preg_replace_callback( '/\$([A-Z_]+)/', function( $matches ){
 			$cmd = $matches[0];
 			foreach ( array_slice( $matches, 1 ) as $key ) {
-				$cmd = str_replace( '$' . $key, escapeshellarg( getenv( $key ) ), $cmd );
+				if ( getenv( $key ) ) {
+					$cmd = str_replace( '$' . $key, escapeshellarg( getenv( $key ) ), $cmd );
+				}
 			}
 			return $cmd;
 		}, $this->command );
