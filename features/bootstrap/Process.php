@@ -40,7 +40,16 @@ class Process {
 			2 => array( 'pipe', 'w' ),
 		);
 
-		$proc = proc_open( $this->command, $descriptors, $pipes, $cwd, $this->env );
+		// Convert environment variables.
+		$command = preg_replace_callback( '/\$([A-Z_]+)/', function( $matches ){
+			$cmd = $matches[0];
+			foreach ( array_slice( $matches, 1 ) as $key ) {
+				$cmd = str_replace( '$' . $key, escapeshellarg( getenv( $key ) ), $cmd );
+			}
+			return $cmd;
+		}, $this->command );
+
+		$proc = proc_open( $command, $descriptors, $pipes, $cwd, $this->env );
 
 		$stdout = stream_get_contents( $pipes[1] );
 		fclose( $pipes[1] );
