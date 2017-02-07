@@ -21,6 +21,6 @@ test:
     - composer validate
     - bash bin/install-package-tests.sh
   override:
-    - WP_VERSION=latest ./vendor/bin/behat --strict
+    - WP_VERSION=latest ./vendor/bin/behat --format progress --strict
     - rm -rf '/tmp/wp-cli-test core-download-cache'
-    - WP_VERSION=trunk ./vendor/bin/behat --strict
+    - WP_VERSION=trunk ./vendor/bin/behat --format progress --strict
