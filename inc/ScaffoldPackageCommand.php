@@ -273,7 +273,7 @@ class ScaffoldPackageCommand {
 				$readme_args['commands'][] = array(
 					'name' => "wp {$command}",
 					'shortdesc' => $parent_command['description'],
-					'synopsis' => "wp {$command} {$parent_command['synopsis']}",
+					'synopsis' => "wp {$command}" . ( empty( $parent_command['subcommands'] ) ? " {$parent_command['synopsis']}" : "" ),
 					'longdesc' => $longdesc,
 				);
 			}
