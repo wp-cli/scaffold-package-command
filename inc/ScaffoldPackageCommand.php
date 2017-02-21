@@ -44,7 +44,7 @@ class ScaffoldPackageCommand {
 	 * [--require_wp_cli=<version>]
 	 * : Required WP-CLI version for the package.
 	 * ---
-	 * default: >=0.23.0
+	 * default: >=1.1.0
 	 * ---
 	 *
 	 * [--skip-tests]
