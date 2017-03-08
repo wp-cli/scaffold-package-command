@@ -103,15 +103,16 @@ class ScaffoldPackageCommand {
 			WP_CLI::success( "Created package files in {$package_dir}" );
 		}
 
+		$force_flag = $force ? '--force' : '';
 		if ( ! Utils\get_flag_value( $assoc_args, 'skip-tests' ) ) {
-			WP_CLI::run_command( array( 'scaffold', 'package-tests', $package_dir ), array( 'force' => $force ) );
+			WP_CLI::runcommand( "scaffold package-tests {$package_dir} {$force_flag}", array( 'launch' => false ) );
 		}
 
 		if ( ! Utils\get_flag_value( $assoc_args, 'skip-readme' ) ) {
-			WP_CLI::run_command( array( 'scaffold', 'package-readme', $package_dir ), array( 'force' => $force ) );
+			WP_CLI::runcommand( "scaffold package-readme {$package_dir} {$force_flag}", array( 'launch' => false ) );
 		}
 
-		WP_CLI::run_command( array( 'package', 'install', $package_dir ) );
+		WP_CLI::runcommand( "package install {$package_dir}", array( 'launch' => false ) );
 	}
 
 	/**
@@ -238,10 +239,7 @@ class ScaffoldPackageCommand {
 
 		if ( ! empty( $composer_obj['extra']['commands'] ) ) {
 			$readme_args['commands'] = array();
-			ob_start();
-			WP_CLI::run_command( array( 'cli', 'cmd-dump' ) );
-			$ret = ob_get_clean();
-			$cmd_dump = json_decode( $ret, true );
+			$cmd_dump = WP_CLI::runcommand( 'cli cmd-dump', array( 'launch' => false, 'return' => true, 'parse' => 'json' ) );
 			foreach( $composer_obj['extra']['commands'] as $command ) {
 				$bits = explode( ' ', $command );
 				$parent_command = $cmd_dump;
