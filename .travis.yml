@@ -17,7 +17,8 @@ cache:
 
 env:
   global:
-    - WP_CLI_BIN_DIR=/tmp/wp-cli-phar
+    - PATH="$HOME/.composer/vendor/bin:$PATH"
+    - WP_CLI_BIN_DIR=$HOME/.composer/vendor/bin
 
 matrix:
   include:
@@ -32,9 +33,14 @@ matrix:
     - php: 5.3
       env: WP_VERSION=latest
 
-before_script:
+install:
   - phpenv config-rm xdebug.ini
-  - composer validate
+  - composer global require wp-cli/wp-cli
+  - composer install --no-dev
   - bash bin/install-package-tests.sh
 
-script: ./vendor/bin/behat --format progress --strict
+before_script:
+  - composer validate
+
+script:
+  - behat --format progress --strict
