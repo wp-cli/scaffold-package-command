@@ -35,7 +35,7 @@ matrix:
 
 install:
   - phpenv config-rm xdebug.ini
-  - composer global require wp-cli/wp-cli
+  - composer global require wp-cli/wp-cli:dev-master --dev
   - composer install --no-dev
   - bash bin/install-package-tests.sh
 
