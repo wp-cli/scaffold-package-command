@@ -17,8 +17,8 @@ cache:
 
 env:
   global:
-    - PATH="$HOME/.composer/vendor/bin:$PATH"
-    - WP_CLI_BIN_DIR="$HOME/.composer/vendor/bin"
+    - PATH="$TRAVIS_BUILD_DIR/vendor/bin:$PATH"
+    - WP_CLI_BIN_DIR="$TRAVIS_BUILD_DIR/vendor/bin"
 
 matrix:
   include:
@@ -33,11 +33,11 @@ matrix:
     - php: 5.3
       env: WP_VERSION=latest
 
-install:
+before_install:
   - phpenv config-rm xdebug.ini
-  - composer global require wp-cli/wp-cli:dev-master
-  - composer global require behat/behat:~2.5
-  - composer install --no-dev
+
+install:
+  - composer install
   - bash bin/install-package-tests.sh
 
 before_script:
