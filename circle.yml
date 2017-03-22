@@ -2,12 +2,12 @@ machine:
   php:
     version: 5.6.22
   environment:
-    PATH: "$HOME/.composer/vendor/bin:$PATH"
-    WP_CLI_BIN_DIR: "$HOME/.composer/vendor/bin"
+    PATH: "$HOME/$CIRCLE_PROJECT_REPONAME/vendor/bin:$PATH"
+    WP_CLI_BIN_DIR: "$HOME/$CIRCLE_PROJECT_REPONAME/vendor/bin"
 
 dependencies:
   cache_directories:
-    - ~/.composer/cache
+    - $HOME/.composer/cache
   pre:
     # Set the PHP timezone so that Behat does not fail.
     - echo "date.timezone = 'US/Central'" > /opt/circleci/php/$(phpenv global)/etc/conf.d/wp-cli-timezone.ini
@@ -16,9 +16,7 @@ dependencies:
     # Increase memory limit
     - echo "memory_limit = 512M" > /opt/circleci/php/$(phpenv global)/etc/conf.d/memory.ini
   override:
-    - composer global require wp-cli/wp-cli:dev-master
-    - composer global require behat/behat:~2.5
-    - composer install --no-dev
+    - composer install
     - bash bin/install-package-tests.sh
 
 test:
