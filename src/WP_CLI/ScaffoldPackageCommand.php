@@ -87,12 +87,16 @@ class ScaffoldPackageCommand {
 
 		$package_root = dirname( dirname( dirname( __FILE__ ) ) );
 		$template_path = $package_root . '/templates/';
+		$wp_cli_yml = <<<EOT
+require:
+  - command.php
+EOT;
 
 		$files_written = $this->create_files( array(
 			"{$package_dir}/.gitignore"     => file_get_contents( "{$package_root}/.gitignore" ),
 			"{$package_dir}/.editorconfig"  => file_get_contents( "{$package_root}/.editorconfig" ),
 			"{$package_dir}/.distignore"    => file_get_contents( "{$package_root}/.distignore" ),
-			"{$package_dir}/wp-cli.yml"     => file_get_contents( "{$package_root}/wp-cli.yml" ),
+			"{$package_dir}/wp-cli.yml"     => $wp_cli_yml,
 			"{$package_dir}/command.php"    => Utils\mustache_render( "{$template_path}/command.mustache", $assoc_args ),
 			"{$package_dir}/composer.json"  => Utils\mustache_render( "{$template_path}/composer.mustache", $assoc_args ),
 		), $force );
