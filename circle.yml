@@ -2,7 +2,8 @@ machine:
   php:
     version: 5.6.22
   environment:
-    WP_CLI_BIN_DIR: /tmp/wp-cli-phar
+    PATH: "$HOME/$CIRCLE_PROJECT_REPONAME/vendor/bin:$PATH"
+    WP_CLI_BIN_DIR: "$HOME/$CIRCLE_PROJECT_REPONAME/vendor/bin"
 
 dependencies:
   cache_directories:
@@ -14,13 +15,14 @@ dependencies:
     - echo ""  > /opt/circleci/php/$(phpenv global)/etc/conf.d/xdebug.ini
     # Increase memory limit
     - echo "memory_limit = 512M" > /opt/circleci/php/$(phpenv global)/etc/conf.d/memory.ini
-
+  override:
+    - composer install
+    - bash bin/install-package-tests.sh
 
 test:
   pre:
     - composer validate
-    - bash bin/install-package-tests.sh
   override:
-    - WP_VERSION=latest ./vendor/bin/behat --format progress --strict
+    - WP_VERSION=latest behat --format progress --strict
     - rm -rf '/tmp/wp-cli-test core-download-cache'
-    - WP_VERSION=trunk ./vendor/bin/behat --format progress --strict
+    - WP_VERSION=trunk behat --format progress --strict
