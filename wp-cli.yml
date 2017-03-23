@@ -1,2 +1,2 @@
 require:
-  - command.php
+  - scaffold-package-command.php
