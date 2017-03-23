@@ -34,7 +34,7 @@ Feature: Scaffold WP-CLI commands
     And the {PACKAGE_PATH}/local/wp-cli/foo/composer.json file should contain:
       """
           "require": {
-              "wp-cli/wp-cli": ">=1.1.0"
+              "wp-cli/wp-cli": "^1.1.0"
           },
       """
     And the {PACKAGE_PATH}/local/wp-cli/foo/command.php file should exist
