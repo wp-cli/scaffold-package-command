@@ -4,7 +4,10 @@ if ( ! class_exists( 'WP_CLI' ) ) {
 	return;
 }
 
-require_once __DIR__ . '/inc/ScaffoldPackageCommand.php';
+$autoload = dirname( __FILE__ ) . '/vendor/autoload.php';
+if ( file_exists( $autoload ) ) {
+	require_once $autoload;
+}
 
 WP_CLI::add_command( 'scaffold package', array( 'WP_CLI\ScaffoldPackageCommand', 'package' ) );
 WP_CLI::add_command( 'scaffold package-readme', array( 'WP_CLI\ScaffoldPackageCommand', 'package_readme' ) );
