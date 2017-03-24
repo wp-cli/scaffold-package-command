@@ -85,7 +85,7 @@ class ScaffoldPackageCommand {
 
 		$force = Utils\get_flag_value( $assoc_args, 'force' );
 
-		$package_root = dirname( dirname( dirname( __FILE__ ) ) );
+		$package_root = dirname( dirname( __FILE__ ) );
 		$template_path = $package_root . '/templates/';
 		$wp_cli_yml = <<<EOT
 require:
@@ -205,7 +205,7 @@ EOT;
 
 		$force = Utils\get_flag_value( $assoc_args, 'force' );
 
-		$package_root = dirname( dirname( dirname( __FILE__ ) ) );
+		$package_root = dirname( dirname( __FILE__ ) );
 		$template_path = $package_root . '/templates/';
 
 		$bits = explode( '/', $composer_obj['name'] );
@@ -478,7 +478,7 @@ EOT;
 		}
 
 		$wp_cli_root = WP_CLI_ROOT;
-		$package_root = dirname( dirname( dirname( __FILE__ ) ) );
+		$package_root = dirname( dirname( __FILE__ ) );
 		$copy_source = array(
 			$wp_cli_root => array(
 				'features/bootstrap/FeatureContext.php'       => $bootstrap_dir,
