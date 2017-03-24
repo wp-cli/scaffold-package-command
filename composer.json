@@ -16,9 +16,7 @@
     ],
     "minimum-stability": "dev",
     "autoload": {
-        "psr-4": {
-            "WP_CLI\\": "src/WP_CLI"
-        },
+        "psr-4": { "WP_CLI\\": "src" },
         "files": [ "scaffold-package-command.php" ]
     },
     "require": {
