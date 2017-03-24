@@ -302,7 +302,7 @@ EOT;
 		}
 		foreach( array( 'using', 'installing', 'contributing' ) as $key ) {
 			if ( isset( $readme_sections[ $key ] ) ) {
-				$readme_sections[ $key ]['body'] = dirname( dirname( dirname( __FILE__ ) ) ) . '/templates/readme-' . $key . '.mustache';
+				$readme_sections[ $key ]['body'] = dirname( dirname( __FILE__ ) ) . '/templates/readme-' . $key . '.mustache';
 			}
 		}
 
