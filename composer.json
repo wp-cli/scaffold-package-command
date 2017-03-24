@@ -16,15 +16,19 @@
     ],
     "minimum-stability": "dev",
     "autoload": {
-        "files": [ "command.php" ]
+        "psr-4": { "WP_CLI\\": "src" },
+        "files": [ "scaffold-package-command.php" ]
     },
     "require": {
-        "wp-cli/wp-cli": "^1.0.0"
+        "wp-cli/wp-cli": "dev-master"
     },
     "require-dev": {
         "behat/behat": "~2.5"
     },
     "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        },
         "commands": [
             "scaffold package",
             "scaffold package-tests",
