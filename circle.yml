@@ -16,6 +16,7 @@ dependencies:
     # Increase memory limit
     - echo "memory_limit = 512M" > /opt/circleci/php/$(phpenv global)/etc/conf.d/memory.ini
   override:
+    - composer require wp-cli/wp-cli:dev-master
     - composer install
     - bash bin/install-package-tests.sh
 
