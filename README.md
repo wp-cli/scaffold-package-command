@@ -76,7 +76,7 @@ wp scaffold package-tests <dir> [--ci=<provider>] [--force]
 
 WP-CLI makes use of a Behat-based testing framework, which you should use
 too. This command generates all of the files you need. Functional tests
-are an integral ingredient of highly-quality, maintainable commands.
+are an integral ingredient of high-quality, maintainable commands.
 Behat is a great choice as a testing framework because:
 
 * It’s easy to write new tests, which means they’ll actually get written.
