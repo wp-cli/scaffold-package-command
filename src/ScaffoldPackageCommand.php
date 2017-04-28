@@ -415,6 +415,7 @@ EOT;
 	 * * `.travis.yml` is the configuration file for Travis CI.
 	 * * `bin/install-package-tests.sh` will configure your environment to run
 	 * the tests.
+	 * * `bin/test.sh` is a test runner that respects contextual Behat tags.
 	 * * `features/load-wp-cli.feature` is a basic test to confirm WP-CLI can
 	 * load.
 	 * * `features/bootstrap`, `features/steps`, `features/extra` are Behat
@@ -503,6 +504,7 @@ EOT;
 			$package_root => array(
 				'templates/load-wp-cli.feature'               => $features_dir,
 				'bin/install-package-tests.sh'                => $bin_dir,
+				'bin/test.sh'                                 => $bin_dir,
 			),
 		);
 

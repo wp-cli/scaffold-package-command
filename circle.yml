@@ -24,6 +24,6 @@ test:
   pre:
     - composer validate
   override:
-    - WP_VERSION=latest behat --format progress --strict
+    - WP_VERSION=latest bash bin/test.sh
     - rm -rf '/tmp/wp-cli-test core-download-cache'
-    - WP_VERSION=trunk behat --format progress --strict
+    - WP_VERSION=trunk bash bin/test.sh
