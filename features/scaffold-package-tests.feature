@@ -104,3 +104,13 @@ Feature: Scaffold the test suite for an existing package
       bash bin/test.sh
       """
     And the community-command/.travis.yml file should not exist
+
+  Scenario: Don't scaffold features/load-wp-cli.feature when a feature file already exists
+    When I run `wp scaffold package-tests community-command`
+    And I run `mv community-command/features/load-wp-cli.feature community-command/features/command.feature`
+    Then the community-command/features/load-wp-cli.feature file should not exist
+    And the community-command/features/command.feature file should exist
+
+    When I run `wp scaffold package-tests community-command --force`
+    Then the community-command/features/load-wp-cli.feature file should not exist
+    And the community-command/features/command.feature file should exist
