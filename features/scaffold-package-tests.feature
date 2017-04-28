@@ -34,6 +34,7 @@ Feature: Scaffold the test suite for an existing package
     Then STDOUT should not be empty
     And the community-command/.travis.yml file should exist
     And the community-command/bin/install-package-tests.sh file should exist
+    And the community-command/bin/test.sh file should exist
     And the community-command/utils/behat-tags.php file should contain:
       """
       require-wp
@@ -84,6 +85,10 @@ Feature: Scaffold the test suite for an existing package
       """
       bash bin/install-package-tests.sh
       """
+    And the community-command/.travis.yml file should contain:
+      """
+      bash bin/test.sh
+      """
     And the community-command/circle.yml file should not exist
 
   Scenario: Scaffolds .travis.yml configuration file with argument
@@ -93,5 +98,9 @@ Feature: Scaffold the test suite for an existing package
     And the community-command/circle.yml file should contain:
       """
       bash bin/install-package-tests.sh
+      """
+    And the community-command/circle.yml file should contain:
+      """
+      bash bin/test.sh
       """
     And the community-command/.travis.yml file should not exist
