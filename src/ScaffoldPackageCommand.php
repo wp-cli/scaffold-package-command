@@ -502,11 +502,15 @@ EOT;
 				'features/extra/no-mail.php'                  => $extra_dir,
 			),
 			$package_root => array(
-				'templates/load-wp-cli.feature'               => $features_dir,
 				'bin/install-package-tests.sh'                => $bin_dir,
 				'bin/test.sh'                                 => $bin_dir,
 			),
 		);
+
+		// Only create a sample feature file when none exist
+		if ( ! glob( $features_dir . '/*.feature' ) ) {
+			$copy_source[ $package_root ]['templates/load-wp-cli.feature'] = $features_dir;
+		}
 
 		if ( 'travis' === $assoc_args['ci'] ) {
 			$copy_source[ $package_root ]['.travis.yml'] = $package_dir;
