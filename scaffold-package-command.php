@@ -16,7 +16,8 @@ $registration = function () {
 };
 
 // Only use command hooks in versions that support them.
-if ( version_compare( WP_CLI_VERSION, '1.2.0-alpha', '>=' ) ) {
+$wp_cli_version = preg_replace( '#-alpha(.+)#', '-alpha', WP_CLI_VERSION );
+if ( version_compare( $wp_cli_version, '1.2.0-alpha', '>=' ) ) {
 	WP_CLI::add_hook( 'after_add_command:scaffold', $registration );
 } else {
 	$registration();
