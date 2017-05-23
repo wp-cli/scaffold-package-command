@@ -33,7 +33,8 @@
         "commands": [
             "scaffold package",
             "scaffold package-tests",
-            "scaffold package-readme"
+            "scaffold package-readme",
+            "scaffold package-github"
         ]
     }
 }
