@@ -20,10 +20,9 @@
         "psr-4": { "WP_CLI\\": "src" },
         "files": [ "scaffold-package-command.php" ]
     },
-    "require": {
-        "wp-cli/wp-cli": "*"
-    },
+    "require": {},
     "require-dev": {
+        "wp-cli/wp-cli": "*",
         "behat/behat": "~2.5"
     },
     "extra": {
@@ -33,7 +32,8 @@
         "commands": [
             "scaffold package",
             "scaffold package-tests",
-            "scaffold package-readme"
+            "scaffold package-readme",
+            "scaffold package-github"
         ]
     }
 }
