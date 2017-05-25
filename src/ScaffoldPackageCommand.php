@@ -367,6 +367,53 @@ EOT;
 	}
 
 	/**
+	 * Generate GitHub configuration files for your command.
+	 *
+	 * Creates a variety of files to better manage your project on GitHub. These
+	 * files include:
+	 *
+	 * * `.github/ISSUE_TEMPLATE` - Text displayed when a user opens a new issue.
+	 * * `.github/PULL_REQUEST_TEMPLATE` - Text displayed when a user submits a pull request.
+	 *
+	 * ## OPTIONS
+	 *
+	 * <dir>
+	 * : The package directory to generate GitHub configuration for.
+	 *
+	 * [--force]
+	 * : Overwrite files that already exist.
+	 *
+	 * @when       before_wp_load
+	 * @subcommand package-github
+	 */
+	public function package_github( $args, $assoc_args ) {
+		list( $package_dir ) = $args;
+
+		if ( is_file( $package_dir ) ) {
+			$package_dir = dirname( $package_dir );
+		} else if ( is_dir( $package_dir ) ) {
+			$package_dir = rtrim( $package_dir, '/' );
+		}
+
+		if ( ! is_dir( $package_dir ) || ! file_exists( $package_dir . '/composer.json' ) ) {
+			WP_CLI::error( "Invalid package directory. composer.json file must be present." );
+		}
+		$force = Utils\get_flag_value( $assoc_args, 'force' );
+		$template_path = dirname( dirname( __FILE__ ) ) . '/templates';
+
+		$create_files = array(
+			"{$package_dir}/.github/ISSUE_TEMPLATE" => Utils\mustache_render( "{$template_path}/github-issue-template.mustache" ),
+			"{$package_dir}/.github/PULL_REQUEST_TEMPLATE" => Utils\mustache_render( "{$template_path}/github-pull-request-template.mustache" ),
+		);
+		$files_written = $this->create_files( $create_files, $force );
+		if ( empty( $files_written ) ) {
+			WP_CLI::log( 'Package GitHub configuration generation skipped.' );
+		} else {
+			WP_CLI::success( 'Created package GitHub configuration.' );
+		}
+	}
+
+	/**
 	 * Generate files needed for writing Behat tests for your command.
 	 *
 	 * WP-CLI makes use of a Behat-based testing framework, which you should use

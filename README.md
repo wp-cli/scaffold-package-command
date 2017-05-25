@@ -237,6 +237,30 @@ In this example:
 	[--force]
 		Overwrite the readme if it already exists.
 
+
+
+### wp scaffold package-github
+
+Generate GitHub configuration files for your command.
+
+~~~
+wp scaffold package-github <dir> [--force]
+~~~
+
+Creates a variety of files to better manage your project on GitHub. These
+files include:
+
+* `.github/ISSUE_TEMPLATE` - Text displayed when a user opens a new issue.
+* `.github/PULL_REQUEST_TEMPLATE` - Text displayed when a user submits a pull request.
+
+**OPTIONS**
+
+	<dir>
+		The package directory to generate GitHub configuration for.
+
+	[--force]
+		Overwrite files that already exist.
+
 ## Installing
 
 Installing this package requires WP-CLI v0.23.0 or greater. Update to the latest stable release with `wp cli update`.
