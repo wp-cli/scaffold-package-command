@@ -200,3 +200,38 @@ Feature: Scaffold a README.md file for an existing package
       """
       Error: Missing one or more commands defined in composer.json -> extras -> commands.
       """
+
+  Scenario: README for a bundled command
+    Given an empty directory
+    And a foo/composer.json file:
+      """
+      {
+          "name": "runcommand/profile",
+          "authors": [],
+          "minimum-stability": "dev",
+          "autoload": {
+              "files": [ "command.php" ]
+          },
+          "require": {
+          },
+          "require-dev": {
+              "wp-cli/wp-cli": "*",
+              "behat/behat": "~2.5"
+          },
+          "extra": {
+              "bundled": true
+          }
+      }
+      """
+
+    When I run `wp scaffold package-readme foo`
+    Then the foo/README.md file should exist
+    And the foo/README.md file should contain:
+      """
+      runcommand/profile
+      ==================
+      """
+    And the foo/README.md file should contain:
+      """
+      This package is included with WP-CLI itself
+      """
