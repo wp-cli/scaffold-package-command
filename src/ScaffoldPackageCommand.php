@@ -300,9 +300,15 @@ EOT;
 				'heading'      => $section_heading,
 			);
 		}
+		$bundled = ! empty( $composer_obj['extra']['bundled'] );
 		foreach( array( 'using', 'installing', 'contributing' ) as $key ) {
 			if ( isset( $readme_sections[ $key ] ) ) {
-				$readme_sections[ $key ]['body'] = dirname( dirname( __FILE__ ) ) . '/templates/readme-' . $key . '.mustache';
+				$file = dirname( dirname( __FILE__ ) ) . '/templates/readme-' . $key . '.mustache';
+				if ( $bundled
+					&& file_exists( dirname( dirname( __FILE__ ) ) . '/templates/readme-' . $key . '-bundled.mustache' ) ) {
+					$file = dirname( dirname( __FILE__ ) ) . '/templates/readme-' . $key . '-bundled.mustache';
+				}
+				$readme_sections[ $key ]['body'] = $file;
 			}
 		}
 
