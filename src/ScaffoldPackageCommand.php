@@ -420,7 +420,7 @@ EOT;
 	}
 
 	/**
-	 * Generate files needed for writing Behat tests for your command.
+	 * Generate files for writing Behat tests for your command.
 	 *
 	 * WP-CLI makes use of a Behat-based testing framework, which you should use
 	 * too. This command generates all of the files you need. Functional tests
