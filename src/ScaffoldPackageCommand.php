@@ -182,7 +182,7 @@ EOT;
 	 * ## OPTIONS
 	 *
 	 * <dir>
-	 * : Directory of an existing command.
+	 * : Directory path to an existing package to generate a readme for.
 	 *
 	 * [--force]
 	 * : Overwrite the readme if it already exists.
@@ -384,7 +384,7 @@ EOT;
 	 * ## OPTIONS
 	 *
 	 * <dir>
-	 * : The package directory to generate GitHub configuration for.
+	 * : Directory path to an existing package to generate GitHub configuration for.
 	 *
 	 * [--force]
 	 * : Overwrite files that already exist.
@@ -492,7 +492,7 @@ EOT;
 	 * ## OPTIONS
 	 *
 	 * <dir>
-	 * : The package directory to generate tests for.
+	 * : Directory path to an existing package to generate tests for.
 	 *
 	 * [--ci=<provider>]
 	 * : Create a configuration file for a specific CI provider.
