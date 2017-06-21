@@ -194,13 +194,7 @@ EOT;
 
 		list( $package_dir ) = $args;
 
-		if ( ! is_dir( $package_dir ) ) {
-			WP_CLI::error( 'Directory does not exist.' );
-		}
-
-		if ( ! file_exists( $package_dir . '/composer.json' ) ) {
-			WP_CLI::error( 'Invalid package directory. composer.json file must be present.' );
-		}
+		self::check_if_valid_package_dir( $package_dir );
 
 		$composer_obj = json_decode( file_get_contents( $package_dir . '/composer.json' ), true );
 		if ( ! $composer_obj ) {
@@ -405,13 +399,7 @@ EOT;
 			$package_dir = rtrim( $package_dir, '/' );
 		}
 
-		if ( ! is_dir( $package_dir ) ) {
-			WP_CLI::error( 'Directory does not exist.' );
-		}
-
-		if ( ! file_exists( $package_dir . '/composer.json' ) ) {
-			WP_CLI::error( 'Invalid package directory. composer.json file must be present.' );
-		}
+		self::check_if_valid_package_dir( $package_dir );
 
 		$force = Utils\get_flag_value( $assoc_args, 'force' );
 		$template_path = dirname( dirname( __FILE__ ) ) . '/templates';
@@ -531,13 +519,7 @@ EOT;
 			$package_dir = rtrim( $package_dir, '/' );
 		}
 
-		if ( ! is_dir( $package_dir ) ) {
-			WP_CLI::error( 'Directory does not exist.' );
-		}
-
-		if ( ! file_exists( $package_dir . '/composer.json' ) ) {
-			WP_CLI::error( 'Invalid package directory. composer.json file must be present.' );
-		}
+		self::check_if_valid_package_dir( $package_dir );
 
 		$package_dir .= '/';
 		$bin_dir       = $package_dir . 'bin/';
@@ -675,6 +657,16 @@ EOT;
 			}
 		}
 		return $wrote_files;
+	}
+
+	private static function check_if_valid_package_dir( $package_dir ) {
+		if ( ! is_dir( $package_dir ) ) {
+			WP_CLI::error( 'Directory does not exist.' );
+		}
+
+		if ( ! file_exists( $package_dir . '/composer.json' ) ) {
+			WP_CLI::error( 'Invalid package directory. composer.json file must be present.' );
+		}
 	}
 
 }
