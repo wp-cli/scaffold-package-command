@@ -1,5 +1,29 @@
 Feature: Scaffold a README.md file for an existing package
 
+  Scenario: Fails when invalid directory provided
+    Given an empty directory
+
+    When I try `wp scaffold package-readme bar`
+    Then the bar directory should not exist
+    And STDERR should be:
+      """
+      Error: Directory does not exist.
+      """
+
+  Scenario: Fails when invalid package provided
+    Given an empty directory
+    And a baz/empty file:
+      """
+      """
+
+    When I try `wp scaffold package-readme baz`
+    Then the baz directory should exist
+    But the baz/README.md file should not exist
+    And STDERR should be:
+      """
+      Error: Invalid package directory. composer.json file must be present.
+      """
+
   Scenario: Scaffold a README.md based on the defaults
     Given an empty directory
 
