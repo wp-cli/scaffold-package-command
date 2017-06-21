@@ -1,13 +1,25 @@
 Feature: Scaffold GitHub configuration for an existing package
 
-  Scenario: Fails when invalid package directory provided
+  Scenario: Fails when invalid directory provided
     Given an empty directory
 
-    When I run `wp package path`
-    Then save STDOUT as {PACKAGE_PATH}
+    When I try `wp scaffold package-github bar`
+    Then the bar directory should not exist
+    And STDERR should be:
+      """
+      Error: Directory does not exist.
+      """
 
-    When I try `wp scaffold package-github {PACKAGE_PATH}/local/wp-cli/default-github`
-    Then STDERR should be:
+  Scenario: Fails when invalid package provided
+    Given an empty directory
+    And a baz/empty file:
+      """
+      """
+
+    When I try `wp scaffold package-github baz`
+    Then the baz directory should exist
+    But the baz/.github directory should not exist
+    And STDERR should be:
       """
       Error: Invalid package directory. composer.json file must be present.
       """

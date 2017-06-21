@@ -182,7 +182,7 @@ EOT;
 	 * ## OPTIONS
 	 *
 	 * <dir>
-	 * : Directory of an existing command.
+	 * : Directory path to an existing package to generate a readme for.
 	 *
 	 * [--force]
 	 * : Overwrite the readme if it already exists.
@@ -194,9 +194,7 @@ EOT;
 
 		list( $package_dir ) = $args;
 
-		if ( ! is_dir( $package_dir ) || ! file_exists( $package_dir . '/composer.json' ) ) {
-			WP_CLI::error( "Invalid package directory. composer.json file must be present." );
-		}
+		self::check_if_valid_package_dir( $package_dir );
 
 		$composer_obj = json_decode( file_get_contents( $package_dir . '/composer.json' ), true );
 		if ( ! $composer_obj ) {
@@ -384,7 +382,7 @@ EOT;
 	 * ## OPTIONS
 	 *
 	 * <dir>
-	 * : The package directory to generate GitHub configuration for.
+	 * : Directory path to an existing package to generate GitHub configuration for.
 	 *
 	 * [--force]
 	 * : Overwrite files that already exist.
@@ -401,9 +399,8 @@ EOT;
 			$package_dir = rtrim( $package_dir, '/' );
 		}
 
-		if ( ! is_dir( $package_dir ) || ! file_exists( $package_dir . '/composer.json' ) ) {
-			WP_CLI::error( "Invalid package directory. composer.json file must be present." );
-		}
+		self::check_if_valid_package_dir( $package_dir );
+
 		$force = Utils\get_flag_value( $assoc_args, 'force' );
 		$template_path = dirname( dirname( __FILE__ ) ) . '/templates';
 
@@ -492,7 +489,7 @@ EOT;
 	 * ## OPTIONS
 	 *
 	 * <dir>
-	 * : The package directory to generate tests for.
+	 * : Directory path to an existing package to generate tests for.
 	 *
 	 * [--ci=<provider>]
 	 * : Create a configuration file for a specific CI provider.
@@ -522,9 +519,7 @@ EOT;
 			$package_dir = rtrim( $package_dir, '/' );
 		}
 
-		if ( ! is_dir( $package_dir ) || ! file_exists( $package_dir . '/composer.json' ) ) {
-			WP_CLI::error( "Invalid package directory. composer.json file must be present." );
-		}
+		self::check_if_valid_package_dir( $package_dir );
 
 		$package_dir .= '/';
 		$bin_dir       = $package_dir . 'bin/';
@@ -662,6 +657,16 @@ EOT;
 			}
 		}
 		return $wrote_files;
+	}
+
+	private static function check_if_valid_package_dir( $package_dir ) {
+		if ( ! is_dir( $package_dir ) ) {
+			WP_CLI::error( 'Directory does not exist.' );
+		}
+
+		if ( ! file_exists( $package_dir . '/composer.json' ) ) {
+			WP_CLI::error( 'Invalid package directory. composer.json file must be present.' );
+		}
 	}
 
 }
