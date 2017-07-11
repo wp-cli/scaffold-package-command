@@ -261,7 +261,7 @@ EOT;
 				} while( $parent_command && $bits );
 
 				if ( empty( $parent_command ) ) {
-					WP_CLI::error( 'Missing one or more commands defined in composer.json -> extras -> commands.' );
+					WP_CLI::error( 'Missing one or more commands defined in composer.json -> extra -> commands.' );
 				}
 
 				$longdesc = preg_replace( '/## GLOBAL PARAMETERS(.+)/s', '', $parent_command['longdesc'] );
