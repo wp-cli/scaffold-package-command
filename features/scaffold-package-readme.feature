@@ -222,7 +222,7 @@ Feature: Scaffold a README.md file for an existing package
     When I try `wp scaffold package-readme foo`
     Then STDERR should be:
       """
-      Error: Missing one or more commands defined in composer.json -> extras -> commands.
+      Error: Missing one or more commands defined in composer.json -> extra -> commands.
       """
 
   Scenario: README for a bundled command
