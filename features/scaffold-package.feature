@@ -38,6 +38,11 @@ Feature: Scaffold WP-CLI commands
           },
       """
     And the {PACKAGE_PATH}/local/wp-cli/foo/command.php file should exist
+    And the {PACKAGE_PATH}/local/wp-cli/foo/CONTRIBUTING.md file should exist
+    And the {PACKAGE_PATH}/local/wp-cli/foo/CONTRIBUTING.md file should contain:
+      """
+      Contributing
+      """
     And the {PACKAGE_PATH}/local/wp-cli/foo/wp-cli.yml file should exist
     And the {PACKAGE_PATH}/local/wp-cli/foo/.travis.yml file should not exist
 
