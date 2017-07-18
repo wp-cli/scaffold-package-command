@@ -96,6 +96,7 @@ EOT;
 			"{$package_dir}/.gitignore"     => file_get_contents( "{$package_root}/.gitignore" ),
 			"{$package_dir}/.editorconfig"  => file_get_contents( "{$package_root}/.editorconfig" ),
 			"{$package_dir}/.distignore"    => file_get_contents( "{$package_root}/.distignore" ),
+			"{$package_dir}/CONTRIBUTING.md"=> file_get_contents( "{$package_root}/CONTRIBUTING.md" ),
 			"{$package_dir}/wp-cli.yml"     => $wp_cli_yml,
 			"{$package_dir}/command.php"    => Utils\mustache_render( "{$template_path}/command.mustache", $assoc_args ),
 			"{$package_dir}/composer.json"  => Utils\mustache_render( "{$template_path}/composer.mustache", $assoc_args ),
