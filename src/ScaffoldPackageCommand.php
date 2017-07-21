@@ -236,6 +236,11 @@ EOT;
 			}
 		}
 
+		$readme_args['wp_cli_requires_instructions'] = "requires WP-CLI {$readme_args['required_wp_cli_version']} or greater";
+		if ( '*' === $readme_args['required_wp_cli_version'] ) {
+			$readme_args['wp_cli_requires_instructions'] = "requires WP-CLI's latest stable release";
+		}
+
 		if ( false !== stripos( $readme_args['required_wp_cli_version'], 'alpha' ) ) {
 			$readme_args['wp_cli_update_to_instructions'] = 'the latest nightly release with `wp cli update --nightly`';
 		}

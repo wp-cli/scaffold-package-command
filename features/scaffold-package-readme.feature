@@ -79,6 +79,31 @@ Feature: Scaffold a README.md file for an existing package
       Success: Uninstalled package.
       """
 
+  Scenario: Scaffold a README.md requiring the latest stable release
+    Given an empty directory
+
+    When I run `wp scaffold package wp-cli/foo --dir=foo --require_wp_cli='*'`
+    Then STDOUT should contain:
+      """
+      Success: Created package readme.
+      """
+    And the foo/composer.json file should contain:
+      """
+          "require": {
+              "wp-cli/wp-cli": "*"
+          },
+      """
+    And the foo/README.md file should exist
+    And the foo/README.md file should contain:
+      """
+      Installing this package requires WP-CLI's latest stable release. Update to the latest stable release with `wp cli update`.
+      """
+    When I run `wp package uninstall wp-cli/foo`
+    Then STDOUT should contain:
+      """
+      Success: Uninstalled package.
+      """
+
   Scenario: Scaffold a readme with custom shields
     Given an empty directory
     And a foo/composer.json file:
