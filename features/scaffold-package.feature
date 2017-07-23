@@ -214,3 +214,13 @@ Feature: Scaffold WP-CLI commands
       """
       Success: Uninstalled package.
       """
+
+  Scenario: Use tilde for HOME in package directory path
+    Given an empty directory
+
+    When I run `wp scaffold package bar/foo --dir=~/foo --force --skip-tests --skip-readme`
+    Then STDOUT should contain:
+      """
+      Success: Package installed.
+      """
+    And the /tmp/wp-cli-home/foo directory should exist
