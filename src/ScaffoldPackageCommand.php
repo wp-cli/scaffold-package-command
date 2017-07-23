@@ -79,6 +79,10 @@ class ScaffoldPackageCommand {
 			$package_dir = WP_CLI::get_runner()->get_packages_dir_path() . 'local/' . $assoc_args['name'];
 		}
 
+		if ( '~/' === substr( $package_dir, 0, 2 ) && ( $home = getenv( 'HOME' ) ) ) {
+			$package_dir = $home . substr( $package_dir, 1 );
+		}
+
 		if ( empty( $assoc_args['homepage'] ) ) {
 			$assoc_args['homepage'] = 'https://github.com/' . $assoc_args['name'];
 		}
