@@ -298,6 +298,7 @@ EOT;
 				'Using',
 				'Installing',
 				'Contributing',
+				'Support',
 			);
 		}
 
@@ -309,7 +310,7 @@ EOT;
 			);
 		}
 		$bundled = ! empty( $composer_obj['extra']['bundled'] );
-		foreach( array( 'using', 'installing', 'contributing' ) as $key ) {
+		foreach( array( 'using', 'installing', 'contributing', 'support' ) as $key ) {
 			if ( isset( $readme_sections[ $key ] ) ) {
 				$file = dirname( dirname( __FILE__ ) ) . '/templates/readme-' . $key . '.mustache';
 				if ( $bundled
