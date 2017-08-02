@@ -16,7 +16,7 @@ This package implements the following commands:
 Generate the files needed for a basic WP-CLI command.
 
 ~~~
-wp scaffold package <name> [--description=<description>] [--homepage=<homepage>] [--dir=<dir>] [--license=<license>] [--require_wp_cli=<version>] [--skip-tests] [--skip-readme] [--force]
+wp scaffold package <name> [--description=<description>] [--homepage=<homepage>] [--dir=<dir>] [--license=<license>] [--require_wp_cli=<version>] [--skip-tests] [--skip-readme] [--skip-install] [--force]
 ~~~
 
 Default behavior is to create the following files:
@@ -60,6 +60,9 @@ WP-CLI `packages/local/` directory.
 
 	[--skip-readme]
 		Don't generate a README.md for the package.
+
+	[--skip-install]
+		Don't install the package after scaffolding.
 
 	[--force]
 		Overwrite files that already exist.
