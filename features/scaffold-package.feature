@@ -230,3 +230,16 @@ Feature: Scaffold WP-CLI commands
       Success: Package installed.
       """
     And the /tmp/wp-cli-home/foo directory should exist
+
+  Scenario: Scaffold a package but skip installation
+    Given an empty directory
+
+    When I run `wp scaffold package wp-cli/foo --skip-install`
+    Then STDOUT should contain:
+      """
+      Success: Created package files
+      """
+    And STDOUT should not contain:
+      """
+      Installing package
+      """
