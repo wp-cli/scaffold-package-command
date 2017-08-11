@@ -45,6 +45,8 @@ Feature: Scaffold WP-CLI commands
       """
     And the {PACKAGE_PATH}/local/wp-cli/foo/wp-cli.yml file should exist
     And the {PACKAGE_PATH}/local/wp-cli/foo/.travis.yml file should not exist
+    And the {PACKAGE_PATH}/local/wp-cli/foo/.github/PULL_REQUEST_TEMPLATE.md file should exist
+    And the {PACKAGE_PATH}/local/wp-cli/foo/.github/ISSUE_TEMPLATE.md file should exist
 
     When I run `wp --require={PACKAGE_PATH}/local/wp-cli/foo/command.php hello-world`
     Then STDOUT should be:
@@ -231,10 +233,13 @@ Feature: Scaffold WP-CLI commands
       """
     And the /tmp/wp-cli-home/foo directory should exist
 
-  Scenario: Scaffold a package but skip installation
+  Scenario: Scaffold a package but skip installation and GitHub templates
     Given an empty directory
 
-    When I run `wp scaffold package wp-cli/foo --skip-install`
+    When I run `wp package path`
+    Then save STDOUT as {PACKAGE_PATH}
+
+    When I run `wp scaffold package wp-cli/foo --skip-install --skip-github`
     Then STDOUT should contain:
       """
       Success: Created package files
@@ -243,3 +248,6 @@ Feature: Scaffold WP-CLI commands
       """
       Installing package
       """
+    And the {PACKAGE_PATH}/local/wp-cli/foo/.gitignore file should exist
+    And the {PACKAGE_PATH}/local/wp-cli/foo/.github/PULL_REQUEST_TEMPLATE.md file should not exist
+    And the {PACKAGE_PATH}/local/wp-cli/foo/.github/ISSUE_TEMPLATE.md file should not exist
