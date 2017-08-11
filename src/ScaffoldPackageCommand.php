@@ -53,6 +53,9 @@ class ScaffoldPackageCommand {
 	 * [--skip-readme]
 	 * : Don't generate a README.md for the package.
 	 *
+	 * [--skip-github]
+	 * : Don't generate GitHub issue and pull request templates.
+	 *
 	 * [--skip-install]
 	 * : Don't install the package after scaffolding.
 	 *
@@ -122,6 +125,10 @@ EOT;
 
 		if ( ! Utils\get_flag_value( $assoc_args, 'skip-readme' ) ) {
 			WP_CLI::runcommand( "scaffold package-readme {$package_dir} {$force_flag}", array( 'launch' => false ) );
+		}
+
+		if ( ! Utils\get_flag_value( $assoc_args, 'skip-github' ) ) {
+			WP_CLI::runcommand( "scaffold package-github {$package_dir} {$force_flag}", array( 'launch' => false ) );
 		}
 
 		if ( ! Utils\get_flag_value( $assoc_args, 'skip-install' ) ) {
