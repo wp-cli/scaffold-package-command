@@ -45,8 +45,8 @@ Feature: Scaffold WP-CLI commands
       """
     And the {PACKAGE_PATH}/local/wp-cli/foo/wp-cli.yml file should exist
     And the {PACKAGE_PATH}/local/wp-cli/foo/.travis.yml file should not exist
-    And the {PACKAGE_PATH}/local/wp-cli/foo/.github/PULL_REQUEST_TEMPLATE.md file should exist
-    And the {PACKAGE_PATH}/local/wp-cli/foo/.github/ISSUE_TEMPLATE.md file should exist
+    And the {PACKAGE_PATH}/local/wp-cli/foo/.github/PULL_REQUEST_TEMPLATE file should exist
+    And the {PACKAGE_PATH}/local/wp-cli/foo/.github/ISSUE_TEMPLATE file should exist
 
     When I run `wp --require={PACKAGE_PATH}/local/wp-cli/foo/command.php hello-world`
     Then STDOUT should be:
@@ -250,5 +250,5 @@ Feature: Scaffold WP-CLI commands
       Installing package
       """
     And the {PACKAGE_PATH}/local/wp-cli/foo/.gitignore file should exist
-    And the {PACKAGE_PATH}/local/wp-cli/foo/.github/PULL_REQUEST_TEMPLATE.md file should not exist
-    And the {PACKAGE_PATH}/local/wp-cli/foo/.github/ISSUE_TEMPLATE.md file should not exist
+    And the {PACKAGE_PATH}/local/wp-cli/foo/.github/PULL_REQUEST_TEMPLATE file should not exist
+    And the {PACKAGE_PATH}/local/wp-cli/foo/.github/ISSUE_TEMPLATE file should not exist
