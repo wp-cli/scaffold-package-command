@@ -147,16 +147,15 @@ Feature: Scaffold WP-CLI commands
       s
       s
       s
-      s
       """
 
-    When I run `wp scaffold package wp-cli/same-package --skip-tests`
+    When I run `wp scaffold package wp-cli/same-package --skip-tests --skip-github`
     Then STDOUT should contain:
       """
       Success: Created package files
       """
 
-    When I run `wp scaffold package wp-cli/same-package --skip-tests < session`
+    When I run `wp scaffold package wp-cli/same-package --skip-tests --skip-github < session`
     And STDERR should contain:
       """
       Warning: File already exists
