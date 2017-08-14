@@ -30,7 +30,7 @@ Feature: Scaffold GitHub configuration for an existing package
     When I run `wp package path`
     Then save STDOUT as {PACKAGE_PATH}
 
-    When I run `wp scaffold package wp-cli/default-github`
+    When I run `wp scaffold package wp-cli/default-github --skip-github`
     Then the {PACKAGE_PATH}/local/wp-cli/default-github directory should exist
 
     When I run `wp scaffold package-github {PACKAGE_PATH}/local/wp-cli/default-github`
