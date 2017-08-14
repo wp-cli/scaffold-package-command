@@ -228,7 +228,7 @@ EOT;
 			'package_name'        => $composer_obj['name'],
 			'package_short_name'  => $bits[1],
 			'package_name_border' => str_pad( '', strlen( $composer_obj['name'] ), '=' ),
-			'package_description' => $composer_obj['description'],
+			'package_description' => isset( $composer_obj['description'] ) ? $composer_obj['description'] : '',
 			'required_wp_cli_version' => ! empty( $composer_obj['require']['wp-cli/wp-cli'] ) ? str_replace( array( '~', '^', '>=' ), 'v', $composer_obj['require']['wp-cli/wp-cli'] ) : 'v0.23.0',
 			'shields'             => '',
 			'has_commands'        => false,
@@ -334,7 +334,7 @@ EOT;
 		}
 
 		$readme_sections['package_description'] = array(
-			'body' => $composer_obj['description'],
+			'body' => isset( $composer_obj['description'] ) ? $composer_obj['description'] : '',
 		);
 
 		$readme_args['quick_links'] = '';
