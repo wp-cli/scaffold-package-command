@@ -199,8 +199,8 @@ $steps->Then( '/^the (.+) (file|directory) should (exist|not exist|be:|contain:|
 	}
 );
 
-$steps->Then( '/^the (.+) file should match (((\/.+\/)|(#.+#))([a-z]+)?)$/',
-function ( $world, $path, $expected = null ) {
+$steps->Then( '/^the contents of the (.+) file should match (((\/.+\/)|(#.+#))([a-z]+)?)$/',
+function ( $world, $path, $expected ) {
 	$path = $world->replace_variables( $path );
 
 	// If it's a relative path, make it relative to the current test dir
@@ -210,6 +210,14 @@ function ( $world, $path, $expected = null ) {
 
 	$contents = file_get_contents( $path );
 	assertRegExp( $expected, $contents );
+}
+);
+
+$steps->Then( '/^(STDOUT|STDERR) should match (((\/.+\/)|(#.+#))([a-z]+)?)$/',
+function ( $world, $stream, $expected ) {
+
+	$stream = strtolower( $stream );
+	assertRegExp( $expected, $world->result->$stream );
 }
 );
 
