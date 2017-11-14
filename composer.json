@@ -1,6 +1,6 @@
 {
     "name": "wp-cli/scaffold-package-command",
-    "description": "Scaffold WP-CLI commands with functional tests",
+    "description": "Scaffolds WP-CLI commands with functional tests, full README.md, and more.",
     "type": "wp-cli-package",
     "homepage": "https://github.com/wp-cli/scaffold-package-command",
     "support": {

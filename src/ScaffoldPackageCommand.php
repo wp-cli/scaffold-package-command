@@ -401,6 +401,7 @@ EOT;
 	 *
 	 * * `.github/ISSUE_TEMPLATE` - Text displayed when a user opens a new issue.
 	 * * `.github/PULL_REQUEST_TEMPLATE` - Text displayed when a user submits a pull request.
+	 * * `.github/settings.yml` - Configuration file for the [Probot settings app](https://probot.github.io/apps/settings/).
 	 *
 	 * ## OPTIONS
 	 *
@@ -427,9 +428,50 @@ EOT;
 		$force = Utils\get_flag_value( $assoc_args, 'force' );
 		$template_path = dirname( dirname( __FILE__ ) ) . '/templates';
 
+		$composer_obj = json_decode( file_get_contents( $package_dir . '/composer.json' ), true );
+		$settings_vars = array(
+			'has_description' => false,
+			'description'     => '',
+			'has_labels'      => true,
+			'labels'          => array(
+				array(
+					'name'    => 'scope:documentation',
+					'color'   => '0e8a16'
+				),
+				array(
+					'name'    => 'scope:testing',
+					'color'   => '5319e7'
+				),
+				array(
+					'name'    => 'good-first-issue',
+					'color'   => 'eb6420',
+				),
+				array(
+					'name'    => 'state:unconfirmed',
+					'color'   => 'bfe5bf'
+				),
+				array(
+					'name'    => 'state:unsupported',
+					'color'   => 'bfe5bf'
+				),
+			),
+		);
+		if ( ! empty( $composer_obj['description'] ) ) {
+			$settings_vars['description'] = $composer_obj['description'];
+			$settings_vars['has_description'] = true;
+		}
+		if ( ! empty( $composer_obj['extra']['commands'] ) ) {
+			foreach ( $composer_obj['extra']['commands'] as $cmd ) {
+				$settings_vars['labels'][] = array(
+					'name'  => 'command:' . str_replace( ' ', '-', $cmd ),
+					'color' => 'c5def5',
+				);
+			}
+		}
 		$create_files = array(
 			"{$package_dir}/.github/ISSUE_TEMPLATE" => Utils\mustache_render( "{$template_path}/github-issue-template.mustache" ),
 			"{$package_dir}/.github/PULL_REQUEST_TEMPLATE" => Utils\mustache_render( "{$template_path}/github-pull-request-template.mustache" ),
+			"{$package_dir}/.github/settings.yml" => Utils\mustache_render( "{$template_path}/github-settings.mustache", $settings_vars ),
 		);
 		$files_written = $this->create_files( $create_files, $force );
 		if ( empty( $files_written ) ) {
