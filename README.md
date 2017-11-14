@@ -1,7 +1,7 @@
 wp-cli/scaffold-package-command
 ===============================
 
-Scaffold WP-CLI commands with functional tests
+Scaffolds WP-CLI commands with functional tests, full README.md, and more.
 
 [![Build Status](https://travis-ci.org/wp-cli/scaffold-package-command.svg?branch=master)](https://travis-ci.org/wp-cli/scaffold-package-command) [![CircleCI](https://circleci.com/gh/wp-cli/scaffold-package-command/tree/master.svg?style=svg)](https://circleci.com/gh/wp-cli/scaffold-package-command/tree/master)
 
@@ -258,6 +258,7 @@ files include:
 
 * `.github/ISSUE_TEMPLATE` - Text displayed when a user opens a new issue.
 * `.github/PULL_REQUEST_TEMPLATE` - Text displayed when a user submits a pull request.
+* `.github/settings.yml` - Configuration file for the [Probot settings app](https://probot.github.io/apps/settings/).
 
 **OPTIONS**
 
