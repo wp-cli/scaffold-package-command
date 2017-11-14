@@ -1,0 +1,12 @@
+# Used by Probot Settings: https://probot.github.io/apps/settings/
+repository:
+{{#has_description}}
+  description: {{description}}
+{{/has_description}}
+{{#has_labels}}
+  labels:
+  {{#labels}}
+    - name: {{name}}
+      color: {{color}}
+  {{/labels}}
+{{/has_labels}}
