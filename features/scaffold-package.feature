@@ -229,17 +229,12 @@ Feature: Scaffold WP-CLI commands
   Scenario: Use tilde for HOME in package directory path
     Given an empty directory
 
-    When I try `wp scaffold package bar/foo --dir=~/foo --force --skip-tests --skip-readme`
+    When I run `HOME={RUN_DIR} wp scaffold package bar/foo --dir=~/foo --force --skip-tests --skip-readme`
     Then STDOUT should contain:
       """
       Success: Package installed.
       """
-    And STDERR should contain:
-      """
-      Warning: File already exists
-      """
-    And the /tmp/wp-cli-home/foo directory should exist
-    And the return code should be 0
+    And the {RUN_DIR}/foo directory should exist
 
   Scenario: Scaffold a package but skip installation and GitHub templates
     Given an empty directory
