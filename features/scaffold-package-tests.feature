@@ -33,6 +33,7 @@ Feature: Scaffold the test suite for an existing package
       """
       Error: Directory does not exist.
       """
+    And the return code should be 1
 
   Scenario: Fails when invalid package provided
     Given an empty directory
@@ -47,6 +48,7 @@ Feature: Scaffold the test suite for an existing package
       """
       Error: Invalid package directory. composer.json file must be present.
       """
+    And the return code should be 1
 
   Scenario: Scaffold package tests
     Given a invalid-command/command.php file:
@@ -100,6 +102,7 @@ Feature: Scaffold the test suite for an existing package
       """
       Error: Invalid package directory. composer.json file must be present.
       """
+    And the return code should be 1
 
   Scenario: Scaffolds .travis.yml configuration file by default
     When I run `wp scaffold package-tests community-command`
@@ -135,6 +138,11 @@ Feature: Scaffold the test suite for an existing package
     Then the community-command/features/load-wp-cli.feature file should not exist
     And the community-command/features/command.feature file should exist
 
-    When I run `wp scaffold package-tests community-command --force`
+    When I try `wp scaffold package-tests community-command --force`
     Then the community-command/features/load-wp-cli.feature file should not exist
     And the community-command/features/command.feature file should exist
+    And STDERR should contain:
+      """
+      Warning: File already exists
+      """
+    And the return code should be 0
