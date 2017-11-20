@@ -9,6 +9,7 @@ Feature: Scaffold GitHub configuration for an existing package
       """
       Error: Directory does not exist.
       """
+    And the return code should be 1
 
   Scenario: Fails when invalid package provided
     Given an empty directory
@@ -23,6 +24,7 @@ Feature: Scaffold GitHub configuration for an existing package
       """
       Error: Invalid package directory. composer.json file must be present.
       """
+    And the return code should be 1
 
   Scenario: Scaffold GitHub configuration based on defaults
     Given an empty directory
