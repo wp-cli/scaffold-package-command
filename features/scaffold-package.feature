@@ -108,6 +108,7 @@ Feature: Scaffold WP-CLI commands
       """
       Error: 'foo' is an invalid package name. Package scaffold expects '<author>/<package>'.
       """
+    And the return code should be 1
 
   Scenario: Scaffold a WP-CLI command to a custom directory
     Given an empty directory
@@ -155,7 +156,7 @@ Feature: Scaffold WP-CLI commands
       Success: Created package files
       """
 
-    When I run `wp scaffold package wp-cli/same-package --skip-tests --skip-github < session`
+    When I try `wp scaffold package wp-cli/same-package --skip-tests --skip-github < session`
     And STDERR should contain:
       """
       Warning: File already exists
@@ -164,6 +165,8 @@ Feature: Scaffold WP-CLI commands
       """
       All package files were skipped
       """
+    And the return code should be 0
+
     When I run `wp package uninstall wp-cli/same-package`
     Then STDOUT should contain:
       """
@@ -226,12 +229,12 @@ Feature: Scaffold WP-CLI commands
   Scenario: Use tilde for HOME in package directory path
     Given an empty directory
 
-    When I run `wp scaffold package bar/foo --dir=~/foo --force --skip-tests --skip-readme`
+    When I run `HOME={RUN_DIR} wp scaffold package bar/foo --dir=~/foo --force --skip-tests --skip-readme`
     Then STDOUT should contain:
       """
       Success: Package installed.
       """
-    And the /tmp/wp-cli-home/foo directory should exist
+    And the {RUN_DIR}/foo directory should exist
 
   Scenario: Scaffold a package but skip installation and GitHub templates
     Given an empty directory
