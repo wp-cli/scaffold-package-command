@@ -435,6 +435,10 @@ EOT;
 			'has_labels'      => true,
 			'labels'          => array(
 				array(
+					'name'    => 'bug',
+					'color'   => 'fc2929'
+				),
+				array(
 					'name'    => 'scope:documentation',
 					'color'   => '0e8a16'
 				),
@@ -447,12 +451,24 @@ EOT;
 					'color'   => 'eb6420',
 				),
 				array(
+					'name'    => 'help-wanted',
+					'color'   => '159818',
+				),
+				array(
+					'name'    => 'maybelater',
+					'color'   => 'c2e0c6',
+				),
+				array(
 					'name'    => 'state:unconfirmed',
 					'color'   => 'bfe5bf'
 				),
 				array(
 					'name'    => 'state:unsupported',
 					'color'   => 'bfe5bf'
+				),
+				array(
+					'name'    => 'wontfix',
+					'color'   => 'c2e0c6',
 				),
 			),
 		);
