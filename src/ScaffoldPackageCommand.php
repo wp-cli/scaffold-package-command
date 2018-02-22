@@ -560,6 +560,15 @@ EOT;
 	 * `$PATH`. Once you've done so, you can run the tests for a project by
 	 * calling `behat`.
 	 *
+	 * For Travis CI, specially-named files in the package directory can be
+	 * used to modify the generated `.travis.yml`, where `<tag>` is one of
+	 * 'cache', 'env', 'matrix', 'before_install', 'install', 'before_script', 'script':
+	 * * `travis-<tag>.yml` - contents used for `<tag>:` (if present following ignored)
+	 * * `travis-<tag>-append.yml` - contents appended to generated `<tag>:`
+	 *
+	 * You can also append to the generated `.travis.yml` with the file:
+	 * * `travis-append.yml` - contents appended to generated `.travis.yml`
+	 *
 	 * ## ENVIRONMENT
 	 *
 	 * The `features/bootstrap/FeatureContext.php` file expects the
@@ -641,8 +650,26 @@ EOT;
 			$copy_source[ $package_root ]['templates/load-wp-cli.feature'] = $features_dir;
 		}
 
+		$travis_tags = array( 'cache', 'env', 'matrix', 'before_install', 'install', 'before_script', 'script' );
+		$travis_tag_overwrites = $travis_tag_appends = array();
+		$travis_append = '';
 		if ( 'travis' === $assoc_args['ci'] ) {
 			$copy_source[ $package_root ]['.travis.yml'] = $package_dir;
+
+			// Allow a package to overwrite or append to Travis tags.
+			foreach ( $travis_tags as $travis_tag ) {
+				if ( file_exists( $package_dir . 'travis-' . $travis_tag . '.yml' ) ) {
+					$travis_tag_overwrites[ $travis_tag ] = file_get_contents( $package_dir . 'travis-' . $travis_tag . '.yml' );
+				} elseif ( file_exists( $package_dir . 'travis-' . $travis_tag . '-append.yml' ) ) {
+					$travis_tag_appends[ $travis_tag ] = file_get_contents( $package_dir . 'travis-' . $travis_tag . '-append.yml' );
+				}
+			}
+
+			// Allow a package to append to Travis.
+			if ( file_exists( $package_dir . 'travis-append.yml' ) ) {
+				$travis_append = file_get_contents( $package_dir . 'travis-append.yml' );
+			}
+
 		} else if ( 'circle' === $assoc_args['ci'] ) {
 			$copy_source[ $package_root ]['circle.yml'] = $package_dir;
 		}
@@ -656,6 +683,20 @@ EOT;
 				// file_get_contents() works with Phar-archived files
 				$contents  = file_get_contents( $source . "/{$file}" );
 				$file_path = $dir . basename( $file );
+
+				if ( '.travis.yml' === $file ) {
+					foreach ( $travis_tags as $travis_tag ) {
+						if ( isset( $travis_tag_overwrites[ $travis_tag ] ) ) {
+							// Note the contents fully overwrite, so should include the tag, eg `env:` etc (or nothing if want to remove totally).
+							$contents = preg_replace( '/^' . $travis_tag . ':.*?(?:^$|\z)/ms', $travis_tag_overwrites[ $travis_tag ], $contents );
+						} elseif ( isset( $travis_tag_appends[ $travis_tag ] ) ) {
+							$contents = preg_replace( '/^' . $travis_tag . ':.*?(?:^$|\z)/ms', '\0' . $travis_tag_appends[ $travis_tag ], $contents );
+						}
+					}
+					if ( $travis_append ) {
+						$contents = $contents . $travis_append;
+					}
+				}
 
 				$force = \WP_CLI\Utils\get_flag_value( $assoc_args, 'force' );
 				$should_write_file = $this->prompt_if_files_will_be_overwritten( $file_path, $force );
