@@ -8,11 +8,11 @@ jobs:
     steps:
     - checkout
     - run: |
-      composer require wp-cli/wp-cli:dev-master
-      composer install
-      bash bin/install-package-tests.sh
+        composer require wp-cli/wp-cli:dev-master
+        composer install
+        bash bin/install-package-tests.sh
     - run: |
-      composer validate
-      WP_VERSION=latest bash bin/test.sh
-      rm -rf '/tmp/wp-cli-test core-download-cache'
-      WP_VERSION=trunk bash bin/test.sh
+        composer validate
+        WP_VERSION=latest bash bin/test.sh
+        rm -rf '/tmp/wp-cli-test core-download-cache'
+        WP_VERSION=trunk bash bin/test.sh
