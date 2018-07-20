@@ -14,7 +14,7 @@ jobs:
         sudo docker-php-ext-install mysqli
         sudo apt-get install mysql-client-5.7
     - run: |
-        - echo -e "memory_limit = 1024M" | sudo tee /usr/local/etc/php/php.ini > /dev/null
+        echo -e "memory_limit = 1024M" | sudo tee /usr/local/etc/php/php.ini > /dev/null
     - run: |
         composer require wp-cli/wp-cli:dev-master
         composer install
