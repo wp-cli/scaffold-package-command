@@ -1,29 +1,18 @@
-machine:
-  php:
-    version: 5.6.22
-  environment:
-    PATH: "$HOME/$CIRCLE_PROJECT_REPONAME/vendor/bin:$PATH"
-    WP_CLI_BIN_DIR: "$HOME/$CIRCLE_PROJECT_REPONAME/vendor/bin"
-
-dependencies:
-  cache_directories:
-    - ~/.composer/cache
-  pre:
-    # Set the PHP timezone so that Behat does not fail.
-    - echo "date.timezone = 'US/Central'" > /opt/circleci/php/$(phpenv global)/etc/conf.d/wp-cli-timezone.ini
-    # Disable xdebug, which makes Composer slower.
-    - echo ""  > /opt/circleci/php/$(phpenv global)/etc/conf.d/xdebug.ini
-    # Increase memory limit
-    - echo "memory_limit = 1024M" > /opt/circleci/php/$(phpenv global)/etc/conf.d/memory.ini
-  override:
-    - composer require wp-cli/wp-cli:dev-master
-    - composer install
-    - bash bin/install-package-tests.sh
-
-test:
-  pre:
-    - composer validate
-  override:
-    - WP_VERSION=latest bash bin/test.sh
-    - rm -rf '/tmp/wp-cli-test core-download-cache'
-    - WP_VERSION=trunk bash bin/test.sh
+version: 2
+jobs:
+  build:
+    working_directory: ~/wp-cli/package-tests
+    parallelism: 1
+    docker:
+    - image: circleci/php:7.1
+    steps:
+    - checkout
+    - run: |
+      composer require wp-cli/wp-cli:dev-master
+      composer install
+      bash bin/install-package-tests.sh
+    - run: |
+      composer validate
+      WP_VERSION=latest bash bin/test.sh
+      rm -rf '/tmp/wp-cli-test core-download-cache'
+      WP_VERSION=trunk bash bin/test.sh
