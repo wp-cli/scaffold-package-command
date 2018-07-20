@@ -6,17 +6,16 @@ jobs:
     docker:
     - image: circleci/php:7.1
     - image: circleci/mysql:5.6
+      environment:
+        MYSQL_HOST: 127.0.0.1
+        MYSQL_DB: wp_cli_test
+        MYSQL_USER: wp_cli_test
+        MYSQL_PASSWORD: password1
     steps:
     - checkout
     - run: |
-        sudo sh -c "printf '\ndeb http://ftp.us.debian.org/debian sid main\n' >> /etc/apt/sources.list"
-        sudo apt-get update
-        sudo docker-php-ext-install mysqli
-        sudo apt-get install mysql-client-5.7
-    - run: |
         composer require wp-cli/wp-cli:dev-master
         composer install
-        bash bin/install-package-tests.sh
     - run: |
         composer validate
         WP_VERSION=latest bash bin/test.sh
