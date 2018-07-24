@@ -1,29 +1,29 @@
-machine:
-  php:
-    version: 5.6.22
-  environment:
-    PATH: "$HOME/$CIRCLE_PROJECT_REPONAME/vendor/bin:$PATH"
-    WP_CLI_BIN_DIR: "$HOME/$CIRCLE_PROJECT_REPONAME/vendor/bin"
-
-dependencies:
-  cache_directories:
-    - ~/.composer/cache
-  pre:
-    # Set the PHP timezone so that Behat does not fail.
-    - echo "date.timezone = 'US/Central'" > /opt/circleci/php/$(phpenv global)/etc/conf.d/wp-cli-timezone.ini
-    # Disable xdebug, which makes Composer slower.
-    - echo ""  > /opt/circleci/php/$(phpenv global)/etc/conf.d/xdebug.ini
-    # Increase memory limit
-    - echo "memory_limit = 1024M" > /opt/circleci/php/$(phpenv global)/etc/conf.d/memory.ini
-  override:
-    - composer require wp-cli/wp-cli:dev-master
-    - composer install
-    - bash bin/install-package-tests.sh
-
-test:
-  pre:
-    - composer validate
-  override:
-    - WP_VERSION=latest bash bin/test.sh
-    - rm -rf '/tmp/wp-cli-test core-download-cache'
-    - WP_VERSION=trunk bash bin/test.sh
+version: 2
+jobs:
+  build:
+    working_directory: ~/wp-cli/package-tests
+    parallelism: 1
+    docker:
+    - image: circleci/php:7.1
+    - image: circleci/mysql:5.6
+    steps:
+    - checkout
+    - run: |
+        sudo sh -c "printf '\ndeb http://ftp.us.debian.org/debian sid main\n' >> /etc/apt/sources.list"
+        sudo apt-get update
+        sudo docker-php-ext-install mysqli
+        sudo apt-get install mysql-client-5.7
+    - run: |
+        echo -e "memory_limit = 1024M" | sudo tee /usr/local/etc/php/php.ini > /dev/null
+    - run: |
+        composer require wp-cli/wp-cli:dev-master
+        composer install
+        bash bin/install-package-tests.sh
+    - run: |
+        echo 'export PATH=$HOME/wp-cli/package-tests/vendor/bin:$PATH' >> $BASH_ENV
+        source $BASH_ENV
+    - run: |
+        composer validate
+        WP_VERSION=latest bash bin/test.sh
+        rm -rf '/tmp/wp-cli-test core-download-cache'
+        WP_VERSION=trunk bash bin/test.sh
