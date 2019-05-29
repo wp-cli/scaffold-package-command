@@ -25,7 +25,7 @@
     },
     "require-dev": {
         "wp-cli/wp-cli": "*",
-        "behat/behat": "~2.5"
+        "behat/behat": "~3.5"
     },
     "extra": {
         "branch-alias": {
