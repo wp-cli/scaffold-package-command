@@ -21,21 +21,40 @@
         "files": [ "scaffold-package-command.php" ]
     },
     "require": {
-        "wp-cli/scaffold-command": "*"
+        "php": "^5.6 || ^7.0",
+        "wp-cli/wp-cli": "^2",
+        "wp-cli/scaffold-command": "^2"
     },
     "require-dev": {
-        "wp-cli/wp-cli": "*",
-        "behat/behat": "~2.5"
+        "wp-cli/wp-cli-tests": "^2.1"
+    },
+    "config": {
+        "process-timeout": 7200,
+        "sort-packages": true
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.x-dev"
+            "dev-master": "2.x-dev"
         },
         "commands": [
             "scaffold package",
             "scaffold package-tests",
             "scaffold package-readme",
             "scaffold package-github"
+        ]
+    },
+    "scripts": {
+        "behat": "run-behat-tests",
+        "behat-rerun": "rerun-behat-tests",
+        "lint": "run-linter-tests",
+        "phpcs": "run-phpcs-tests",
+        "phpunit": "run-php-unit-tests",
+        "prepare-tests": "install-package-tests",
+        "test": [
+            "@lint",
+            "@phpcs",
+            "@phpunit",
+            "@behat"
         ]
     }
 }
