@@ -3,7 +3,6 @@
 namespace WP_CLI;
 
 use WP_CLI;
-use WP_CLI\Process;
 use WP_CLI\Utils;
 
 class ScaffoldPackageCommand {
@@ -72,11 +71,11 @@ class ScaffoldPackageCommand {
 	 */
 	public function package( $args, $assoc_args ) {
 
-		$defaults           = array(
+		$defaults           = [
 			'dir'         => '',
 			'description' => '',
 			'homepage'    => '',
-		);
+		];
 		$assoc_args         = array_merge( $defaults, $assoc_args );
 		$assoc_args['name'] = $args[0];
 
@@ -91,8 +90,11 @@ class ScaffoldPackageCommand {
 			$package_dir = WP_CLI::get_runner()->get_packages_dir_path() . 'local/' . $assoc_args['name'];
 		}
 
-		if ( '~/' === substr( $package_dir, 0, 2 ) && ( $home = getenv( 'HOME' ) ) ) {
-			$package_dir = $home . substr( $package_dir, 1 );
+		if ( '~/' === substr( $package_dir, 0, 2 ) ) {
+			$home = getenv( 'HOME' );
+			if ( $home ) {
+				$package_dir = $home . substr( $package_dir, 1 );
+			}
 		}
 
 		if ( empty( $assoc_args['homepage'] ) ) {
@@ -109,7 +111,7 @@ require:
 EOT;
 
 		$files_written = $this->create_files(
-			array(
+			[
 				"{$package_dir}/.gitignore"                => file_get_contents( "{$package_root}/.gitignore" ),
 				"{$package_dir}/.editorconfig"             => file_get_contents( "{$package_root}/.editorconfig" ),
 				"{$package_dir}/.distignore"               => file_get_contents( "{$package_root}/.distignore" ),
@@ -118,7 +120,7 @@ EOT;
 				"{$package_dir}/hello-world-command.php"   => Utils\mustache_render( "{$template_path}/hello-world-command.mustache", $assoc_args ),
 				"{$package_dir}/src/HelloWorldCommand.php" => Utils\mustache_render( "{$template_path}/HelloWorldCommand.mustache", $assoc_args ),
 				"{$package_dir}/composer.json"             => Utils\mustache_render( "{$template_path}/composer.mustache", $assoc_args ),
-			),
+			],
 			$force
 		);
 
@@ -234,22 +236,22 @@ EOT;
 		$template_path = $package_root . '/templates/';
 
 		$bits        = explode( '/', $composer_obj['name'] );
-		$readme_args = array(
+		$readme_args = [
 			'package_name'                  => $composer_obj['name'],
 			'package_short_name'            => $bits[1],
 			'package_name_border'           => str_pad( '', strlen( $composer_obj['name'] ), '=' ),
 			'package_description'           => isset( $composer_obj['description'] ) ? $composer_obj['description'] : '',
-			'required_wp_cli_version'       => ! empty( $composer_obj['require']['wp-cli/wp-cli'] ) ? str_replace( array( '~', '^', '>=' ), 'v', $composer_obj['require']['wp-cli/wp-cli'] ) : 'v1.3.0',
+			'required_wp_cli_version'       => ! empty( $composer_obj['require']['wp-cli/wp-cli'] ) ? str_replace( [ '~', '^', '>=' ], 'v', $composer_obj['require']['wp-cli/wp-cli'] ) : 'v1.3.0',
 			'shields'                       => '',
 			'has_commands'                  => false,
 			'wp_cli_update_to_instructions' => 'the latest stable release with `wp cli update`',
 			'show_powered_by'               => isset( $composer_obj['extra']['readme']['show_powered_by'] ) ? (bool) $composer_obj['extra']['readme']['show_powered_by'] : true,
-		);
+		];
 
 		if ( isset( $composer_obj['extra']['readme']['shields'] ) ) {
 			$readme_args['shields'] = implode( ' ', $composer_obj['extra']['readme']['shields'] );
 		} else {
-			$shields = array();
+			$shields = [];
 			if ( file_exists( $package_dir . '/.travis.yml' ) ) {
 				$shields[] = "[![Build Status](https://travis-ci.org/{$readme_args['package_name']}.svg?branch=master)](https://travis-ci.org/{$readme_args['package_name']})";
 			}
@@ -272,14 +274,14 @@ EOT;
 		}
 
 		if ( ! empty( $composer_obj['extra']['commands'] ) ) {
-			$readme_args['commands'] = array();
+			$readme_args['commands'] = [];
 			$cmd_dump                = WP_CLI::runcommand(
 				'cli cmd-dump',
-				array(
+				[
 					'launch' => false,
 					'return' => true,
 					'parse'  => 'json',
-				)
+				]
 			);
 			foreach ( $composer_obj['extra']['commands'] as $command ) {
 				$bits           = explode( ' ', $command );
@@ -311,39 +313,39 @@ EOT;
 				$longdesc = preg_replace( '/##\s(.+)/', '**$1**', $longdesc );
 
 				// definition lists
-				$longdesc = preg_replace_callback( '/([^\n]+)\n: (.+?)(\n\n|$)/s', array( __CLASS__, 'rewrap_param_desc' ), $longdesc );
+				$longdesc = preg_replace_callback( '/([^\n]+)\n: (.+?)(\n\n|$)/s', [ __CLASS__, 'rewrap_param_desc' ], $longdesc );
 
-				$readme_args['commands'][] = array(
+				$readme_args['commands'][] = [
 					'name'      => "wp {$command}",
 					'shortdesc' => isset( $parent_command['description'] ) ? $parent_command['description'] : '',
 					'synopsis'  => "wp {$command}" . ( empty( $parent_command['subcommands'] ) ? ( isset( $parent_command['synopsis'] ) ? " {$parent_command['synopsis']}" : '' ) : '' ),
 					'longdesc'  => $longdesc,
-				);
+				];
 			}
 			$readme_args['has_commands']          = true;
-			$readme_args['has_multiple_commands'] = count( $readme_args['commands'] ) > 1 ? true : false;
+			$readme_args['has_multiple_commands'] = count( $readme_args['commands'] ) > 1;
 		}
 
 		if ( isset( $composer_obj['extra']['readme']['sections'] ) ) {
 			$readme_section_headings = $composer_obj['extra']['readme']['sections'];
 		} else {
-			$readme_section_headings = array(
+			$readme_section_headings = [
 				'Using',
 				'Installing',
 				'Contributing',
 				'Support',
-			);
+			];
 		}
 
-		$readme_sections = array();
+		$readme_sections = [];
 		foreach ( $readme_section_headings as $section_heading ) {
 			$key                     = strtolower( preg_replace( '#[^\da-z-_]#i', '', $section_heading ) );
-			$readme_sections[ $key ] = array(
+			$readme_sections[ $key ] = [
 				'heading' => $section_heading,
-			);
+			];
 		}
 		$bundled = ! empty( $composer_obj['extra']['bundled'] );
-		foreach ( array( 'using', 'installing', 'contributing', 'support' ) as $key ) {
+		foreach ( [ 'using', 'installing', 'contributing', 'support' ] as $key ) {
 			if ( isset( $readme_sections[ $key ] ) ) {
 				$file = dirname( dirname( __FILE__ ) ) . '/templates/readme-' . $key . '.mustache';
 				if ( $bundled
@@ -354,9 +356,9 @@ EOT;
 			}
 		}
 
-		$readme_sections['package_description'] = array(
+		$readme_sections['package_description'] = [
 			'body' => isset( $composer_obj['description'] ) ? $composer_obj['description'] : '',
-		);
+		];
 
 		$readme_args['quick_links'] = '';
 		foreach ( $readme_sections as $key => $section ) {
@@ -368,15 +370,15 @@ EOT;
 			$readme_args['quick_links'] = 'Quick links: ' . rtrim( $readme_args['quick_links'], '| ' );
 		}
 
-		$readme_args['sections'] = array();
+		$readme_args['sections'] = [];
 		$ext_regex               = '#\.(md|mustache)$#i';
 		foreach ( $readme_sections as $section => $section_args ) {
-			$value = array();
-			foreach ( array( 'pre', 'body', 'post' ) as $k ) {
+			$value = [];
+			foreach ( [ 'pre', 'body', 'post' ] as $k ) {
 				$v = '';
 				if ( isset( $composer_obj['extra']['readme'][ $section ][ $k ] ) ) {
 					$v = $composer_obj['extra']['readme'][ $section ][ $k ];
-					if ( false !== stripos( $v, '://' ) ) {
+					if ( false !== strpos( $v, '://' ) ) {
 						$response = Utils\http_request( 'GET', $v );
 						$v        = $response->body;
 					} elseif ( preg_match( $ext_regex, $v ) ) {
@@ -396,17 +398,17 @@ EOT;
 			if ( 'package_description' === $section ) {
 				$readme_args['package_description'] = $value;
 			} else {
-				$readme_args['sections'][] = array(
+				$readme_args['sections'][] = [
 					'heading' => $section_args['heading'],
 					'body'    => $value,
-				);
+				];
 			}
 		}
 
 		$files_written = $this->create_files(
-			array(
+			[
 				"{$package_dir}/README.md" => Utils\mustache_render( "{$template_path}/readme.mustache", $readme_args ),
-			),
+			],
 			$force
 		);
 
@@ -453,66 +455,66 @@ EOT;
 		$template_path = dirname( dirname( __FILE__ ) ) . '/templates';
 
 		$composer_obj  = json_decode( file_get_contents( $package_dir . '/composer.json' ), true );
-		$settings_vars = array(
+		$settings_vars = [
 			'has_description' => false,
 			'description'     => '',
 			'has_labels'      => true,
-			'labels'          => array(
-				array(
+			'labels'          => [
+				[
 					'name'  => 'bug',
 					'color' => 'fc2929',
-				),
-				array(
+				],
+				[
 					'name'  => 'scope:documentation',
 					'color' => '0e8a16',
-				),
-				array(
+				],
+				[
 					'name'  => 'scope:testing',
 					'color' => '5319e7',
-				),
-				array(
+				],
+				[
 					'name'  => 'good-first-issue',
 					'color' => 'eb6420',
-				),
-				array(
+				],
+				[
 					'name'  => 'help-wanted',
 					'color' => '159818',
-				),
-				array(
+				],
+				[
 					'name'  => 'maybelater',
 					'color' => 'c2e0c6',
-				),
-				array(
+				],
+				[
 					'name'  => 'state:unconfirmed',
 					'color' => 'bfe5bf',
-				),
-				array(
+				],
+				[
 					'name'  => 'state:unsupported',
 					'color' => 'bfe5bf',
-				),
-				array(
+				],
+				[
 					'name'  => 'wontfix',
 					'color' => 'c2e0c6',
-				),
-			),
-		);
+				],
+			],
+		];
 		if ( ! empty( $composer_obj['description'] ) ) {
 			$settings_vars['description']     = $composer_obj['description'];
 			$settings_vars['has_description'] = true;
 		}
 		if ( ! empty( $composer_obj['extra']['commands'] ) ) {
 			foreach ( $composer_obj['extra']['commands'] as $cmd ) {
-				$settings_vars['labels'][] = array(
+				$settings_vars['labels'][] = [
 					'name'  => 'command:' . str_replace( ' ', '-', $cmd ),
 					'color' => 'c5def5',
-				);
+				];
 			}
 		}
-		$create_files  = array(
+		$create_files  = [
 			"{$package_dir}/.github/ISSUE_TEMPLATE"        => Utils\mustache_render( "{$template_path}/github-issue-template.mustache" ),
 			"{$package_dir}/.github/PULL_REQUEST_TEMPLATE" => Utils\mustache_render( "{$template_path}/github-pull-request-template.mustache" ),
 			"{$package_dir}/.github/settings.yml"          => Utils\mustache_render( "{$template_path}/github-settings.mustache", $settings_vars ),
-		);
+		];
 		$files_written = $this->create_files( $create_files, $force );
 		if ( empty( $files_written ) ) {
 			WP_CLI::log( 'Package GitHub configuration generation skipped.' );
@@ -648,8 +650,9 @@ EOT;
 			$copy_source[ $package_root ]['templates/load-wp-cli.feature'] = $features_dir;
 		}
 
-		$travis_tags           = array( 'cache', 'env', 'matrix', 'before_install', 'install', 'before_script', 'script' );
-		$travis_tag_overwrites = $travis_tag_appends = array();
+		$travis_tags           = [ 'cache', 'env', 'matrix', 'before_install', 'install', 'before_script', 'script' ];
+		$travis_tag_overwrites = [];
+		$travis_tag_appends    = [];
 		$travis_append         = '';
 		if ( 'travis' === $assoc_args['ci'] ) {
 			$copy_source[ $package_root ]['.travis.yml'] = $package_dir;
@@ -671,7 +674,7 @@ EOT;
 			$copy_source[ $package_root ]['circle.yml'] = $package_dir;
 		}
 
-		$files_written = array();
+		$files_written = [];
 		foreach ( $copy_source as $source => $to_copy ) {
 			foreach ( $to_copy as $file => $dir ) {
 				if ( 'php/WP_CLI/ProcessRun.php' === $file && ! file_exists( $source . "/{$file}" ) ) {
@@ -691,7 +694,7 @@ EOT;
 						}
 					}
 					if ( $travis_append ) {
-						$contents = $contents . $travis_append;
+						$contents .= $travis_append;
 					}
 				}
 
@@ -702,7 +705,7 @@ EOT;
 				}
 				$files_written[] = $file_path;
 
-				$result = Process::create( Utils\esc_cmd( 'touch %s', $file_path ) )->run();
+				Process::create( Utils\esc_cmd( 'touch %s', $file_path ) )->run();
 				file_put_contents( $file_path, $contents );
 			}
 		}
@@ -725,7 +728,7 @@ EOT;
 		foreach ( $lines as &$line ) {
 			$line = $whitespace . $line;
 		}
-		return implode( $lines, "\n" );
+		return implode( "\n", $lines );
 	}
 
 	private function prompt_if_files_will_be_overwritten( $filename, $force ) {
@@ -743,7 +746,7 @@ EOT;
 					$default = false,
 					$marker  = '[s/r]: '
 				);
-			} while ( ! in_array( $answer, array( 's', 'r' ) ) );
+			} while ( ! in_array( $answer, [ 's', 'r' ], true ) );
 			$should_write_file = 'r' === $answer;
 		}
 
@@ -754,7 +757,7 @@ EOT;
 	}
 
 	private function create_files( $files_and_contents, $force ) {
-		$wrote_files = array();
+		$wrote_files = [];
 
 		foreach ( $files_and_contents as $filename => $contents ) {
 			$should_write_file = $this->prompt_if_files_will_be_overwritten( $filename, $force );
