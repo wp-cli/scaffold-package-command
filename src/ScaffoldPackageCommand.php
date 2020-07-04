@@ -47,6 +47,12 @@ class ScaffoldPackageCommand {
 	 * default: ^2.5
 	 * ---
 	 *
+	 * [--require_wp_cli_tests=<version>]
+	 * : Required WP-CLI testing framework version for the package.
+	 * ---
+	 * default: ^3.0.11
+	 * ---
+
 	 * [--skip-tests]
 	 * : Don't generate files for integration testing.
 	 *
@@ -103,13 +109,13 @@ require:
 EOT;
 
 		$files_written = $this->create_files( array(
-			"{$package_dir}/.gitignore"     => file_get_contents( "{$package_root}/.gitignore" ),
-			"{$package_dir}/.editorconfig"  => file_get_contents( "{$package_root}/.editorconfig" ),
-			"{$package_dir}/.distignore"    => file_get_contents( "{$package_root}/.distignore" ),
-			"{$package_dir}/CONTRIBUTING.md"=> file_get_contents( "{$package_root}/CONTRIBUTING.md" ),
-			"{$package_dir}/wp-cli.yml"     => $wp_cli_yml,
-			"{$package_dir}/command.php"    => Utils\mustache_render( "{$template_path}/command.mustache", $assoc_args ),
-			"{$package_dir}/composer.json"  => Utils\mustache_render( "{$template_path}/composer.mustache", $assoc_args ),
+			"{$package_dir}/.gitignore"              => file_get_contents( "{$package_root}/.gitignore" ),
+			"{$package_dir}/.editorconfig"           => file_get_contents( "{$package_root}/.editorconfig" ),
+			"{$package_dir}/.distignore"             => file_get_contents( "{$package_root}/.distignore" ),
+			"{$package_dir}/CONTRIBUTING.md"         => file_get_contents( "{$package_root}/CONTRIBUTING.md" ),
+			"{$package_dir}/wp-cli.yml"              => $wp_cli_yml,
+			"{$package_dir}/hello-world-command.php" => Utils\mustache_render( "{$template_path}/command.mustache", $assoc_args ),
+			"{$package_dir}/composer.json"           => Utils\mustache_render( "{$template_path}/composer.mustache", $assoc_args ),
 		), $force );
 
 		if ( empty( $files_written ) ) {
@@ -612,13 +618,9 @@ EOT;
 		self::check_if_valid_package_dir( $package_dir );
 
 		$package_dir .= '/';
-		$bin_dir       = $package_dir . 'bin/';
-		$utils_dir     = $package_dir . 'utils/';
 		$features_dir  = $package_dir . 'features/';
-		foreach ( array( $features_dir, $utils_dir, $bin_dir ) as $dir ) {
-			if ( ! is_dir( $dir ) ) {
-				Process::create( Utils\esc_cmd( 'mkdir %s', $dir ) )->run();
-			}
+		if ( ! is_dir( $features_dir ) ) {
+			Process::create( Utils\esc_cmd( 'mkdir %s', $features_dir ) )->run();
 		}
 
 		$package_root = dirname( dirname( __FILE__ ) );
