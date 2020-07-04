@@ -125,6 +125,8 @@ EOT;
 			WP_CLI::success( "Created package files in {$package_dir}" );
 		}
 
+		Process::create( 'composer install' )->run();
+
 		$force_flag = $force ? '--force' : '';
 		if ( ! Utils\get_flag_value( $assoc_args, 'skip-tests' ) ) {
 			WP_CLI::runcommand( "scaffold package-tests {$package_dir} {$force_flag}", array( 'launch' => false ) );
