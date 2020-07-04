@@ -296,7 +296,8 @@ EOT;
 				}
 				 */
 
-				$longdesc = preg_replace( '/## GLOBAL PARAMETERS(.+)/s', '', $parent_command['longdesc'] );
+				$longdesc = isset( $parent_command['longdesc'] ) ? $parent_command['longdesc'] : '';
+				$longdesc = preg_replace( '/## GLOBAL PARAMETERS(.+)/s', '', $longdesc );
 				$longdesc = preg_replace( '/##\s(.+)/', '**$1**', $longdesc );
 
 				// definition lists
@@ -304,8 +305,8 @@ EOT;
 
 				$readme_args['commands'][] = array(
 					'name' => "wp {$command}",
-					'shortdesc' => $parent_command['description'],
-					'synopsis' => "wp {$command}" . ( empty( $parent_command['subcommands'] ) ? " {$parent_command['synopsis']}" : "" ),
+					'shortdesc' => isset( $parent_command['description'] ) ? $parent_command['description'] : '',
+					'synopsis' => "wp {$command}" . ( empty( $parent_command['subcommands'] ) ? ( isset( $parent_command['synopsis'] ) ? " {$parent_command['synopsis']}" : '' ) : "" ),
 					'longdesc' => $longdesc,
 				);
 			}
