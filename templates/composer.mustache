@@ -17,3 +17,57 @@
         "wp-cli/wp-cli-tests": "^3.0.11"
     }
 }
+{
+    "name": "{{name}}",
+    "type": "wp-cli-package",
+    "description": "{{description}}",
+    "homepage": "{{homepage}}",
+    "license": "{{license}}",
+    "authors": [],
+    "require": {
+        "wp-cli/wp-cli": "{{require_wp_cli}}"
+    },
+    "require-dev": {
+        "wp-cli/wp-cli-tests": "{{require_wp_cli_tests}}"
+    },
+    "config": {
+        "process-timeout": 7200,
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.x-dev"
+        },
+        "bundled": false,
+        "commands": [
+            "hello-world"
+        ]
+    },
+    "autoload": {
+        "psr-4": {
+            "WP_CLI\\HelloWorld\\": "src/"
+        },
+        "files": [
+            "hello-world-command.php"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "behat": "run-behat-tests",
+        "behat-rerun": "rerun-behat-tests",
+        "lint": "run-linter-tests",
+        "phpcs": "run-phpcs-tests",
+        "phpunit": "run-php-unit-tests",
+        "prepare-tests": "install-package-tests",
+        "test": [
+            "@lint",
+            "@phpcs",
+            "@phpunit",
+            "@behat"
+        ]
+    },
+    "support": {
+        "issues": "https://github.com/{{name}}/issues"
+    }
+}
