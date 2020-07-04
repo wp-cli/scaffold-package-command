@@ -202,7 +202,7 @@ Feature: Scaffold the test suite for an existing package
       """
     And the community-command/.travis.yml file should contain:
       """
-        - bash bin/install-package-tests.sh
+        - composer prepare-tests
       """
     And the community-command/.travis.yml file should contain:
       """
@@ -222,7 +222,7 @@ Feature: Scaffold the test suite for an existing package
       """
     And the community-command/.travis.yml file should contain:
       """
-        - bash bin/test.sh
+        - composer behat || composer behat-rerun
         - bash bin/my-append-script.sh
       """
     And the community-command/.travis.yml file should contain:
