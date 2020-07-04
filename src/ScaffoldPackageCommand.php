@@ -125,8 +125,6 @@ EOT;
 			WP_CLI::success( "Created package files in {$package_dir}" );
 		}
 
-		Process::create( 'composer install' )->run();
-
 		$force_flag = $force ? '--force' : '';
 		if ( ! Utils\get_flag_value( $assoc_args, 'skip-tests' ) ) {
 			WP_CLI::runcommand( "scaffold package-tests {$package_dir} {$force_flag}", array( 'launch' => false ) );
@@ -291,9 +289,12 @@ EOT;
 					}
 				} while( $parent_command && $bits );
 
+				/* This check doesn't work because of the way the commands are fetched.
+				 * Needs bigger refactor to put this check back in.
 				if ( empty( $parent_command ) ) {
 					WP_CLI::error( 'Missing one or more commands defined in composer.json -> extra -> commands.' );
 				}
+				 */
 
 				$longdesc = preg_replace( '/## GLOBAL PARAMETERS(.+)/s', '', $parent_command['longdesc'] );
 				$longdesc = preg_replace( '/##\s(.+)/', '**$1**', $longdesc );
