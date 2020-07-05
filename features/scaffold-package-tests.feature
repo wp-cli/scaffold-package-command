@@ -174,7 +174,7 @@ Feature: Scaffold the test suite for an existing package
       """
     And the community-command/.travis.yml file should contain:
       """
-          - php: 7.4
+            php: 7.4
       """
     And the community-command/.travis.yml file should contain:
       """
