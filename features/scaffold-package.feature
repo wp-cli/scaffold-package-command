@@ -125,6 +125,7 @@ Feature: Scaffold WP-CLI commands
     And the custom-directory/wp-cli.yml file should exist
     And the custom-directory/.travis.yml file should not exist
 
+    When I run `composer --working-dir=custom-directory/ install`
     When I run `wp --require=custom-directory/hello-world-command.php hello-world`
     Then STDOUT should be:
       """
@@ -192,6 +193,7 @@ Feature: Scaffold WP-CLI commands
     And the {PACKAGE_PATH}/local/wp-cli/with-tests/wp-cli.yml file should exist
     And the {PACKAGE_PATH}/local/wp-cli/with-tests/.travis.yml file should exist
 
+    When I run `composer --working-dir={PACKAGE_PATH}/local/wp-cli/with-tests/ install`
     When I run `wp --require={PACKAGE_PATH}/local/wp-cli/with-tests/hello-world-command.php hello-world`
     Then STDOUT should be:
       """
