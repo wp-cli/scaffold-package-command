@@ -51,7 +51,7 @@ Feature: Scaffold WP-CLI commands
     When I run `wp --require={PACKAGE_PATH}/local/wp-cli/foo/hello-world-command.php hello-world`
     Then STDOUT should be:
       """
-      Success: Hello world!
+      Success: Hello World!
       """
 
     When I run `cat {PACKAGE_PATH}/local/wp-cli/foo/wp-cli.yml`
@@ -91,7 +91,7 @@ Feature: Scaffold WP-CLI commands
     When I run `wp hello-world`
     Then STDOUT should be:
       """
-      Success: Hello world!
+      Success: Hello World!
       """
 
     When I run `wp package uninstall wp-cli/without-require`
@@ -128,7 +128,7 @@ Feature: Scaffold WP-CLI commands
     When I run `wp --require=custom-directory/hello-world-command.php hello-world`
     Then STDOUT should be:
       """
-      Success: Hello world!
+      Success: Hello World!
       """
     When I run `wp package uninstall wp-cli/custom-directory`
     Then STDOUT should contain:
@@ -194,7 +194,7 @@ Feature: Scaffold WP-CLI commands
     When I run `wp --require={PACKAGE_PATH}/local/wp-cli/with-tests/hello-world-command.php hello-world`
     Then STDOUT should be:
       """
-      Success: Hello world!
+      Success: Hello World!
       """
     When I run `wp package uninstall wp-cli/with-tests`
     Then STDOUT should contain:
