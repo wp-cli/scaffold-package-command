@@ -124,9 +124,10 @@ Feature: Scaffold the test suite for an existing package
       """
           - MY_APPEND_ENV="my-append-env"
       """
-    And a community-command/travis-matrix-append.yml file:
+    And a community-command/travis-jobs-append.yml file:
       """
-          - php: 99.97
+          - stage: test
+            php: 99.97
             env: WP_VERSION=9997.9997
       """
     And a community-command/travis-before_install-append.yml file:
@@ -137,10 +138,6 @@ Feature: Scaffold the test suite for an existing package
     And a community-command/travis-install-append.yml file:
       """
         - bash bin/my-append-install.sh
-      """
-    And a community-command/travis-before_script-append.yml file:
-      """
-        - bash bin/my-append-before_script.sh
       """
     And a community-command/travis-script-append.yml file:
       """
@@ -176,15 +173,16 @@ Feature: Scaffold the test suite for an existing package
       """
           - MY_APPEND_ENV="my-append-env"
 
-      matrix:
+      before_install:
       """
     And the community-command/.travis.yml file should contain:
       """
-          - php: 7.2
+          - php: 7.4
       """
     And the community-command/.travis.yml file should contain:
       """
-          - php: 99.97
+          - stage: test
+            php: 99.97
             env: WP_VERSION=9997.9997
 
       before_install:
@@ -208,17 +206,11 @@ Feature: Scaffold the test suite for an existing package
       """
         - bash bin/my-append-install.sh
 
-      before_script:
+      script:
       """
     And the community-command/.travis.yml file should contain:
       """
         - composer validate
-      """
-    And the community-command/.travis.yml file should contain:
-      """
-        - bash bin/my-append-before_script.sh
-
-      script:
       """
     And the community-command/.travis.yml file should contain:
       """
