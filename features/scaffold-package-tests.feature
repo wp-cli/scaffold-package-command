@@ -56,9 +56,6 @@ Feature: Scaffold the test suite for an existing package
     When I run `wp scaffold package-tests community-command`
     Then STDOUT should not be empty
     And the community-command/.travis.yml file should exist
-      """
-      require-wp
-      """
     And the community-command/features directory should contain:
       """
       load-wp-cli.feature
