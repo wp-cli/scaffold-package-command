@@ -1,0 +1,23 @@
+{
+  "name": "scaffold-package-command",
+  "version": "1.0.0",
+  "description": "wp-cli/scaffold-package-command",
+  "main": " ",
+  "scripts": {
+    "test": "echo \"Error: testing not setup\" && exit 1",
+    "lint": "node ./node_modules/gherkin-lint/dist/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wp-cli/scaffold-package-command.git"
+  },
+  "author": "Daniel Bachhuber <daniel@runcommand.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wp-cli/scaffold-package-command/issues"
+  },
+  "homepage": "https://github.com/wp-cli/scaffold-package-command#readme",
+  "devDependencies": {
+    "gherkin-lint": "^4.1.3"
+  }
+}
