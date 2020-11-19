@@ -625,15 +625,18 @@ EOT;
 		}
 
 		$wp_cli_root = WP_CLI_ROOT;
+		$wp_cli_test_root = realpath(implode(DIRECTORY_SEPARATOR, [WP_CLI_ROOT, '..', 'wp-cli-tests']));
+
 		$package_root = dirname( dirname( __FILE__ ) );
 		$copy_source = array(
 			$wp_cli_root => array(
-				'features/bootstrap/FeatureContext.php'       => $bootstrap_dir,
-				'features/bootstrap/support.php'              => $bootstrap_dir,
 				'php/WP_CLI/Process.php'                      => $bootstrap_dir,
 				'php/WP_CLI/ProcessRun.php'                   => $bootstrap_dir,
 				'php/utils.php'                               => $bootstrap_dir,
-				'ci/behat-tags.php'                           => $utils_dir,
+			),
+			$wp_cli_test_root => array(
+				'features/bootstrap/FeatureContext.php'       => $bootstrap_dir,
+				'features/bootstrap/support.php'              => $bootstrap_dir,
 				'features/steps/given.php'                    => $steps_dir,
 				'features/steps/when.php'                     => $steps_dir,
 				'features/steps/then.php'                     => $steps_dir,
@@ -642,6 +645,7 @@ EOT;
 			$package_root => array(
 				'bin/install-package-tests.sh'                => $bin_dir,
 				'bin/test.sh'                                 => $bin_dir,
+				'utils/behat-tags.php'                        => $utils_dir,
 			),
 		);
 
