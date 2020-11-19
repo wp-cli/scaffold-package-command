@@ -44,7 +44,7 @@ class ScaffoldPackageCommand {
 	 * [--require_wp_cli=<version>]
 	 * : Required WP-CLI version for the package.
 	 * ---
-	 * default: ^1.1.0
+	 * default: ^2.4.0
 	 * ---
 	 *
 	 * [--skip-tests]
@@ -229,7 +229,7 @@ EOT;
 			'package_short_name'  => $bits[1],
 			'package_name_border' => str_pad( '', strlen( $composer_obj['name'] ), '=' ),
 			'package_description' => isset( $composer_obj['description'] ) ? $composer_obj['description'] : '',
-			'required_wp_cli_version' => ! empty( $composer_obj['require']['wp-cli/wp-cli'] ) ? str_replace( array( '~', '^', '>=' ), 'v', $composer_obj['require']['wp-cli/wp-cli'] ) : 'v1.3.0',
+			'required_wp_cli_version' => ! empty( $composer_obj['require']['wp-cli/wp-cli'] ) ? str_replace( array( '~', '^', '>=' ), 'v', $composer_obj['require']['wp-cli/wp-cli'] ) : 'v2.4.0',
 			'shields'             => '',
 			'has_commands'        => false,
 			'wp_cli_update_to_instructions' => 'the latest stable release with `wp cli update`',
