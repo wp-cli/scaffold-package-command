@@ -625,7 +625,7 @@ EOT;
 		}
 
 		$wp_cli_root = WP_CLI_ROOT;
-		$wp_cli_test_root = realpath(implode(DIRECTORY_SEPARATOR, [WP_CLI_ROOT, '..', 'wp-cli-tests']));
+		$wp_cli_test_root = WP_CLI_ROOT . '/../wp-cli-tests';
 
 		$package_root = dirname( dirname( __FILE__ ) );
 		$copy_source = array(
