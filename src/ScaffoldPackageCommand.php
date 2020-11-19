@@ -641,11 +641,11 @@ EOT;
 				'features/steps/when.php'                     => $steps_dir,
 				'features/steps/then.php'                     => $steps_dir,
 				'features/extra/no-mail.php'                  => $extra_dir,
+				'utils/behat-tags.php'                        => $utils_dir,
 			),
 			$package_root => array(
 				'bin/install-package-tests.sh'                => $bin_dir,
 				'bin/test.sh'                                 => $bin_dir,
-				'utils/behat-tags.php'                        => $utils_dir,
 			),
 		);
 
