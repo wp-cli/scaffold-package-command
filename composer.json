@@ -21,7 +21,7 @@
         "files": [ "scaffold-package-command.php" ]
     },
     "require": {
-        "php": "^5.6 || ^7.0",
+        "php": "^5.6 || ^7 || ^8",
         "wp-cli/wp-cli": "^2",
         "wp-cli/package-command": "^2",
         "wp-cli/scaffold-command": "^2"
