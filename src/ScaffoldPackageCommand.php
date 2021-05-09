@@ -44,7 +44,7 @@ class ScaffoldPackageCommand {
 	 * [--require_wp_cli=<version>]
 	 * : Required WP-CLI version for the package.
 	 * ---
-	 * default: ^1.1.0
+	 * default: ^2.5
 	 * ---
 	 *
 	 * [--skip-tests]
@@ -615,35 +615,13 @@ EOT;
 		$bin_dir       = $package_dir . 'bin/';
 		$utils_dir     = $package_dir . 'utils/';
 		$features_dir  = $package_dir . 'features/';
-		$bootstrap_dir = $features_dir . 'bootstrap/';
-		$steps_dir     = $features_dir . 'steps/';
-		$extra_dir     = $features_dir . 'extra/';
-		foreach ( array( $features_dir, $bootstrap_dir, $steps_dir, $extra_dir, $utils_dir, $bin_dir ) as $dir ) {
+		foreach ( array( $features_dir, $utils_dir, $bin_dir ) as $dir ) {
 			if ( ! is_dir( $dir ) ) {
 				Process::create( Utils\esc_cmd( 'mkdir %s', $dir ) )->run();
 			}
 		}
 
-		$wp_cli_root = WP_CLI_ROOT;
 		$package_root = dirname( dirname( __FILE__ ) );
-		$copy_source = array(
-			$wp_cli_root => array(
-				'features/bootstrap/FeatureContext.php'       => $bootstrap_dir,
-				'features/bootstrap/support.php'              => $bootstrap_dir,
-				'php/WP_CLI/Process.php'                      => $bootstrap_dir,
-				'php/WP_CLI/ProcessRun.php'                   => $bootstrap_dir,
-				'php/utils.php'                               => $bootstrap_dir,
-				'ci/behat-tags.php'                           => $utils_dir,
-				'features/steps/given.php'                    => $steps_dir,
-				'features/steps/when.php'                     => $steps_dir,
-				'features/steps/then.php'                     => $steps_dir,
-				'features/extra/no-mail.php'                  => $extra_dir,
-			),
-			$package_root => array(
-				'bin/install-package-tests.sh'                => $bin_dir,
-				'bin/test.sh'                                 => $bin_dir,
-			),
-		);
 
 		// Only create a sample feature file when none exist
 		if ( ! glob( $features_dir . '/*.feature' ) ) {
@@ -698,7 +676,7 @@ EOT;
 					}
 				}
 
-				$force = \WP_CLI\Utils\get_flag_value( $assoc_args, 'force' );
+				$force = Utils\get_flag_value( $assoc_args, 'force' );
 				$should_write_file = $this->prompt_if_files_will_be_overwritten( $file_path, $force );
 				if ( ! $should_write_file ) {
 					continue;
@@ -707,9 +685,6 @@ EOT;
 
 				$result = Process::create( Utils\esc_cmd( 'touch %s', $file_path ) )->run();
 				file_put_contents( $file_path, $contents );
-				if ( 'bin/install-package-tests.sh' === $file ) {
-					Process::create( Utils\esc_cmd( 'chmod +x %s', $file_path ) )->run();
-				}
 			}
 		}
 
