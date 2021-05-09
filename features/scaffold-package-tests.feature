@@ -91,11 +91,11 @@ Feature: Scaffold the test suite for an existing package
     And the community-command/circle.yml file should exist
     And the community-command/circle.yml file should contain:
       """
-      bash bin/install-package-tests.sh
+      composer prepare-tests
       """
     And the community-command/circle.yml file should contain:
       """
-      bash bin/test.sh
+      composer test
       """
     And the community-command/.travis.yml file should not exist
 
