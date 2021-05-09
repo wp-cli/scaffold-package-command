@@ -5,14 +5,14 @@ jobs:
     parallelism: 1
     docker:
     - image: circleci/php:7.1
-    - image: circleci/mysql:5.6
+    - image: circleci/mariadb:10.5
     steps:
     - checkout
     - run: |
         sudo sh -c "printf '\ndeb http://ftp.us.debian.org/debian sid main\n' >> /etc/apt/sources.list"
         sudo apt-get update
         sudo docker-php-ext-install mysqli
-        sudo apt-get install mysql-client-5.7
+        sudo apt-get install mariadb-client-10.5
     - run: |
         echo -e "memory_limit = 1024M" | sudo tee /usr/local/etc/php/php.ini > /dev/null
     - run: |
