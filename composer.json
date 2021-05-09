@@ -27,7 +27,7 @@
         "wp-cli/scaffold-command": "^2"
     },
     "require-dev": {
-        "wp-cli/wp-cli-tests": "^2.1"
+        "wp-cli/wp-cli-tests": "^3.0.11"
     },
     "config": {
         "process-timeout": 7200,
