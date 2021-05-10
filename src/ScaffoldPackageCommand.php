@@ -252,6 +252,9 @@ EOT;
 			$readme_args['shields'] = implode( ' ', $composer_obj['extra']['readme']['shields'] );
 		} else {
 			$shields = [];
+			if ( file_exists( $package_dir . '/.github/workflows/testing.yml' ) ) {
+				$shields[] = "[![Testing](https://github.com/{$readme_args['package_name']}/actions/workflows/testing.yml/badge.svg)](https://github.com/{$readme_args['package_name']}/actions/workflows/testing.yml)";
+			}
 			if ( file_exists( $package_dir . '/.travis.yml' ) ) {
 				$shields[] = "[![Build Status](https://travis-ci.org/{$readme_args['package_name']}.svg?branch=master)](https://travis-ci.org/{$readme_args['package_name']})";
 			}
