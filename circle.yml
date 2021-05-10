@@ -5,25 +5,37 @@ jobs:
     parallelism: 1
     docker:
     - image: circleci/php:7.1
-    - image: circleci/mysql:5.6
+      environment:
+        WP_CLI_TEST_DBHOST: 127.0.0.1:3306
+        WP_CLI_TEST_DBROOTPASS: root
+        WP_CLI_TEST_DBUSER: wp_cli_test
+        WP_CLI_TEST_DBPASS: password1
+    - image: circleci/mariadb:10.5
+      environment:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: wp_cli_test
+        MYSQL_USER: wp_cli_test
+        MYSQL_PASSWORD: password1
     steps:
     - checkout
     - run: |
         sudo sh -c "printf '\ndeb http://ftp.us.debian.org/debian sid main\n' >> /etc/apt/sources.list"
         sudo apt-get update
         sudo docker-php-ext-install mysqli
-        sudo apt-get install mysql-client-5.7
+        sudo apt-get install mariadb-client-10.5
     - run: |
         echo -e "memory_limit = 1024M" | sudo tee /usr/local/etc/php/php.ini > /dev/null
     - run: |
+        dockerize -wait tcp://127.0.0.1:3306 -timeout 1m
+    - run: |
         composer require wp-cli/wp-cli:dev-master
         composer install
-        bash bin/install-package-tests.sh
+        composer prepare-tests
     - run: |
         echo 'export PATH=$HOME/wp-cli/package-tests/vendor/bin:$PATH' >> $BASH_ENV
         source $BASH_ENV
     - run: |
         composer validate
-        WP_VERSION=latest bash bin/test.sh
+        WP_VERSION=latest composer test
         rm -rf '/tmp/wp-cli-test core-download-cache'
-        WP_VERSION=trunk bash bin/test.sh
+        WP_VERSION=trunk composer test

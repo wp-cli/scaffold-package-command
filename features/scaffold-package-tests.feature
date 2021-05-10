@@ -17,9 +17,6 @@ Feature: Scaffold the test suite for an existing package
         },
         "autoload": {
           "files": [ "dictator.php" ]
-        },
-        "require-dev": {
-          "behat/behat": "~2.5"
         }
       }
       """
@@ -59,42 +56,12 @@ Feature: Scaffold the test suite for an existing package
     When I run `wp scaffold package-tests community-command`
     Then STDOUT should not be empty
     And the community-command/.travis.yml file should exist
-    And the community-command/bin/install-package-tests.sh file should exist
-    And the community-command/bin/test.sh file should exist
-    And the community-command/utils/behat-tags.php file should contain:
       """
       require-wp
       """
     And the community-command/features directory should contain:
       """
-      bootstrap
-      extra
       load-wp-cli.feature
-      steps
-      """
-    And the community-command/features/bootstrap directory should contain:
-      """
-      FeatureContext.php
-      Process.php
-      ProcessRun.php
-      support.php
-      utils.php
-      """
-    And the community-command/features/steps directory should contain:
-      """
-      given.php
-      then.php
-      when.php
-      """
-    And the community-command/features/extra directory should contain:
-      """
-      no-mail.php
-      """
-
-    When I run `wp eval "if ( is_executable( 'community-command/bin/install-package-tests.sh' ) ) { echo 'executable'; } else { exit( 1 ); }"`
-    Then STDOUT should be:
-      """
-      executable
       """
 
     When I try `wp scaffold package-tests invalid-command`
@@ -110,11 +77,11 @@ Feature: Scaffold the test suite for an existing package
     And the community-command/.travis.yml file should exist
     And the community-command/.travis.yml file should contain:
       """
-      bash bin/install-package-tests.sh
+      - composer prepare-tests
       """
     And the community-command/.travis.yml file should contain:
       """
-      bash bin/test.sh
+      - composer behat
       """
     And the community-command/circle.yml file should not exist
 
@@ -124,11 +91,11 @@ Feature: Scaffold the test suite for an existing package
     And the community-command/circle.yml file should exist
     And the community-command/circle.yml file should contain:
       """
-      bash bin/install-package-tests.sh
+      composer prepare-tests
       """
     And the community-command/circle.yml file should contain:
       """
-      bash bin/test.sh
+      composer test
       """
     And the community-command/.travis.yml file should not exist
 
@@ -147,6 +114,7 @@ Feature: Scaffold the test suite for an existing package
       """
     And the return code should be 0
 
+  @broken
   Scenario: Scaffolds .travis.yml configuration file with travis[-<tag>[-append]].yml append/override files.
     Given a community-command/travis-cache-append.yml file:
       """
