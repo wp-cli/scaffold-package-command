@@ -5,7 +5,17 @@ jobs:
     parallelism: 1
     docker:
     - image: circleci/php:7.1
+      environment:
+        WP_CLI_TEST_DBHOST: 127.0.0.1:3306
+        WP_CLI_TEST_DBROOTPASS: root
+        WP_CLI_TEST_DBUSER: wp_cli_test
+        WP_CLI_TEST_DBPASS: password1
     - image: circleci/mariadb:10.5
+      environment:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: wp_cli_test
+        MYSQL_USER: wp_cli_test
+        MYSQL_PASSWORD: password1
     steps:
     - checkout
     - run: |
@@ -15,6 +25,8 @@ jobs:
         sudo apt-get install mariadb-client-10.5
     - run: |
         echo -e "memory_limit = 1024M" | sudo tee /usr/local/etc/php/php.ini > /dev/null
+    - run: |
+        dockerize -wait tcp://127.0.0.1:3306 -timeout 1m
     - run: |
         composer require wp-cli/wp-cli:dev-master
         composer install
