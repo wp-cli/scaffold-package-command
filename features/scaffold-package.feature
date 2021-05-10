@@ -37,7 +37,7 @@ Feature: Scaffold WP-CLI commands
               "wp-cli/wp-cli": "^2.5"
           },
       """
-    And the {PACKAGE_PATH}/local/wp-cli/foo/command.php file should exist
+    And the {PACKAGE_PATH}/local/wp-cli/foo/hello-world-command.php file should exist
     And the {PACKAGE_PATH}/local/wp-cli/foo/CONTRIBUTING.md file should exist
     And the {PACKAGE_PATH}/local/wp-cli/foo/CONTRIBUTING.md file should contain:
       """
@@ -48,17 +48,24 @@ Feature: Scaffold WP-CLI commands
     And the {PACKAGE_PATH}/local/wp-cli/foo/.github/PULL_REQUEST_TEMPLATE file should exist
     And the {PACKAGE_PATH}/local/wp-cli/foo/.github/ISSUE_TEMPLATE file should exist
 
-    When I run `wp --require={PACKAGE_PATH}/local/wp-cli/foo/command.php hello-world`
+    When I run `wp hello-world`
     Then STDOUT should be:
       """
-      Success: Hello world.
+      Success: Hello World!
+      """
+
+    When I run `composer -q -n --working-dir={PACKAGE_PATH}/local/wp-cli/foo/ install`
+    And I run `wp --require={PACKAGE_PATH}/local/wp-cli/foo/hello-world-command.php hello-world`
+    Then STDOUT should be:
+      """
+      Success: Hello World!
       """
 
     When I run `cat {PACKAGE_PATH}/local/wp-cli/foo/wp-cli.yml`
     Then STDOUT should contain:
       """
       require:
-        - command.php
+        - hello-world-command.php
       """
 
     When I run `cat {PACKAGE_PATH}/local/wp-cli/foo/.gitignore`
@@ -91,7 +98,7 @@ Feature: Scaffold WP-CLI commands
     When I run `wp hello-world`
     Then STDOUT should be:
       """
-      Success: Hello world.
+      Success: Hello World!
       """
 
     When I run `wp package uninstall wp-cli/without-require`
@@ -121,14 +128,15 @@ Feature: Scaffold WP-CLI commands
     And the custom-directory/.gitignore file should exist
     And the custom-directory/.editorconfig file should exist
     And the custom-directory/composer.json file should exist
-    And the custom-directory/command.php file should exist
+    And the custom-directory/hello-world-command.php file should exist
     And the custom-directory/wp-cli.yml file should exist
     And the custom-directory/.travis.yml file should not exist
 
-    When I run `wp --require=custom-directory/command.php hello-world`
+    When I run `composer -q -n --working-dir=custom-directory/ install`
+    And I run `wp --require=custom-directory/hello-world-command.php hello-world`
     Then STDOUT should be:
       """
-      Success: Hello world.
+      Success: Hello World!
       """
     When I run `wp package uninstall wp-cli/custom-directory`
     Then STDOUT should contain:
@@ -140,6 +148,7 @@ Feature: Scaffold WP-CLI commands
     Given an empty directory
     And a session file:
       """
+      s
       s
       s
       s
@@ -187,14 +196,15 @@ Feature: Scaffold WP-CLI commands
     And the {PACKAGE_PATH}/local/wp-cli/with-tests/.gitignore file should exist
     And the {PACKAGE_PATH}/local/wp-cli/with-tests/.editorconfig file should exist
     And the {PACKAGE_PATH}/local/wp-cli/with-tests/composer.json file should exist
-    And the {PACKAGE_PATH}/local/wp-cli/with-tests/command.php file should exist
+    And the {PACKAGE_PATH}/local/wp-cli/with-tests/hello-world-command.php file should exist
     And the {PACKAGE_PATH}/local/wp-cli/with-tests/wp-cli.yml file should exist
     And the {PACKAGE_PATH}/local/wp-cli/with-tests/.travis.yml file should exist
 
-    When I run `wp --require={PACKAGE_PATH}/local/wp-cli/with-tests/command.php hello-world`
+    When I run `composer -q -n --working-dir={PACKAGE_PATH}/local/wp-cli/with-tests/ install`
+    And I run `wp --require={PACKAGE_PATH}/local/wp-cli/with-tests/hello-world-command.php hello-world`
     Then STDOUT should be:
       """
-      Success: Hello world.
+      Success: Hello World!
       """
     When I run `wp package uninstall wp-cli/with-tests`
     Then STDOUT should contain:

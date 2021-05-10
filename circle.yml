@@ -28,14 +28,13 @@ jobs:
     - run: |
         dockerize -wait tcp://127.0.0.1:3306 -timeout 1m
     - run: |
-        composer require wp-cli/wp-cli:dev-master
+        composer validate
         composer install
         composer prepare-tests
     - run: |
         echo 'export PATH=$HOME/wp-cli/package-tests/vendor/bin:$PATH' >> $BASH_ENV
         source $BASH_ENV
     - run: |
-        composer validate
         WP_VERSION=latest composer test
         rm -rf '/tmp/wp-cli-test core-download-cache'
         WP_VERSION=trunk composer test
