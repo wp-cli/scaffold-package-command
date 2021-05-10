@@ -706,7 +706,7 @@ EOT;
 		foreach ( $lines as &$line ) {
 			$line = $whitespace . $line;
 		}
-		return implode( $lines, "\n" );
+		return implode( "\n", $lines );
 	}
 
 	private function prompt_if_files_will_be_overwritten( $filename, $force ) {
