@@ -34,7 +34,7 @@ Feature: Scaffold WP-CLI commands
     And the {PACKAGE_PATH}/local/wp-cli/foo/composer.json file should contain:
       """
           "require": {
-              "wp-cli/wp-cli": "^1.1.0"
+              "wp-cli/wp-cli": "^2.5"
           },
       """
     And the {PACKAGE_PATH}/local/wp-cli/foo/command.php file should exist
@@ -190,8 +190,6 @@ Feature: Scaffold WP-CLI commands
     And the {PACKAGE_PATH}/local/wp-cli/with-tests/command.php file should exist
     And the {PACKAGE_PATH}/local/wp-cli/with-tests/wp-cli.yml file should exist
     And the {PACKAGE_PATH}/local/wp-cli/with-tests/.travis.yml file should exist
-    And the {PACKAGE_PATH}/local/wp-cli/with-tests/features/bootstrap/Process.php file should exist
-    And the {PACKAGE_PATH}/local/wp-cli/with-tests/features/bootstrap/ProcessRun.php file should exist
 
     When I run `wp --require={PACKAGE_PATH}/local/wp-cli/with-tests/command.php hello-world`
     Then STDOUT should be:
