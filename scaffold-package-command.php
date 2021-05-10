@@ -6,9 +6,9 @@ if ( ! class_exists( 'WP_CLI' ) ) {
 	return;
 }
 
-$autoload = dirname( __FILE__ ) . '/vendor/autoload.php';
-if ( file_exists( $autoload ) ) {
-	require_once $autoload;
+$wpcli_scaffold_package_autoload = dirname( __FILE__ ) . '/vendor/autoload.php';
+if ( file_exists( $wpcli_scaffold_package_autoload ) ) {
+	require_once $wpcli_scaffold_package_autoload;
 }
 
 WP_CLI::add_command( 'scaffold package', [ ScaffoldPackageCommand::class, 'package' ] );

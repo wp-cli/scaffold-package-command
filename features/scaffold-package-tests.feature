@@ -56,9 +56,6 @@ Feature: Scaffold the test suite for an existing package
     When I run `wp scaffold package-tests community-command`
     Then STDOUT should not be empty
     And the community-command/.travis.yml file should exist
-      """
-      require-wp
-      """
     And the community-command/features directory should contain:
       """
       load-wp-cli.feature
@@ -124,9 +121,10 @@ Feature: Scaffold the test suite for an existing package
       """
           - MY_APPEND_ENV="my-append-env"
       """
-    And a community-command/travis-matrix-append.yml file:
+    And a community-command/travis-jobs-append.yml file:
       """
-          - php: 99.97
+          - stage: test
+            php: 99.97
             env: WP_VERSION=9997.9997
       """
     And a community-command/travis-before_install-append.yml file:
@@ -137,10 +135,6 @@ Feature: Scaffold the test suite for an existing package
     And a community-command/travis-install-append.yml file:
       """
         - bash bin/my-append-install.sh
-      """
-    And a community-command/travis-before_script-append.yml file:
-      """
-        - bash bin/my-append-before_script.sh
       """
     And a community-command/travis-script-append.yml file:
       """
@@ -176,15 +170,16 @@ Feature: Scaffold the test suite for an existing package
       """
           - MY_APPEND_ENV="my-append-env"
 
-      matrix:
+      before_install:
       """
     And the community-command/.travis.yml file should contain:
       """
-          - php: 7.2
+            php: 7.4
       """
     And the community-command/.travis.yml file should contain:
       """
-          - php: 99.97
+          - stage: test
+            php: 99.97
             env: WP_VERSION=9997.9997
 
       before_install:
@@ -202,13 +197,13 @@ Feature: Scaffold the test suite for an existing package
       """
     And the community-command/.travis.yml file should contain:
       """
-        - bash bin/install-package-tests.sh
+        - composer prepare-tests
       """
     And the community-command/.travis.yml file should contain:
       """
         - bash bin/my-append-install.sh
 
-      before_script:
+      script:
       """
     And the community-command/.travis.yml file should contain:
       """
@@ -216,13 +211,7 @@ Feature: Scaffold the test suite for an existing package
       """
     And the community-command/.travis.yml file should contain:
       """
-        - bash bin/my-append-before_script.sh
-
-      script:
-      """
-    And the community-command/.travis.yml file should contain:
-      """
-        - bash bin/test.sh
+        - composer behat || composer behat-rerun
         - bash bin/my-append-script.sh
       """
     And the community-command/.travis.yml file should contain:
