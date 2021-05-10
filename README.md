@@ -16,7 +16,7 @@ This package implements the following commands:
 Generate the files needed for a basic WP-CLI command.
 
 ~~~
-wp scaffold package <name> [--description=<description>] [--homepage=<homepage>] [--dir=<dir>] [--license=<license>] [--require_wp_cli=<version>] [--skip-tests] [--skip-readme] [--skip-github] [--skip-install] [--force]
+wp scaffold package <name> [--description=<description>] [--homepage=<homepage>] [--dir=<dir>] [--license=<license>] [--require_wp_cli=<version>] [--require_wp_cli_tests=<version>] [--skip-tests] [--skip-readme] [--skip-github] [--skip-install] [--force]
 ~~~
 
 Default behavior is to create the following files:
@@ -52,7 +52,13 @@ WP-CLI `packages/local/` directory.
 	[--require_wp_cli=<version>]
 		Required WP-CLI version for the package.
 		---
-		default: ^1.1.0
+		default: ^2.5
+		---
+
+	[--require_wp_cli_tests=<version>]
+		Required WP-CLI testing framework version for the package.
+		---
+		default: ^3.0.11
 		---
 
 	[--skip-tests]
@@ -139,6 +145,15 @@ projects and don't want to install a copy with each one, you can
 machine. Make sure `~/.composer/vendor/bin` has also been added to your
 `$PATH`. Once you've done so, you can run the tests for a project by
 calling `behat`.
+
+For Travis CI, specially-named files in the package directory can be
+used to modify the generated `.travis.yml`, where `<tag>` is one of
+'cache', 'env', 'matrix', 'before_install', 'install', 'before_script', 'script':
+* `travis-<tag>.yml` - contents used for `<tag>:` (if present following ignored)
+* `travis-<tag>-append.yml` - contents appended to generated `<tag>:`
+
+You can also append to the generated `.travis.yml` with the file:
+* `travis-append.yml` - contents appended to generated `.travis.yml`
 
 **ENVIRONMENT**
 
@@ -270,7 +285,7 @@ files include:
 
 ## Installing
 
-Installing this package requires WP-CLI v1.3.0 or greater. Update to the latest stable release with `wp cli update`.
+Installing this package requires WP-CLI v2.5 or greater. Update to the latest stable release with `wp cli update`.
 
 Once you've done so, you can install this package with:
 
