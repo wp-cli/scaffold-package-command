@@ -1,5 +1,13 @@
 Installing this package {{wp_cli_requires_instructions}}. Update to {{wp_cli_update_to_instructions}}.
 
-Once you've done so, you can install this package with:
+Once you've done so, you can install the latest stable version of this package with:
 
-    wp package install git@github.com:{{package_name}}.git
+```bash
+wp package install {{package_name}}:@stable
+```
+
+To install the latest development version of this package, use the following command instead:
+
+```bash
+wp package install {{package_name}}:dev-master
+```
