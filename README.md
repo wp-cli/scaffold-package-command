@@ -3,7 +3,7 @@ wp-cli/scaffold-package-command
 
 Scaffolds WP-CLI commands with functional tests, full README.md, and more.
 
-[![Build Status](https://travis-ci.org/wp-cli/scaffold-package-command.svg?branch=master)](https://travis-ci.org/wp-cli/scaffold-package-command) [![CircleCI](https://circleci.com/gh/wp-cli/scaffold-package-command/tree/master.svg?style=svg)](https://circleci.com/gh/wp-cli/scaffold-package-command/tree/master)
+[![Testing](https://github.com/wp-cli/scaffold-package-command/actions/workflows/testing.yml/badge.svg)](https://github.com/wp-cli/scaffold-package-command/actions/workflows/testing.yml) [![Build Status](https://travis-ci.org/wp-cli/scaffold-package-command.svg?branch=master)](https://travis-ci.org/wp-cli/scaffold-package-command) [![CircleCI](https://circleci.com/gh/wp-cli/scaffold-package-command/tree/master.svg?style=svg)](https://circleci.com/gh/wp-cli/scaffold-package-command/tree/master)
 
 Quick links: [Using](#using) | [Installing](#installing) | [Contributing](#contributing) | [Support](#support)
 
@@ -287,9 +287,17 @@ files include:
 
 Installing this package requires WP-CLI v2.5 or greater. Update to the latest stable release with `wp cli update`.
 
-Once you've done so, you can install this package with:
+Once you've done so, you can install the latest stable version of this package with:
 
-    wp package install git@github.com:wp-cli/scaffold-package-command.git
+```bash
+wp package install wp-cli/scaffold-package-command:@stable
+```
+
+To install the latest development version of this package, use the following command instead:
+
+```bash
+wp package install wp-cli/scaffold-package-command:dev-master
+```
 
 ## Contributing
 
@@ -315,7 +323,7 @@ Once you've decided to commit the time to seeing your pull request through, [ple
 
 ## Support
 
-Github issues aren't for general support questions, but there are other venues you can try: https://wp-cli.org/#support
+GitHub issues aren't for general support questions, but there are other venues you can try: https://wp-cli.org/#support
 
 
 *This README.md is generated dynamically from the project's codebase using `wp scaffold package-readme` ([doc](https://github.com/wp-cli/scaffold-package-command#wp-scaffold-package-readme)). To suggest changes, please submit a pull request against the corresponding part of the codebase.*
