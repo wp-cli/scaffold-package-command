@@ -10,7 +10,7 @@ jobs:
         WP_CLI_TEST_DBROOTPASS: root
         WP_CLI_TEST_DBUSER: wp_cli_test
         WP_CLI_TEST_DBPASS: password1
-    - image: circleci/mariadb:10.5
+    - image: circleci/mariadb:10.6
       environment:
         MYSQL_ROOT_PASSWORD: root
         MYSQL_DATABASE: wp_cli_test
