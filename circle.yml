@@ -22,7 +22,7 @@ jobs:
         sudo sh -c "printf '\ndeb http://ftp.us.debian.org/debian sid main\n' >> /etc/apt/sources.list"
         sudo apt-get update
         sudo docker-php-ext-install mysqli
-        sudo apt-get install mariadb-client-10.5
+        sudo apt-get install mariadb-client-10.6
     - run: |
         echo -e "memory_limit = 1024M" | sudo tee /usr/local/etc/php/php.ini > /dev/null
     - run: |
