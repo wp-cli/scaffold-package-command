@@ -4,7 +4,7 @@ jobs:
     working_directory: ~/wp-cli/package-tests
     parallelism: 1
     docker:
-    - image: circleci/php:7.1
+    - image: circleci/php:7.4
       environment:
         WP_CLI_TEST_DBHOST: 127.0.0.1:3306
         WP_CLI_TEST_DBROOTPASS: root
