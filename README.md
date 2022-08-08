@@ -3,7 +3,7 @@ wp-cli/scaffold-package-command
 
 Scaffolds WP-CLI commands with functional tests, full README.md, and more.
 
-[![Testing](https://github.com/wp-cli/scaffold-package-command/actions/workflows/testing.yml/badge.svg)](https://github.com/wp-cli/scaffold-package-command/actions/workflows/testing.yml) [![Build Status](https://travis-ci.org/wp-cli/scaffold-package-command.svg?branch=master)](https://travis-ci.org/wp-cli/scaffold-package-command) [![CircleCI](https://circleci.com/gh/wp-cli/scaffold-package-command/tree/master.svg?style=svg)](https://circleci.com/gh/wp-cli/scaffold-package-command/tree/master)
+[![Testing](https://github.com/wp-cli/scaffold-package-command/actions/workflows/testing.yml/badge.svg)](https://github.com/wp-cli/scaffold-package-command/actions/workflows/testing.yml) [![Build Status](https://travis-ci.org/wp-cli/scaffold-package-command.svg?branch=master)](https://travis-ci.org/wp-cli/scaffold-package-command) [![CircleCI](https://circleci.com/gh/wp-cli/scaffold-package-command/tree/main.svg?style=svg)](https://circleci.com/gh/wp-cli/scaffold-package-command/tree/main)
 
 Quick links: [Using](#using) | [Installing](#installing) | [Contributing](#contributing) | [Support](#support)
 
