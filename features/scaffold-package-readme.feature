@@ -63,7 +63,7 @@ Feature: Scaffold a README.md file for an existing package
     Then save STDOUT as {PACKAGE_PATH}
 
     When I run `wp scaffold package wp-cli/custom-branch`
-    And I run `wp scaffold package-readme --branch=custom --force`
+    And I run `wp scaffold package-readme custom-branch --branch=custom --force`
     Then STDOUT should contain:
       """
       Success: Created package readme.
