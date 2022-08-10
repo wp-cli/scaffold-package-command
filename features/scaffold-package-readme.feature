@@ -62,22 +62,22 @@ Feature: Scaffold a README.md file for an existing package
     When I run `wp package path`
     Then save STDOUT as {PACKAGE_PATH}
 
-    When I run `wp scaffold package custom-branch`
+    When I run `wp scaffold package wp-cli/custom-branch`
     Then STDOUT should contain:
       """
       Success: Created package readme.
       """
     And I run `wp scaffold package-readme custom-branch --branch=custom --force`
-    And the {PACKAGE_PATH}/local/custom-branch/README.md file should exist
-    And the {PACKAGE_PATH}/local/custom-branch/README.md file should contain:
+    And the {PACKAGE_PATH}/local/wp-cli/custom-branch/README.md file should exist
+    And the {PACKAGE_PATH}/local/wp-cli/custom-branch/README.md file should contain:
       """
       Installing this package requires WP-CLI v2.5 or greater. Update to the latest stable release with `wp cli update`.
       """
-    And the {PACKAGE_PATH}/local/custom-branch/README.md file should contain:
+    And the {PACKAGE_PATH}/local/wp-cli/custom-branch/README.md file should contain:
       """
       [![Build Status](https://travis-ci.org/wp-cli/custom-branch.svg?branch=custom)
       """
-    And the {PACKAGE_PATH}/local/custom-branch/README.md file should contain:
+    And the {PACKAGE_PATH}/local/wp-cli/custom-branch/README.md file should contain:
       """
       *This README.md is generated dynamically from the project's codebase
       """
