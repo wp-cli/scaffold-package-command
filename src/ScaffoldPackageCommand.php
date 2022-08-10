@@ -216,6 +216,9 @@ EOT;
 	 * [--force]
 	 * : Overwrite the readme if it already exists.
 	 *
+	 * [--branch=<branch>]
+	 * : Name of default branch of the underlaying repository. Defaults to main.
+	 *
 	 * @when before_wp_load
 	 * @subcommand package-readme
 	 */
@@ -230,7 +233,8 @@ EOT;
 			WP_CLI::error( 'Invalid composer.json in package directory.' );
 		}
 
-		$force = Utils\get_flag_value( $assoc_args, 'force' );
+		$force  = Utils\get_flag_value( $assoc_args, 'force' );
+		$branch = Utils\get_flag_value( $assoc_args, 'branch', 'main' );
 
 		$package_root  = dirname( dirname( __FILE__ ) );
 		$template_path = $package_root . '/templates/';
@@ -256,10 +260,10 @@ EOT;
 				$shields[] = "[![Testing](https://github.com/{$readme_args['package_name']}/actions/workflows/testing.yml/badge.svg)](https://github.com/{$readme_args['package_name']}/actions/workflows/testing.yml)";
 			}
 			if ( file_exists( $package_dir . '/.travis.yml' ) ) {
-				$shields[] = "[![Build Status](https://travis-ci.org/{$readme_args['package_name']}.svg?branch=master)](https://travis-ci.org/{$readme_args['package_name']})";
+				$shields[] = "[![Build Status](https://travis-ci.org/{$readme_args['package_name']}.svg?branch={$branch})](https://travis-ci.org/{$readme_args['package_name']})";
 			}
 			if ( file_exists( $package_dir . '/circle.yml' ) ) {
-				$shields[] = "[![CircleCI](https://circleci.com/gh/{$readme_args['package_name']}/tree/master.svg?style=svg)](https://circleci.com/gh/{$readme_args['package_name']}/tree/master)";
+				$shields[] = "[![CircleCI](https://circleci.com/gh/{$readme_args['package_name']}/tree/{$branch}.svg?style=svg)](https://circleci.com/gh/{$readme_args['package_name']}/tree/{$branch})";
 			}
 
 			if ( count( $shields ) ) {

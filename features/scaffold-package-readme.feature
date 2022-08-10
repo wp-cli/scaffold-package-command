@@ -44,7 +44,7 @@ Feature: Scaffold a README.md file for an existing package
       """
     And the {PACKAGE_PATH}/local/wp-cli/default-readme/README.md file should contain:
       """
-      [![Build Status](https://travis-ci.org/wp-cli/default-readme.svg?branch=master)
+      [![Build Status](https://travis-ci.org/wp-cli/default-readme.svg?branch=main)
       """
     And the {PACKAGE_PATH}/local/wp-cli/default-readme/README.md file should contain:
       """
@@ -54,6 +54,32 @@ Feature: Scaffold a README.md file for an existing package
     Then STDOUT should contain:
       """
       Success: Uninstalled package.
+      """
+
+  Scenario: Scaffold a README.md based with custom repository branch
+    Given an empty directory
+
+    When I run `wp package path`
+    Then save STDOUT as {PACKAGE_PATH}
+
+    When I run `wp scaffold package wp-cli/custom-branch`
+    And I run `wp scaffold package-readme --branch=custom --force`
+    Then STDOUT should contain:
+      """
+      Success: Created package readme.
+      """
+    And the {PACKAGE_PATH}/local/wp-cli/custom-branch/README.md file should exist
+    And the {PACKAGE_PATH}/local/wp-cli/custom-branch/README.md file should contain:
+      """
+      Installing this package requires WP-CLI v2.5 or greater. Update to the latest stable release with `wp cli update`.
+      """
+    And the {PACKAGE_PATH}/local/wp-cli/custom-branch/README.md file should contain:
+      """
+      [![Build Status](https://travis-ci.org/wp-cli/custom-branch.svg?branch=custom)
+      """
+    And the {PACKAGE_PATH}/local/wp-cli/custom-branch/README.md file should contain:
+      """
+      *This README.md is generated dynamically from the project's codebase
       """
 
   Scenario: Scaffold a README.md requiring a nightly build
