@@ -67,6 +67,7 @@ Feature: Scaffold a README.md file for an existing package
       """
       Success: Created package readme.
       """
+    # `wp scaffold package-readme --force` returns a warning
     And I try `wp scaffold package-readme {PACKAGE_PATH}/local/wp-cli/custom-branch --branch=custom --force`
     And the {PACKAGE_PATH}/local/wp-cli/custom-branch/README.md file should exist
     And the {PACKAGE_PATH}/local/wp-cli/custom-branch/README.md file should contain:
