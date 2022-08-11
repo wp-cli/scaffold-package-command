@@ -217,7 +217,7 @@ EOT;
 	 * : Overwrite the readme if it already exists.
 	 *
 	 * [--branch=<branch>]
-	 * : Name of default branch of the underlaying repository. Defaults to main.
+	 * : Name of default branch of the underlaying repository. Defaults to master.
 	 *
 	 * @when before_wp_load
 	 * @subcommand package-readme
@@ -234,7 +234,7 @@ EOT;
 		}
 
 		$force  = Utils\get_flag_value( $assoc_args, 'force' );
-		$branch = Utils\get_flag_value( $assoc_args, 'branch', 'main' );
+		$branch = Utils\get_flag_value( $assoc_args, 'branch', 'master' );
 
 		$package_root  = dirname( dirname( __FILE__ ) );
 		$template_path = $package_root . '/templates/';

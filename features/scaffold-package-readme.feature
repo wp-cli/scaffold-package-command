@@ -44,7 +44,7 @@ Feature: Scaffold a README.md file for an existing package
       """
     And the {PACKAGE_PATH}/local/wp-cli/default-readme/README.md file should contain:
       """
-      [![Build Status](https://travis-ci.org/wp-cli/default-readme.svg?branch=main)
+      [![Build Status](https://travis-ci.org/wp-cli/default-readme.svg?branch=master)
       """
     And the {PACKAGE_PATH}/local/wp-cli/default-readme/README.md file should contain:
       """
