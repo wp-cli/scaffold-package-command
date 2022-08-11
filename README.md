@@ -3,7 +3,7 @@ wp-cli/scaffold-package-command
 
 Scaffolds WP-CLI commands with functional tests, full README.md, and more.
 
-[![Testing](https://github.com/wp-cli/scaffold-package-command/actions/workflows/testing.yml/badge.svg)](https://github.com/wp-cli/scaffold-package-command/actions/workflows/testing.yml) [![Build Status](https://travis-ci.org/wp-cli/scaffold-package-command.svg?branch=master)](https://travis-ci.org/wp-cli/scaffold-package-command) [![CircleCI](https://circleci.com/gh/wp-cli/scaffold-package-command/tree/main.svg?style=svg)](https://circleci.com/gh/wp-cli/scaffold-package-command/tree/main)
+[![Testing](https://github.com/wp-cli/scaffold-package-command/actions/workflows/testing.yml/badge.svg)](https://github.com/wp-cli/scaffold-package-command/actions/workflows/testing.yml) [![Build Status](https://travis-ci.org/wp-cli/scaffold-package-command.svg?branch=master)](https://travis-ci.org/wp-cli/scaffold-package-command) [![CircleCI](https://circleci.com/gh/wp-cli/scaffold-package-command/tree/master.svg?style=svg)](https://circleci.com/gh/wp-cli/scaffold-package-command/tree/master)
 
 Quick links: [Using](#using) | [Installing](#installing) | [Contributing](#contributing) | [Support](#support)
 
@@ -190,7 +190,7 @@ WP-CLI Behat framework uses Behat ~2.5, which is installed with Composer.
 Generate a README.md for your command.
 
 ~~~
-wp scaffold package-readme <dir> [--force]
+wp scaffold package-readme <dir> [--force] [--branch=<branch>]
 ~~~
 
 Creates a README.md with Using, Installing, and Contributing instructions
@@ -257,6 +257,9 @@ In this example:
 
 	[--force]
 		Overwrite the readme if it already exists.
+
+	[--branch=<branch>]
+		Name of default branch of the underlaying repository. Defaults to master.
 
 
 
