@@ -262,7 +262,7 @@ EOT;
 			if ( file_exists( $package_dir . '/.travis.yml' ) ) {
 				$shields[] = "[![Build Status](https://travis-ci.org/{$readme_args['package_name']}.svg?branch={$branch})](https://travis-ci.org/{$readme_args['package_name']})";
 			}
-			if ( file_exists( $package_dir . '/circle.yml' ) ) {
+			if ( file_exists( $package_dir . '/.circleci/config.yml' ) ) {
 				$shields[] = "[![CircleCI](https://circleci.com/gh/{$readme_args['package_name']}/tree/{$branch}.svg?style=svg)](https://circleci.com/gh/{$readme_args['package_name']}/tree/{$branch})";
 			}
 
@@ -678,7 +678,7 @@ EOT;
 				$travis_append = file_get_contents( $package_dir . 'travis-append.yml' );
 			}
 		} elseif ( 'circle' === $assoc_args['ci'] ) {
-			$copy_source[ $package_root ]['circle.yml'] = $package_dir;
+			$copy_source[ $package_root ]['.circleci/config.yml'] = $package_dir . '.circleci/';
 		}
 
 		$files_written = [];
@@ -711,6 +711,10 @@ EOT;
 					continue;
 				}
 				$files_written[] = $file_path;
+
+				if ( ! is_dir( dirname( $file_path ) ) ) {
+					Process::create( Utils\esc_cmd( 'mkdir %s', dirname( $file_path ) ) )->run();
+				}
 
 				Process::create( Utils\esc_cmd( 'touch %s', $file_path ) )->run();
 				file_put_contents( $file_path, $contents );
