@@ -678,7 +678,7 @@ EOT;
 				$travis_append = file_get_contents( $package_dir . 'travis-append.yml' );
 			}
 		} elseif ( 'circle' === $assoc_args['ci'] ) {
-			$copy_source[ $package_root ]['.circleci/config.yml'] = $package_dir . 'circleci/';
+			$copy_source[ $package_root ]['.circleci/config.yml'] = $package_dir . '.circleci/';
 		}
 
 		$files_written = [];
