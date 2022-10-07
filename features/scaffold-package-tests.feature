@@ -80,17 +80,17 @@ Feature: Scaffold the test suite for an existing package
       """
       - composer behat
       """
-    And the community-command/circle.yml file should not exist
+    And the community-command/.circleci/config.yml file should not exist
 
-  Scenario: Scaffolds .travis.yml configuration file with argument
+  Scenario: Scaffolds CircleCI configuration file with argument
     When I run `wp scaffold package-tests community-command --ci=circle`
     Then STDOUT should not be empty
-    And the community-command/circle.yml file should exist
-    And the community-command/circle.yml file should contain:
+    And the community-command/.circleci/config.yml file should exist
+    And the community-command/.circleci/config.yml file should contain:
       """
       composer prepare-tests
       """
-    And the community-command/circle.yml file should contain:
+    And the community-command/.circleci/config.yml file should contain:
       """
       composer test
       """
