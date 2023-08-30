@@ -6,7 +6,7 @@ if ( ! class_exists( 'WP_CLI' ) ) {
 	return;
 }
 
-$wpcli_scaffold_package_autoload = dirname( __FILE__ ) . '/vendor/autoload.php';
+$wpcli_scaffold_package_autoload = __DIR__ . '/vendor/autoload.php';
 if ( file_exists( $wpcli_scaffold_package_autoload ) ) {
 	require_once $wpcli_scaffold_package_autoload;
 }
