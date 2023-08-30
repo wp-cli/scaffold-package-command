@@ -103,7 +103,7 @@ class ScaffoldPackageCommand {
 
 		$force = Utils\get_flag_value( $assoc_args, 'force' );
 
-		$package_root  = dirname( dirname( __FILE__ ) );
+		$package_root  = dirname( __DIR__ );
 		$template_path = $package_root . '/templates/';
 		$wp_cli_yml    = <<<EOT
 require:
@@ -236,7 +236,7 @@ EOT;
 		$force  = Utils\get_flag_value( $assoc_args, 'force' );
 		$branch = Utils\get_flag_value( $assoc_args, 'branch', 'master' );
 
-		$package_root  = dirname( dirname( __FILE__ ) );
+		$package_root  = dirname( __DIR__ );
 		$template_path = $package_root . '/templates/';
 
 		$bits        = explode( '/', $composer_obj['name'] );
@@ -354,10 +354,10 @@ EOT;
 		$bundled = ! empty( $composer_obj['extra']['bundled'] );
 		foreach ( [ 'using', 'installing', 'contributing', 'support' ] as $key ) {
 			if ( isset( $readme_sections[ $key ] ) ) {
-				$file = dirname( dirname( __FILE__ ) ) . '/templates/readme-' . $key . '.mustache';
+				$file = dirname( __DIR__ ) . '/templates/readme-' . $key . '.mustache';
 				if ( $bundled
-					&& file_exists( dirname( dirname( __FILE__ ) ) . '/templates/readme-' . $key . '-bundled.mustache' ) ) {
-					$file = dirname( dirname( __FILE__ ) ) . '/templates/readme-' . $key . '-bundled.mustache';
+					&& file_exists( dirname( __DIR__ ) . '/templates/readme-' . $key . '-bundled.mustache' ) ) {
+					$file = dirname( __DIR__ ) . '/templates/readme-' . $key . '-bundled.mustache';
 				}
 				$readme_sections[ $key ]['body'] = $file;
 			}
@@ -459,7 +459,7 @@ EOT;
 		self::check_if_valid_package_dir( $package_dir );
 
 		$force         = Utils\get_flag_value( $assoc_args, 'force' );
-		$template_path = dirname( dirname( __FILE__ ) ) . '/templates';
+		$template_path = dirname( __DIR__ ) . '/templates';
 
 		$composer_obj  = json_decode( file_get_contents( $package_dir . '/composer.json' ), true );
 		$settings_vars = [
@@ -650,7 +650,7 @@ EOT;
 			Process::create( Utils\esc_cmd( 'mkdir %s', $features_dir ) )->run();
 		}
 
-		$package_root = dirname( dirname( __FILE__ ) );
+		$package_root = dirname( __DIR__ );
 
 		// Only create a sample feature file when none exist
 		if ( ! glob( $features_dir . '/*.feature' ) ) {
@@ -798,5 +798,4 @@ EOT;
 			WP_CLI::error( 'Invalid package directory. composer.json file must be present.' );
 		}
 	}
-
 }
