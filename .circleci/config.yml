@@ -4,13 +4,13 @@ jobs:
     working_directory: ~/wp-cli/package-tests
     parallelism: 1
     docker:
-    - image: circleci/php:7.4
+    - image: circleci/php:7.4-bullseye
       environment:
         WP_CLI_TEST_DBHOST: 127.0.0.1:3306
         WP_CLI_TEST_DBROOTPASS: root
         WP_CLI_TEST_DBUSER: wp_cli_test
         WP_CLI_TEST_DBPASS: password1
-    - image: circleci/mariadb:10.6
+    - image: circleci/mariadb:10.5
       environment:
         MYSQL_ROOT_PASSWORD: root
         MYSQL_DATABASE: wp_cli_test
@@ -19,10 +19,10 @@ jobs:
     steps:
     - checkout
     - run: |
-        sudo sh -c "printf '\ndeb http://ftp.us.debian.org/debian sid main\n' >> /etc/apt/sources.list"
+        sudo sh -c "printf '\ndeb http://ftp.us.debian.org/debian bullseye main\n' >> /etc/apt/sources.list"
         sudo apt-get update
         sudo docker-php-ext-install mysqli
-        sudo apt-get install mariadb-client-10.6
+        sudo apt-get install mariadb-client
     - run: |
         echo -e "memory_limit = 1024M" | sudo tee /usr/local/etc/php/php.ini > /dev/null
     - run: |
