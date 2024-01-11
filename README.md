@@ -259,7 +259,7 @@ In this example:
 		Overwrite the readme if it already exists.
 
 	[--branch=<branch>]
-		Name of default branch of the underlaying repository. Defaults to master.
+		Name of default branch of the underlying repository. Defaults to master.
 
 
 
