@@ -248,6 +248,7 @@ EOT;
 			'required_wp_cli_version'       => ! empty( $composer_obj['require']['wp-cli/wp-cli'] ) ? str_replace( [ '~', '^', '>=' ], 'v', $composer_obj['require']['wp-cli/wp-cli'] ) : 'v1.3.0',
 			'shields'                       => '',
 			'has_commands'                  => false,
+			'has_featured_commands'         => false,
 			'wp_cli_update_to_instructions' => 'the latest stable release with `wp cli update`',
 			'show_powered_by'               => isset( $composer_obj['extra']['readme']['show_powered_by'] ) ? (bool) $composer_obj['extra']['readme']['show_powered_by'] : true,
 		];
@@ -331,6 +332,18 @@ EOT;
 			}
 			$readme_args['has_commands']          = true;
 			$readme_args['has_multiple_commands'] = count( $readme_args['commands'] ) > 1;
+		}
+
+		$readme_args['featured_commands'] = [];
+
+		if ( ! empty( $composer_obj['extra']['featured-commands'] ) ) {
+			foreach ( $composer_obj['extra']['featured-commands'] as $command ) {
+				$readme_args['featured_commands'][] = [
+					'title' => "wp {$command}",
+					'url'   => '#' . str_replace( ' ', '-', "wp {$command}" ),
+				];
+			}
+			$readme_args['has_featured_commands'] = true;
 		}
 
 		if ( isset( $composer_obj['extra']['readme']['sections'] ) ) {
