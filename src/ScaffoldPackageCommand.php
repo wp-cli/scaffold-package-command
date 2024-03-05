@@ -626,9 +626,11 @@ EOT;
 	 * [--force]
 	 * : Overwrite files that already exist.
 	 *
-	 * ## EXAMPLE
+	 * ## EXAMPLES
 	 *
-	 *     wp scaffold package-tests /path/to/command/dir/
+	 *     # Generate files for writing Behat tests.
+	 *     $ wp scaffold package-tests /path/to/command/dir/
+	 *     Success: Created package test files.
 	 *
 	 * @when       before_wp_load
 	 * @subcommand package-tests

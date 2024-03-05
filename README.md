@@ -179,9 +179,11 @@ WP-CLI Behat framework uses Behat ~2.5, which is installed with Composer.
 	[--force]
 		Overwrite files that already exist.
 
-**EXAMPLE**
+**EXAMPLES**
 
-    wp scaffold package-tests /path/to/command/dir/
+    # Generate files for writing Behat tests.
+    $ wp scaffold package-tests /path/to/command/dir/
+    Success: Created package test files.
 
 
 
