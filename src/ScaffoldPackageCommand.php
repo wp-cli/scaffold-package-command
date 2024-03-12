@@ -208,6 +208,20 @@ EOT;
 	 * * "support" -> "body" uses a remote Markdown file as the section contents. This can also be a local file path, or a string.
 	 * * "show_powered_by" shows or hides the Powered By mention at the end of the readme.
 	 *
+	 * For sections, "pre", "body" and "post" are supported. Example:
+	 * ```
+	 * "support": {
+	 *   "pre": "highlight.md",
+	 *   "body": "https://raw.githubusercontent.com/runcommand/runcommand-theme/master/bin/readme-partials/support-open-source.md",
+	 *   "post": "This is additional text to show after main body content."
+	 * },
+	 * ```
+	 * In this example:
+	 *
+	 * * "pre" content is pulled from local highlight.md file.
+	 * * "body" content is pulled from remote URL.
+	 * * "post" is a string.
+	 *
 	 * ## OPTIONS
 	 *
 	 * <dir>
