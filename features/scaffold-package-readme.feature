@@ -199,6 +199,39 @@ Feature: Scaffold a README.md file for an existing package
       Support isn't free!
       """
 
+  Scenario: Scaffold a readme with a pre, post and body for the section
+    Given an empty directory
+    And a foo/composer.json file:
+      """
+      {
+          "name": "runcommand/profile",
+          "description": "Quickly identify what's slow with WordPress.",
+          "homepage": "https://runcommand.io/wp/profile/",
+          "extra": {
+              "readme": {
+                  "contributing": {
+                    "pre": "[Visit Site](https://example.com)",
+                    "body": "https://gist.githubusercontent.com/danielbachhuber/bb652b1b744cea541705ee9c13605dad/raw/195c17ebb8cf25e947a9df6e02de1e96a084c287/support.md",
+                    "post": "I am after body."
+                  }
+              }
+          }
+      }
+      """
+
+    When I run `wp scaffold package-readme foo`
+    Then the foo/README.md file should exist
+    And the foo/README.md file should contain:
+      """
+      ## Contributing
+
+      [Visit Site](https://example.com)
+
+      Support isn't free!
+
+      I am after body.
+      """
+
   Scenario: Scaffold a readme with custom sections
     Given an empty directory
     And a foo/composer.json file:
