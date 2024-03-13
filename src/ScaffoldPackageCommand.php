@@ -399,7 +399,7 @@ EOT;
 				$v = '';
 				if ( isset( $composer_obj['extra']['readme'][ $section ][ $k ] ) ) {
 					$v = $composer_obj['extra']['readme'][ $section ][ $k ];
-					if ( false !== strpos( $v, '://' ) ) {
+					if ( filter_var( $v, FILTER_VALIDATE_URL ) === $v ) {
 						$response = Utils\http_request( 'GET', $v );
 						$v        = $response->body;
 					} elseif ( preg_match( $ext_regex, $v ) ) {
