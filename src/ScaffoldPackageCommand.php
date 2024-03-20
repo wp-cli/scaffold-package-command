@@ -635,6 +635,7 @@ EOT;
 	 * options:
 	 *   - travis
 	 *   - circle
+	 *   - github
 	 * ---
 	 *
 	 * [--force]
@@ -695,6 +696,9 @@ EOT;
 			}
 		} elseif ( 'circle' === $assoc_args['ci'] ) {
 			$copy_source[ $package_root ]['.circleci/config.yml'] = $package_dir . '.circleci/';
+		} elseif ( 'github' === $assoc_args['ci'] ) {
+			$copy_source[ $package_root ]['dot-github/workflows/testing.yml'] = $package_dir . '.github/workflows/';
+			$copy_source[ $package_root ]['behat.yml']                        = $package_dir;
 		}
 
 		$files_written = [];
@@ -729,7 +733,7 @@ EOT;
 				$files_written[] = $file_path;
 
 				if ( ! is_dir( dirname( $file_path ) ) ) {
-					Process::create( Utils\esc_cmd( 'mkdir %s', dirname( $file_path ) ) )->run();
+					Process::create( Utils\esc_cmd( 'mkdir -p %s', dirname( $file_path ) ) )->run();
 				}
 
 				Process::create( Utils\esc_cmd( 'touch %s', $file_path ) )->run();
