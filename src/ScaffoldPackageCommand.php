@@ -697,8 +697,8 @@ EOT;
 		} elseif ( 'circle' === $assoc_args['ci'] ) {
 			$copy_source[ $package_root ]['.circleci/config.yml'] = $package_dir . '.circleci/';
 		} elseif ( 'github' === $assoc_args['ci'] ) {
-			$copy_source[ $package_root ]['dot-github/workflows/testing.yml'] = $package_dir . '.github/workflows/';
-			$copy_source[ $package_root ]['behat.yml']                        = $package_dir;
+			$copy_source[ $package_root ]['templates/testing.yml'] = $package_dir . '.github/workflows/';
+			$copy_source[ $package_root ]['behat.yml']             = $package_dir;
 		}
 
 		$files_written = [];

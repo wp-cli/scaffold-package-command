@@ -16,7 +16,7 @@ jobs:
   behat:
     strategy:
       matrix:
-        php-version: ['8.0', '7.4']
+        php-version: ['8.2', '8.0', '7.4']
     runs-on: ubuntu-latest
     services:
       mysql:
@@ -44,7 +44,7 @@ jobs:
         run: composer install
 
       - name: Run Behat
-        run: composer run behat
+        run: composer behat
         env:
           WP_CLI_TEST_DBUSER: wp_cli_test
           WP_CLI_TEST_DBPASS: password1
