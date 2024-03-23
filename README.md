@@ -174,6 +174,7 @@ WP-CLI Behat framework uses Behat ~2.5, which is installed with Composer.
 		options:
 		  - travis
 		  - circle
+		  - github
 		---
 
 	[--force]

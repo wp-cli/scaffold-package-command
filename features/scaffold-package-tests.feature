@@ -96,6 +96,20 @@ Feature: Scaffold the test suite for an existing package
       """
     And the community-command/.travis.yml file should not exist
 
+  Scenario: Scaffolds Github Actions configuration file with argument
+    When I run `wp scaffold package-tests community-command --ci=github`
+    Then STDOUT should not be empty
+    And the community-command/.github/workflows/testing.yml file should exist
+    And the community-command/.github/workflows/testing.yml file should contain:
+      """
+      composer behat
+      """
+    And the community-command/.github/workflows/testing.yml file should contain:
+      """
+      actions/checkout
+      """
+    And the community-command/.travis.yml file should not exist
+
   Scenario: Don't scaffold features/load-wp-cli.feature when a feature file already exists
     When I run `wp scaffold package-tests community-command`
     And I run `mv community-command/features/load-wp-cli.feature community-command/features/command.feature`
