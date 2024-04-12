@@ -674,6 +674,8 @@ EOT;
 			$copy_source[ $package_root ]['templates/load-wp-cli.feature'] = $features_dir;
 		}
 
+		$copy_source[ $package_root ]['behat.yml'] = $package_dir;
+
 		$travis_tags           = [ 'cache', 'env', 'matrix', 'before_install', 'install', 'before_script', 'script' ];
 		$travis_tag_overwrites = [];
 		$travis_tag_appends    = [];
@@ -698,7 +700,6 @@ EOT;
 			$copy_source[ $package_root ]['.circleci/config.yml'] = $package_dir . '.circleci/';
 		} elseif ( 'github' === $assoc_args['ci'] ) {
 			$copy_source[ $package_root ]['templates/testing.yml'] = $package_dir . '.github/workflows/';
-			$copy_source[ $package_root ]['behat.yml']             = $package_dir;
 		}
 
 		$files_written = [];
