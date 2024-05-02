@@ -50,6 +50,10 @@ Feature: Scaffold a README.md file for an existing package
       """
       *This README.md is generated dynamically from the project's codebase
       """
+    And the {PACKAGE_PATH}/local/wp-cli/default-readme/README.md file should contain:
+      """
+      wp package install wp-cli/default-readme:dev-master
+      """
     When I run `wp package uninstall wp-cli/default-readme`
     Then STDOUT should contain:
       """
