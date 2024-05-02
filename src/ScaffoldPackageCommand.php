@@ -259,6 +259,7 @@ EOT;
 			'package_short_name'            => $bits[1],
 			'package_name_border'           => str_pad( '', strlen( $composer_obj['name'] ), '=' ),
 			'package_description'           => isset( $composer_obj['description'] ) ? $composer_obj['description'] : '',
+			'branch'                        => $branch,
 			'required_wp_cli_version'       => ! empty( $composer_obj['require']['wp-cli/wp-cli'] ) ? str_replace( [ '~', '^', '>=' ], 'v', $composer_obj['require']['wp-cli/wp-cli'] ) : 'v1.3.0',
 			'shields'                       => '',
 			'has_commands'                  => false,
