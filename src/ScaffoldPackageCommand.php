@@ -43,13 +43,13 @@ class ScaffoldPackageCommand {
 	 * [--require_wp_cli=<version>]
 	 * : Required WP-CLI version for the package.
 	 * ---
-	 * default: ^2.5
+	 * default: ^2.10.0
 	 * ---
 	 *
 	 * [--require_wp_cli_tests=<version>]
 	 * : Required WP-CLI testing framework version for the package.
 	 * ---
-	 * default: ^3.0.11
+	 * default: ^4.3.1
 	 * ---
 
 	 * [--skip-tests]
