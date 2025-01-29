@@ -685,7 +685,7 @@ EOT;
 		$travis_tag_appends    = [];
 		$travis_append         = '';
 		if ( 'travis' === $assoc_args['ci'] ) {
-			$copy_source[ $package_root ]['.travis.yml'] = $package_dir;
+			$copy_source[ $package_root ]['templates/.travis.yml'] = $package_dir;
 
 			// Allow a package to overwrite or append to Travis tags.
 			foreach ( $travis_tags as $travis_tag ) {
