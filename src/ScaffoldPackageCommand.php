@@ -280,6 +280,9 @@ EOT;
 			if ( file_exists( $package_dir . '/.circleci/config.yml' ) ) {
 				$shields[] = "[![CircleCI](https://circleci.com/gh/{$readme_args['package_name']}/tree/{$branch}.svg?style=svg)](https://circleci.com/gh/{$readme_args['package_name']}/tree/{$branch})";
 			}
+			if ( file_exists( $package_dir . '/codecov.yml' ) ) {
+				$shields[] = "[![Code Coverage](https://codecov.io/gh/{$readme_args['package_name']}/branch/{$branch}/graph/badge.svg)](https://codecov.io/gh/{$readme_args['package_name']}/tree/{$branch})";
+			}
 
 			if ( count( $shields ) ) {
 				$readme_args['shields'] = implode( ' ', $shields );
