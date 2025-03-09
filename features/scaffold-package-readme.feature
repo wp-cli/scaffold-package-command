@@ -40,7 +40,7 @@ Feature: Scaffold a README.md file for an existing package
     And the {PACKAGE_PATH}/local/wp-cli/default-readme/README.md file should exist
     And the {PACKAGE_PATH}/local/wp-cli/default-readme/README.md file should contain:
       """
-      Installing this package requires WP-CLI v2.5 or greater. Update to the latest stable release with `wp cli update`.
+      Installing this package requires WP-CLI v2.11 or greater. Update to the latest stable release with `wp cli update`.
       """
     And the {PACKAGE_PATH}/local/wp-cli/default-readme/README.md file should contain:
       """
@@ -76,7 +76,7 @@ Feature: Scaffold a README.md file for an existing package
     And the {PACKAGE_PATH}/local/wp-cli/custom-branch/README.md file should exist
     And the {PACKAGE_PATH}/local/wp-cli/custom-branch/README.md file should contain:
       """
-      Installing this package requires WP-CLI v2.5 or greater. Update to the latest stable release with `wp cli update`.
+      Installing this package requires WP-CLI v2.11 or greater. Update to the latest stable release with `wp cli update`.
       """
     And the {PACKAGE_PATH}/local/wp-cli/custom-branch/README.md file should contain:
       """
@@ -152,10 +152,10 @@ Feature: Scaffold a README.md file for an existing package
               "files": [ "command.php" ]
           },
           "require": {
-              "wp-cli/wp-cli": "^2.5"
+              "wp-cli/wp-cli": "^2.11"
           },
           "require-dev": {
-              "wp-cli/wp-cli-tests": "^3.0.11"
+              "wp-cli/wp-cli-tests": "^4.3.9"
           },
           "extra": {
               "readme": {
@@ -333,7 +333,7 @@ Feature: Scaffold a README.md file for an existing package
           },
           "require-dev": {
               "wp-cli/wp-cli": "*",
-              "wp-cli/wp-cli-tests": "^3.0.11"
+              "wp-cli/wp-cli-tests": "^4.3.9"
           },
           "extra": {
               "bundled": true

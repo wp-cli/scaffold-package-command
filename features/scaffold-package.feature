@@ -34,7 +34,7 @@ Feature: Scaffold WP-CLI commands
     And the {PACKAGE_PATH}/local/wp-cli/foo/composer.json file should contain:
       """
           "require": {
-              "wp-cli/wp-cli": "^2.5"
+              "wp-cli/wp-cli": "^2.11"
           },
       """
     And the {PACKAGE_PATH}/local/wp-cli/foo/hello-world-command.php file should exist
@@ -159,7 +159,7 @@ Feature: Scaffold WP-CLI commands
       s
       """
 
-    When I run `wp scaffold package wp-cli/same-package --skip-tests --skip-github`
+    When I try `wp scaffold package wp-cli/same-package --skip-tests --skip-github`
     Then STDOUT should contain:
       """
       Success: Created package files
@@ -176,7 +176,7 @@ Feature: Scaffold WP-CLI commands
       """
     And the return code should be 0
 
-    When I run `wp package uninstall wp-cli/same-package`
+    When I try `wp package uninstall wp-cli/same-package`
     Then STDOUT should contain:
       """
       Success: Uninstalled package.
