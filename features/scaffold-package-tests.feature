@@ -2,7 +2,7 @@ Feature: Scaffold the test suite for an existing package
 
   Background:
     Given a WP install
-    Given a community-command/command.php file:
+    And a community-command/command.php file:
       """
       <?php
       """
