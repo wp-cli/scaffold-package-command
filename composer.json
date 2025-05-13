@@ -25,7 +25,7 @@
         ]
     },
     "require": {
-        "php": "^5.6 || ^7 || ^8",
+        "php": ">=7.2.24",
         "wp-cli/package-command": "^2",
         "wp-cli/scaffold-command": "^2",
         "wp-cli/wp-cli": "^2.12"
