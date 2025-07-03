@@ -5,6 +5,9 @@ namespace WP_CLI;
 use WP_CLI;
 use WP_CLI\Utils;
 
+/**
+ * @phpstan-type ComposerConfig array{name: string, description: string, extra: array{readme: array{shields: array<string>}, commands: array<string>}, require: array<string, string>, 'require-dev': array<string, string>}
+ */
 class ScaffoldPackageCommand {
 
 	/**
@@ -43,13 +46,13 @@ class ScaffoldPackageCommand {
 	 * [--require_wp_cli=<version>]
 	 * : Required WP-CLI version for the package.
 	 * ---
-	 * default: ^2.11
+	 * default: ^2.12
 	 * ---
 	 *
 	 * [--require_wp_cli_tests=<version>]
 	 * : Required WP-CLI testing framework version for the package.
 	 * ---
-	 * default: ^4.3.9
+	 * default: ^5.0.0
 	 * ---
 
 	 * [--skip-tests]
@@ -242,7 +245,10 @@ EOT;
 
 		self::check_if_valid_package_dir( $package_dir );
 
-		$composer_obj = json_decode( file_get_contents( $package_dir . '/composer.json' ), true );
+		/**
+		 * @var null|ComposerConfig $composer_obj
+		 */
+		$composer_obj = json_decode( (string) file_get_contents( $package_dir . '/composer.json' ), true );
 		if ( ! $composer_obj ) {
 			WP_CLI::error( 'Invalid composer.json in package directory.' );
 		}
@@ -334,8 +340,8 @@ EOT;
 				 */
 
 				$longdesc = isset( $parent_command['longdesc'] ) ? $parent_command['longdesc'] : '';
-				$longdesc = preg_replace( '/## GLOBAL PARAMETERS(.+)/s', '', $longdesc );
-				$longdesc = preg_replace( '/##\s(.+)/', '**$1**', $longdesc );
+				$longdesc = (string) preg_replace( '/## GLOBAL PARAMETERS(.+)/s', '', $longdesc );
+				$longdesc = (string) preg_replace( '/##\s(.+)/', '**$1**', $longdesc );
 
 				// definition lists
 				$longdesc = preg_replace_callback( '/([^\n]+)\n: (.+?)(\n\n|$)/s', [ __CLASS__, 'rewrap_param_desc' ], $longdesc );
@@ -405,7 +411,9 @@ EOT;
 					$v = $composer_obj['extra']['readme'][ $section ][ $k ];
 					if ( filter_var( $v, FILTER_VALIDATE_URL ) === $v ) {
 						$response = Utils\http_request( 'GET', $v );
-						$v        = $response->body;
+
+						// @phpstan-ignore class.notFound
+						$v = $response->body;
 					} elseif ( preg_match( $ext_regex, $v ) ) {
 						$v = $package_dir . '/' . $v;
 					}
@@ -479,7 +487,10 @@ EOT;
 		$force         = Utils\get_flag_value( $assoc_args, 'force' );
 		$template_path = dirname( __DIR__ ) . '/templates';
 
-		$composer_obj  = json_decode( file_get_contents( $package_dir . '/composer.json' ), true );
+		/**
+		 * @var ComposerConfig $composer_obj
+		 */
+		$composer_obj  = json_decode( (string) file_get_contents( $package_dir . '/composer.json' ), true );
 		$settings_vars = [
 			'has_description' => false,
 			'description'     => '',
@@ -709,26 +720,9 @@ EOT;
 		$files_written = [];
 		foreach ( $copy_source as $source => $to_copy ) {
 			foreach ( $to_copy as $file => $dir ) {
-				if ( 'php/WP_CLI/ProcessRun.php' === $file && ! file_exists( $source . "/{$file}" ) ) {
-					continue;
-				}
 				// file_get_contents() works with Phar-archived files
-				$contents  = file_get_contents( $source . "/{$file}" );
+				$contents  = (string) file_get_contents( $source . "/{$file}" );
 				$file_path = $dir . basename( $file );
-
-				if ( '.travis.yml' === $file ) {
-					foreach ( $travis_tags as $travis_tag ) {
-						if ( isset( $travis_tag_overwrites[ $travis_tag ] ) ) {
-							// Note the contents fully overwrite, so should include the tag, eg `env:` etc (or nothing if want to remove totally).
-							$contents = preg_replace( '/^' . $travis_tag . ':.*?(?:^$|\z)/ms', $travis_tag_overwrites[ $travis_tag ], $contents );
-						} elseif ( isset( $travis_tag_appends[ $travis_tag ] ) ) {
-							$contents = preg_replace( '/^' . $travis_tag . ':.*?(?:^$|\z)/ms', '\0' . $travis_tag_appends[ $travis_tag ], $contents );
-						}
-					}
-					if ( $travis_append ) {
-						$contents .= $travis_append;
-					}
-				}
 
 				$force             = Utils\get_flag_value( $assoc_args, 'force' );
 				$should_write_file = $this->prompt_if_files_will_be_overwritten( $file_path, $force );
