@@ -34,7 +34,7 @@ Feature: Scaffold WP-CLI commands
     And the {PACKAGE_PATH}/local/wp-cli/foo/composer.json file should contain:
       """
           "require": {
-              "wp-cli/wp-cli": "^2.11"
+              "wp-cli/wp-cli": "^2.12"
           },
       """
     And the {PACKAGE_PATH}/local/wp-cli/foo/hello-world-command.php file should exist
