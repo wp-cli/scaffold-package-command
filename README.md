@@ -52,13 +52,13 @@ WP-CLI `packages/local/` directory.
 	[--require_wp_cli=<version>]
 		Required WP-CLI version for the package.
 		---
-		default: ^2.11
+		default: ^2.12
 		---
 
 	[--require_wp_cli_tests=<version>]
 		Required WP-CLI testing framework version for the package.
 		---
-		default: ^4.3.9
+		default: ^5.0.0
 		---
 
 	[--skip-tests]
@@ -305,7 +305,7 @@ files include:
 
 ## Installing
 
-Installing this package requires WP-CLI v2.12 or greater. Update to the latest stable release with `wp cli update`.
+Installing this package requires WP-CLI v2.13 or greater. Update to the latest stable release with `wp cli update`.
 
 Once you've done so, you can install the latest stable version of this package with:
 
