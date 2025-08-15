@@ -108,7 +108,7 @@ class ScaffoldPackageCommand {
 
 		$package_root  = dirname( __DIR__ );
 		$template_path = $package_root . '/templates/';
-		$wp_cli_yml    = <<<EOT
+		$wp_cli_yml    = <<<'EOT'
 require:
   - hello-world-command.php
 EOT;
