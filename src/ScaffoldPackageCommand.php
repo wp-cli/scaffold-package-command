@@ -16,7 +16,7 @@ class ScaffoldPackageCommand {
 	 * Default behavior is to create the following files:
 	 * - command.php
 	 * - composer.json (with package name, description, and license)
-	 * - .gitignore, .editorconfig, and .distignore
+	 * - .gitignore, .editorconfig, .distignore, and phpcs.xml.dist
 	 * - README.md (via wp scaffold package-readme)
 	 * - Test harness (via wp scaffold package-tests)
 	 *
@@ -118,6 +118,7 @@ EOT;
 				"{$package_dir}/.gitignore"                => file_get_contents( "{$package_root}/.gitignore" ),
 				"{$package_dir}/.editorconfig"             => file_get_contents( "{$package_root}/.editorconfig" ),
 				"{$package_dir}/.distignore"               => file_get_contents( "{$package_root}/.distignore" ),
+				"{$package_dir}/phpcs.xml.dist"            => file_get_contents( "{$package_root}/phpcs.xml.dist" ),
 				"{$package_dir}/CONTRIBUTING.md"           => file_get_contents( "{$package_root}/CONTRIBUTING.md" ),
 				"{$package_dir}/wp-cli.yml"                => $wp_cli_yml,
 				"{$package_dir}/hello-world-command.php"   => Utils\mustache_render( "{$template_path}/hello-world-command.mustache", $assoc_args ),
