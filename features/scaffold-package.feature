@@ -23,6 +23,10 @@ Feature: Scaffold WP-CLI commands
       """
       WP_CLI_CS
       """
+    And the {PACKAGE_PATH}/local/wp-cli/foo/phpcs.xml.dist file should contain:
+      """
+      wpcli_foo
+      """
     And the {PACKAGE_PATH}/local/wp-cli/foo/composer.json file should exist
     And the {PACKAGE_PATH}/local/wp-cli/foo/composer.json file should contain:
       """
