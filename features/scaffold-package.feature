@@ -167,6 +167,7 @@ Feature: Scaffold WP-CLI commands
       s
       s
       s
+      s
       """
 
     When I try `wp scaffold package wp-cli/same-package --skip-tests --skip-github`
