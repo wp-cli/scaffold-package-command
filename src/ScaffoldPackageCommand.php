@@ -346,12 +346,19 @@ EOT;
 				// definition lists
 				$longdesc = preg_replace_callback( '/([^\n]+)\n: (.+?)(\n\n|$)/s', [ __CLASS__, 'rewrap_param_desc' ], $longdesc );
 
-				$readme_args['commands'][] = [
+				$command_data = [
 					'name'      => "wp {$command}",
 					'shortdesc' => isset( $parent_command['description'] ) ? $parent_command['description'] : '',
 					'synopsis'  => "wp {$command}" . ( empty( $parent_command['subcommands'] ) ? ( isset( $parent_command['synopsis'] ) ? " {$parent_command['synopsis']}" : '' ) : '' ),
 					'longdesc'  => $longdesc,
 				];
+
+				// Add alias if present.
+				if ( ! empty( $parent_command['alias'] ) ) {
+					$command_data['alias'] = $parent_command['alias'];
+				}
+
+				$readme_args['commands'][] = $command_data;
 			}
 			$readme_args['has_commands']          = true;
 			$readme_args['has_multiple_commands'] = count( $readme_args['commands'] ) > 1;
