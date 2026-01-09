@@ -3,7 +3,7 @@ wp-cli/scaffold-package-command
 
 Scaffolds WP-CLI commands with functional tests, full README.md, and more.
 
-[![Testing](https://github.com/wp-cli/scaffold-package-command/actions/workflows/testing.yml/badge.svg)](https://github.com/wp-cli/scaffold-package-command/actions/workflows/testing.yml) [![CircleCI](https://circleci.com/gh/wp-cli/scaffold-package-command/tree/main.svg?style=svg)](https://circleci.com/gh/wp-cli/scaffold-package-command/tree/main)
+[![Testing](https://github.com/wp-cli/scaffold-package-command/actions/workflows/testing.yml/badge.svg)](https://github.com/wp-cli/scaffold-package-command/actions/workflows/testing.yml) [![CircleCI](https://circleci.com/gh/wp-cli/scaffold-package-command/tree/master.svg?style=svg)](https://circleci.com/gh/wp-cli/scaffold-package-command/tree/master)
 
 Quick links: [Using](#using) | [Installing](#installing) | [Contributing](#contributing) | [Support](#support)
 
@@ -22,7 +22,7 @@ wp scaffold package <name> [--description=<description>] [--homepage=<homepage>]
 Default behavior is to create the following files:
 - command.php
 - composer.json (with package name, description, and license)
-- .gitignore, .editorconfig, and .distignore
+- .gitignore, .editorconfig, .distignore, and phpcs.xml.dist
 - README.md (via wp scaffold package-readme)
 - Test harness (via wp scaffold package-tests)
 
@@ -316,7 +316,7 @@ wp package install wp-cli/scaffold-package-command:@stable
 To install the latest development version of this package, use the following command instead:
 
 ```bash
-wp package install wp-cli/scaffold-package-command:dev-main
+wp package install wp-cli/scaffold-package-command:dev-master
 ```
 
 ## Contributing
