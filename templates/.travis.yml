@@ -14,7 +14,7 @@ notifications:
 
 branches:
   only:
-    - master
+    - main
 
 cache:
   directories:
