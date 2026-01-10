@@ -339,6 +339,22 @@ EOT;
 				}
 				 */
 
+				// Skip commands that were not found or are namespaces with no meaningful content.
+				if ( false === $parent_command ) {
+					continue;
+				}
+
+				// Skip command namespaces (commands with subcommands but no meaningful content).
+				// This needs to be done before processing longdesc to accurately detect empty content.
+				$has_subcommands = ! empty( $parent_command['subcommands'] );
+				$shortdesc       = isset( $parent_command['description'] ) ? $parent_command['description'] : '';
+				$raw_longdesc    = isset( $parent_command['longdesc'] ) ? $parent_command['longdesc'] : '';
+				$is_namespace    = $has_subcommands && empty( trim( $shortdesc ) ) && empty( trim( $raw_longdesc ) );
+
+				if ( $is_namespace ) {
+					continue;
+				}
+
 				$longdesc = isset( $parent_command['longdesc'] ) ? $parent_command['longdesc'] : '';
 				$longdesc = (string) preg_replace( '/## GLOBAL PARAMETERS(.+)/s', '', $longdesc );
 				$longdesc = (string) preg_replace( '/##\s(.+)/', '**$1**', $longdesc );
@@ -346,9 +362,10 @@ EOT;
 				// definition lists
 				$longdesc = preg_replace_callback( '/([^\n]+)\n: (.+?)(\n\n|$)/s', [ __CLASS__, 'rewrap_param_desc' ], $longdesc );
 
+				$shortdesc    = isset( $parent_command['description'] ) ? $parent_command['description'] : '';
 				$command_data = [
 					'name'      => "wp {$command}",
-					'shortdesc' => isset( $parent_command['description'] ) ? $parent_command['description'] : '',
+					'shortdesc' => $shortdesc,
 					'synopsis'  => "wp {$command}" . ( empty( $parent_command['subcommands'] ) ? ( isset( $parent_command['synopsis'] ) ? " {$parent_command['synopsis']}" : '' ) : '' ),
 					'longdesc'  => $longdesc,
 				];
