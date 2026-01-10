@@ -386,3 +386,46 @@ Feature: Scaffold a README.md file for an existing package
       """
       **Alias:** `cpt`
       """
+
+  Scenario: README excludes command namespaces
+    Given an empty directory
+    And a foo/composer.json file:
+      """
+      {
+          "name": "wp-cli/namespace-test",
+          "description": "Test package for excluding command namespaces",
+          "license": "MIT",
+          "authors": [],
+          "minimum-stability": "dev",
+          "autoload": {
+              "files": [ "command.php" ]
+          },
+          "require": {
+              "wp-cli/wp-cli": "^2.12"
+          },
+          "require-dev": {
+              "wp-cli/wp-cli-tests": "^5.0.0"
+          },
+          "extra": {
+              "commands": [
+                "i18n",
+                "i18n make-pot"
+              ]
+          }
+      }
+      """
+
+    When I run `wp scaffold package-readme foo`
+    Then the foo/README.md file should exist
+    And the foo/README.md file should not contain:
+      """
+      ### wp i18n
+      """
+    And the foo/README.md file should not contain:
+      """
+      ### wp i18n make-pot
+      """
+    And the foo/README.md file should contain:
+      """
+      ## Using
+      """
