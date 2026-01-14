@@ -139,9 +139,7 @@ EOT;
 		}
 
 		if ( ! Utils\get_flag_value( $assoc_args, 'skip-readme' ) ) {
-			// Load the command before generating the README so it can be documented
-			$command_file = "{$package_dir}/hello-world-command.php";
-			WP_CLI::runcommand( "scaffold package-readme {$package_dir} {$force_flag} --require={$command_file}", array( 'launch' => false ) );
+			WP_CLI::runcommand( "scaffold package-readme {$package_dir} {$force_flag}", array( 'launch' => true ) );
 		}
 
 		if ( ! Utils\get_flag_value( $assoc_args, 'skip-github' ) ) {
