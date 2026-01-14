@@ -294,7 +294,6 @@ Feature: Scaffold a README.md file for an existing package
       *This README.md is generated dynamically from the project's codebase
       """
 
-  @broken
   Scenario: Error when commands are specified but not present
     Given an empty directory
     And a foo/composer.json file:

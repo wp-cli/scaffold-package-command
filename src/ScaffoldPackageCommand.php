@@ -332,12 +332,9 @@ EOT;
 					}
 				} while ( $parent_command && $bits );
 
-				/* This check doesn't work because of the way the commands are fetched.
-				 * Needs bigger refactor to put this check back in.
 				if ( empty( $parent_command ) ) {
 					WP_CLI::error( 'Missing one or more commands defined in composer.json -> extra -> commands.' );
 				}
-				 */
 
 				$longdesc = isset( $parent_command['longdesc'] ) ? $parent_command['longdesc'] : '';
 				$longdesc = (string) preg_replace( '/## GLOBAL PARAMETERS(.+)/s', '', $longdesc );
