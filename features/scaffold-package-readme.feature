@@ -313,7 +313,7 @@ Feature: Scaffold a README.md file for an existing package
     When I try `wp scaffold package-readme foo`
     Then STDERR should be:
       """
-      Error: Missing one or more commands defined in composer.json -> extra -> commands.
+      Error: Command 'profile' is not registered. Make sure it is loaded before running package-readme.
       """
     And the return code should be 1
 

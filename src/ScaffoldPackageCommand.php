@@ -333,7 +333,7 @@ EOT;
 				} while ( $parent_command && $bits );
 
 				if ( empty( $parent_command ) ) {
-					WP_CLI::error( 'Missing one or more commands defined in composer.json -> extra -> commands.' );
+					WP_CLI::error( "Command '{$command}' is not registered. Make sure it is loaded before running package-readme." );
 				}
 
 				$longdesc = isset( $parent_command['longdesc'] ) ? $parent_command['longdesc'] : '';
