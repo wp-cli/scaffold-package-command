@@ -182,11 +182,11 @@ EOT;
 	 *
 	 * * install the package locally (e.g., from the filesystem via `wp package install /path/to/package`)
 	 * * add a `wp-cli.yml` file in your project directory requiring your package. Here's an example:
-	 * 
+	 *
 	 * ```
 	 * require:
 	 * - your-package.php
-     * ```
+	 * ```
 	 *
 	 * If your project uses [Composer](https://getcomposer.org)'s autoloader
 	 * and your package is not installed locally, you'll need to generate the
