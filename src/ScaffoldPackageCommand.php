@@ -176,6 +176,23 @@ EOT;
 	 * }
 	 * ```
 	 *
+	 * **Important:** for the `package-readme` subcommand to work properly, your
+	 * package must be loaded by WP CLI. You may load your package in one of two
+	 * ways:
+	 *
+	 * * install the package locally (e.g., from the filesystem via `wp package install /path/to/package`)
+	 * * add a `wp-cli.yml` file in your project directory requiring your package. Here's an example:
+	 * 
+	 * ```
+	 * require:
+	 * - your-package.php
+     * ```
+	 *
+	 * If your project uses [Composer](https://getcomposer.org)'s autoloader
+	 * and your package is not installed locally, you'll need to generate the
+	 * necessary autoload files by running `composer dump-autoload` in the
+	 * project directory.
+	 *
 	 * You can also customize the rendering of README.md generally with
 	 * composer.json -> 'extra' -> 'readme'. For example, runcommand/hook's
 	 * composer.json includes:
