@@ -32,7 +32,7 @@ Feature: Scaffold a README.md file for an existing package
     When I run `wp package path`
     Then save STDOUT as {PACKAGE_PATH}
 
-    When I run `wp scaffold package wp-cli/default-readme`
+    When I try `wp scaffold package wp-cli/default-readme`
     Then STDOUT should contain:
       """
       Success: Created package readme.
@@ -66,7 +66,7 @@ Feature: Scaffold a README.md file for an existing package
     When I run `wp package path`
     Then save STDOUT as {PACKAGE_PATH}
 
-    When I run `wp scaffold package wp-cli/custom-branch`
+    When I try `wp scaffold package wp-cli/custom-branch`
     Then STDOUT should contain:
       """
       Success: Created package readme.
@@ -90,7 +90,7 @@ Feature: Scaffold a README.md file for an existing package
   Scenario: Scaffold a README.md requiring a nightly build
     Given an empty directory
 
-    When I run `wp scaffold package wp-cli/foo --dir=foo --require_wp_cli='>=0.24.0-alpha'`
+    When I try `wp scaffold package wp-cli/foo --dir=foo --require_wp_cli='>=0.24.0-alpha'`
     Then STDOUT should contain:
       """
       Success: Created package readme.
@@ -115,7 +115,7 @@ Feature: Scaffold a README.md file for an existing package
   Scenario: Scaffold a README.md requiring the latest stable release
     Given an empty directory
 
-    When I run `wp scaffold package wp-cli/foo --dir=foo --require_wp_cli='*'`
+    When I try `wp scaffold package wp-cli/foo --dir=foo --require_wp_cli='*'`
     Then STDOUT should contain:
       """
       Success: Created package readme.
@@ -313,9 +313,19 @@ Feature: Scaffold a README.md file for an existing package
     When I try `wp scaffold package-readme foo`
     Then STDERR should be:
       """
-      Error: Command 'profile' is not registered. Make sure it is loaded before running package-readme.
+      Error: Missing one or more commands defined in composer.json -> extra -> commands.
       """
     And the return code should be 1
+
+  Scenario: Does not error when commands are specified and present
+    Given an empty directory
+    When I try `wp scaffold package wp-cli/foo --dir=foo`
+    And I try `composer install -d foo`
+    And I try `wp scaffold package-readme foo`
+    Then STDERR should not contain:
+      """
+      Error: Missing one or more commands defined in composer.json -> extra -> commands.
+      """
 
   Scenario: README for a bundled command
     Given an empty directory
