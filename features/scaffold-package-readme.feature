@@ -352,3 +352,37 @@ Feature: Scaffold a README.md file for an existing package
       """
       This package is included with WP-CLI itself
       """
+
+  Scenario: README includes command aliases
+    Given an empty directory
+    And a foo/composer.json file:
+      """
+      {
+          "name": "wp-cli/alias-test",
+          "description": "Test package for command aliases",
+          "license": "MIT",
+          "authors": [],
+          "minimum-stability": "dev",
+          "autoload": {
+              "files": [ "command.php" ]
+          },
+          "require": {
+              "wp-cli/wp-cli": "^2.12"
+          },
+          "require-dev": {
+              "wp-cli/wp-cli-tests": "^5.0.0"
+          },
+          "extra": {
+              "commands": [
+                "scaffold post-type"
+              ]
+          }
+      }
+      """
+
+    When I run `wp scaffold package-readme foo`
+    Then the foo/README.md file should exist
+    And the foo/README.md file should contain:
+      """
+      **Alias:** `cpt`
+      """
