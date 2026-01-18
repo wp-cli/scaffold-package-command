@@ -186,7 +186,7 @@ EOT;
 	 *
 	 * ```
 	 * require:
-	 *  - your-package.php
+	 *   - your-package.php
 	 * ```
 	 *
 	 * If your project uses [Composer](https://getcomposer.org)'s autoloader
