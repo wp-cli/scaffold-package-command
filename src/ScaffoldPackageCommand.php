@@ -177,15 +177,16 @@ EOT;
 	 * ```
 	 *
 	 * **Important:** for the `package-readme` subcommand to work properly, your
-	 * package must be loaded by WP CLI. You may load your package in one of two
-	 * ways:
+	 * package must be loaded by WP-CLI. You may load your package in one of
+	 * three ways:
 	 *
 	 * * install the package locally (e.g., from the filesystem via `wp package install /path/to/package`)
+	 * * require the package via the `--require` parameter (e.g., `wp scaffold package-readme --require=/path/to/package/your-package.php ...`)
 	 * * add a `wp-cli.yml` file in your project directory requiring your package. Here's an example:
 	 *
 	 * ```
 	 * require:
-	 * - your-package.php
+	 *  - your-package.php
 	 * ```
 	 *
 	 * If your project uses [Composer](https://getcomposer.org)'s autoloader
