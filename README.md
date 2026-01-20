@@ -230,7 +230,7 @@ composer.json includes:
         ],
         "readme": {
             "shields": [
-                "[![Build Status](https://travis-ci.org/runcommand/reset-password.svg?branch=master)](https://travis-ci.org/runcommand/reset-password)"
+                "[![Build Status](https://travis-ci.org/runcommand/reset-password.svg?branch=main)](https://travis-ci.org/runcommand/reset-password)"
             ],
             "sections": [
                 "Using",
@@ -238,7 +238,7 @@ composer.json includes:
                 "Support"
             ],
             "support": {
-                "body": "https://raw.githubusercontent.com/runcommand/runcommand-theme/master/bin/readme-partials/support-open-source.md"
+                "body": "https://raw.githubusercontent.com/runcommand/runcommand-theme/main/bin/readme-partials/support-open-source.md"
             },
             "show_powered_by": false
         }
@@ -257,7 +257,7 @@ For sections, "pre", "body" and "post" are supported. Example:
 ```
 "support": {
   "pre": "highlight.md",
-  "body": "https://raw.githubusercontent.com/runcommand/runcommand-theme/master/bin/readme-partials/support-open-source.md",
+  "body": "https://raw.githubusercontent.com/runcommand/runcommand-theme/main/bin/readme-partials/support-open-source.md",
   "post": "This is additional text to show after main body content."
 },
 ```
@@ -276,7 +276,7 @@ In this example:
 		Overwrite the readme if it already exists.
 
 	[--branch=<branch>]
-		Name of default branch of the underlying repository. Defaults to master.
+		Name of default branch of the underlying repository. Defaults to main.
 
 
 

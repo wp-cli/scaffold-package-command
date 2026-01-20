@@ -192,7 +192,7 @@ EOT;
 	 *         ],
 	 *         "readme": {
 	 *             "shields": [
-	 *                 "[![Build Status](https://travis-ci.org/runcommand/reset-password.svg?branch=master)](https://travis-ci.org/runcommand/reset-password)"
+	 *                 "[![Build Status](https://travis-ci.org/runcommand/reset-password.svg?branch=main)](https://travis-ci.org/runcommand/reset-password)"
 	 *             ],
 	 *             "sections": [
 	 *                 "Using",
@@ -200,7 +200,7 @@ EOT;
 	 *                 "Support"
 	 *             ],
 	 *             "support": {
-	 *                 "body": "https://raw.githubusercontent.com/runcommand/runcommand-theme/master/bin/readme-partials/support-open-source.md"
+	 *                 "body": "https://raw.githubusercontent.com/runcommand/runcommand-theme/main/bin/readme-partials/support-open-source.md"
 	 *             },
 	 *             "show_powered_by": false
 	 *         }
@@ -219,7 +219,7 @@ EOT;
 	 * ```
 	 * "support": {
 	 *   "pre": "highlight.md",
-	 *   "body": "https://raw.githubusercontent.com/runcommand/runcommand-theme/master/bin/readme-partials/support-open-source.md",
+	 *   "body": "https://raw.githubusercontent.com/runcommand/runcommand-theme/main/bin/readme-partials/support-open-source.md",
 	 *   "post": "This is additional text to show after main body content."
 	 * },
 	 * ```
@@ -238,7 +238,7 @@ EOT;
 	 * : Overwrite the readme if it already exists.
 	 *
 	 * [--branch=<branch>]
-	 * : Name of default branch of the underlying repository. Defaults to master.
+	 * : Name of default branch of the underlying repository. Defaults to main.
 	 *
 	 * @when before_wp_load
 	 * @subcommand package-readme
@@ -258,7 +258,7 @@ EOT;
 		}
 
 		$force  = Utils\get_flag_value( $assoc_args, 'force' );
-		$branch = Utils\get_flag_value( $assoc_args, 'branch', 'master' );
+		$branch = Utils\get_flag_value( $assoc_args, 'branch', 'main' );
 
 		$package_root  = dirname( __DIR__ );
 		$template_path = $package_root . '/templates/';
