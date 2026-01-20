@@ -18,6 +18,15 @@ Feature: Scaffold WP-CLI commands
       """
       .gitignore
       """
+    And the {PACKAGE_PATH}/local/wp-cli/foo/phpcs.xml.dist file should exist
+    And the {PACKAGE_PATH}/local/wp-cli/foo/phpcs.xml.dist file should contain:
+      """
+      WP_CLI_CS
+      """
+    And the {PACKAGE_PATH}/local/wp-cli/foo/phpcs.xml.dist file should contain:
+      """
+      wpcli_foo
+      """
     And the {PACKAGE_PATH}/local/wp-cli/foo/composer.json file should exist
     And the {PACKAGE_PATH}/local/wp-cli/foo/composer.json file should contain:
       """
@@ -127,6 +136,7 @@ Feature: Scaffold WP-CLI commands
       """
     And the custom-directory/.gitignore file should exist
     And the custom-directory/.editorconfig file should exist
+    And the custom-directory/phpcs.xml.dist file should exist
     And the custom-directory/composer.json file should exist
     And the custom-directory/hello-world-command.php file should exist
     And the custom-directory/wp-cli.yml file should exist
@@ -148,6 +158,7 @@ Feature: Scaffold WP-CLI commands
     Given an empty directory
     And a session file:
       """
+      s
       s
       s
       s
@@ -195,6 +206,7 @@ Feature: Scaffold WP-CLI commands
       """
     And the {PACKAGE_PATH}/local/wp-cli/with-tests/.gitignore file should exist
     And the {PACKAGE_PATH}/local/wp-cli/with-tests/.editorconfig file should exist
+    And the {PACKAGE_PATH}/local/wp-cli/with-tests/phpcs.xml.dist file should exist
     And the {PACKAGE_PATH}/local/wp-cli/with-tests/composer.json file should exist
     And the {PACKAGE_PATH}/local/wp-cli/with-tests/hello-world-command.php file should exist
     And the {PACKAGE_PATH}/local/wp-cli/with-tests/wp-cli.yml file should exist
@@ -260,5 +272,6 @@ Feature: Scaffold WP-CLI commands
       Installing package
       """
     And the {PACKAGE_PATH}/local/wp-cli/foo/.gitignore file should exist
+    And the {PACKAGE_PATH}/local/wp-cli/foo/phpcs.xml.dist file should exist
     And the {PACKAGE_PATH}/local/wp-cli/foo/.github/PULL_REQUEST_TEMPLATE file should not exist
     And the {PACKAGE_PATH}/local/wp-cli/foo/.github/ISSUE_TEMPLATE file should not exist
