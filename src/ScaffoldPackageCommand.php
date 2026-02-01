@@ -152,6 +152,17 @@ EOT;
 
 		if ( ! Utils\get_flag_value( $assoc_args, 'skip-install' ) ) {
 			WP_CLI::runcommand( "package install {$package_dir}", array( 'launch' => false ) );
+			WP_CLI::log( '' );
+			WP_CLI::log( "Next steps:" );
+			WP_CLI::log( "  * Edit {$package_dir}/src/HelloWorldCommand.php to customize your command" );
+			WP_CLI::log( "  * After making changes, regenerate the autoloader with:" );
+			WP_CLI::log( "      composer dump-autoload --working-dir={$package_dir}" );
+		} else {
+			WP_CLI::log( '' );
+			WP_CLI::log( "Next steps:" );
+			WP_CLI::log( "  * Edit {$package_dir}/src/HelloWorldCommand.php to customize your command" );
+			WP_CLI::log( "  * After making changes, regenerate the autoloader with:" );
+			WP_CLI::log( "      composer dump-autoload --working-dir={$package_dir}" );
 		}
 	}
 

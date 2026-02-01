@@ -275,3 +275,37 @@ Feature: Scaffold WP-CLI commands
     And the {PACKAGE_PATH}/local/wp-cli/foo/phpcs.xml.dist file should exist
     And the {PACKAGE_PATH}/local/wp-cli/foo/.github/PULL_REQUEST_TEMPLATE file should not exist
     And the {PACKAGE_PATH}/local/wp-cli/foo/.github/ISSUE_TEMPLATE file should not exist
+
+  Scenario: Scaffolded package includes autoloader documentation
+    Given an empty directory
+
+    When I run `wp package path`
+    Then save STDOUT as {PACKAGE_PATH}
+
+    When I run `wp scaffold package wp-cli/foo --skip-tests --skip-readme --skip-github --skip-install`
+    Then STDOUT should contain:
+      """
+      Success: Created package files
+      """
+    And STDOUT should contain:
+      """
+      Next steps:
+      """
+    And STDOUT should contain:
+      """
+      composer dump-autoload
+      """
+
+    When I run `cat {PACKAGE_PATH}/local/wp-cli/foo/src/HelloWorldCommand.php`
+    Then STDOUT should contain:
+      """
+      IMPORTANT: After modifying this file or adding new command classes, you need to
+      """
+    And STDOUT should contain:
+      """
+      composer dump-autoload --working-dir=$(wp package path)
+      """
+    And STDOUT should contain:
+      """
+      https://getcomposer.org/doc/01-basic-usage.md#autoloading
+      """
