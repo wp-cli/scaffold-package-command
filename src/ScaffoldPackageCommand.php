@@ -16,6 +16,7 @@ class ScaffoldPackageCommand {
 	 * Default behavior is to create the following files:
 	 * - command.php
 	 * - composer.json (with package name, description, and license)
+	 * - LICENSE
 	 * - .gitignore, .editorconfig, .distignore, and phpcs.xml.dist
 	 * - README.md (via wp scaffold package-readme)
 	 * - Test harness (via wp scaffold package-tests)
