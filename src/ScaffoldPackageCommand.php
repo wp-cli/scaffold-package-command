@@ -145,10 +145,10 @@ EOT;
 		if ( ! Utils\get_flag_value( $assoc_args, 'skip-install' ) ) {
 			Process::create( "composer install --working-dir {$package_dir}" )->run();
 			WP_CLI::runcommand( "package install {$package_dir}", array( 'launch' => false ) );
-		}
 
-		if ( ! Utils\get_flag_value( $assoc_args, 'skip-readme' ) ) {
-			WP_CLI::runcommand( "scaffold package-readme {$package_dir} {$force_flag}", array( 'launch' => false ) );
+			if ( ! Utils\get_flag_value( $assoc_args, 'skip-readme' ) ) {
+				WP_CLI::runcommand( "scaffold package-readme {$package_dir} {$force_flag}", array( 'launch' => false ) );
+			}
 		}
 	}
 
