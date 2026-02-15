@@ -81,6 +81,7 @@ class ScaffoldPackageCommand {
 		];
 		$assoc_args         = array_merge( $defaults, $assoc_args );
 		$assoc_args['name'] = $args[0];
+		$assoc_args['year'] = gmdate( 'Y' );
 
 		$bits = explode( '/', $assoc_args['name'] );
 		if ( 2 !== count( $bits ) || empty( $bits[0] ) || empty( $bits[1] ) ) {
@@ -123,6 +124,7 @@ EOT;
 				"{$package_dir}/.distignore"               => file_get_contents( "{$package_root}/.distignore" ),
 				"{$package_dir}/phpcs.xml.dist"            => Utils\mustache_render( "{$template_path}/phpcs.xml.dist.mustache", $assoc_args ),
 				"{$package_dir}/CONTRIBUTING.md"           => file_get_contents( "{$package_root}/CONTRIBUTING.md" ),
+				"{$package_dir}/LICENSE"                   => Utils\mustache_render( "{$template_path}/LICENSE.mustache", $assoc_args ),
 				"{$package_dir}/wp-cli.yml"                => $wp_cli_yml,
 				"{$package_dir}/hello-world-command.php"   => Utils\mustache_render( "{$template_path}/hello-world-command.mustache", $assoc_args ),
 				"{$package_dir}/src/HelloWorldCommand.php" => Utils\mustache_render( "{$template_path}/HelloWorldCommand.mustache", $assoc_args ),
