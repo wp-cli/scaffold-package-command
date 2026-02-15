@@ -142,16 +142,17 @@ EOT;
 			WP_CLI::runcommand( "scaffold package-tests {$package_dir} {$force_flag}", array( 'launch' => false ) );
 		}
 
-		if ( ! Utils\get_flag_value( $assoc_args, 'skip-readme' ) ) {
-			WP_CLI::runcommand( "scaffold package-readme {$package_dir} {$force_flag}", array( 'launch' => false ) );
-		}
-
 		if ( ! Utils\get_flag_value( $assoc_args, 'skip-github' ) ) {
 			WP_CLI::runcommand( "scaffold package-github {$package_dir} {$force_flag}", array( 'launch' => false ) );
 		}
 
 		if ( ! Utils\get_flag_value( $assoc_args, 'skip-install' ) ) {
+			Process::create( "composer install --working-dir {$package_dir}" )->run();
 			WP_CLI::runcommand( "package install {$package_dir}", array( 'launch' => false ) );
+
+			if ( ! Utils\get_flag_value( $assoc_args, 'skip-readme' ) ) {
+				WP_CLI::runcommand( "scaffold package-readme {$package_dir} {$force_flag}", array( 'launch' => false ) );
+			}
 		}
 
 		// Display next steps guidance for users.
@@ -320,9 +321,10 @@ EOT;
 			$cmd_dump                = WP_CLI::runcommand(
 				'cli cmd-dump',
 				[
-					'launch' => false,
-					'return' => true,
-					'parse'  => 'json',
+					'launch'       => false,
+					'return'       => true,
+					'parse'        => 'json',
+					'command_args' => [ "--path=$package_dir" ],
 				]
 			);
 			foreach ( $composer_obj['extra']['commands'] as $command ) {
@@ -343,12 +345,9 @@ EOT;
 					}
 				} while ( $parent_command && $bits );
 
-				/* This check doesn't work because of the way the commands are fetched.
-				 * Needs bigger refactor to put this check back in.
 				if ( empty( $parent_command ) ) {
 					WP_CLI::error( 'Missing one or more commands defined in composer.json -> extra -> commands.' );
 				}
-				 */
 
 				$longdesc = isset( $parent_command['longdesc'] ) ? $parent_command['longdesc'] : '';
 				$longdesc = (string) preg_replace( '/## GLOBAL PARAMETERS(.+)/s', '', $longdesc );
