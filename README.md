@@ -22,6 +22,7 @@ wp scaffold package <name> [--description=<description>] [--homepage=<homepage>]
 Default behavior is to create the following files:
 - command.php
 - composer.json (with package name, description, and license)
+- LICENSE
 - .gitignore, .editorconfig, .distignore, and phpcs.xml.dist
 - README.md (via wp scaffold package-readme)
 - Test harness (via wp scaffold package-tests)
@@ -340,6 +341,10 @@ Once you’ve done a bit of searching and discovered there isn’t an open or fi
 Want to contribute a new feature? Please first [open a new issue](https://github.com/wp-cli/scaffold-package-command/issues/new) to discuss whether the feature is a good fit for the project.
 
 Once you've decided to commit the time to seeing your pull request through, [please follow our guidelines for creating a pull request](https://make.wordpress.org/cli/handbook/pull-requests/) to make sure it's a pleasant experience. See "[Setting up](https://make.wordpress.org/cli/handbook/pull-requests/#setting-up)" for details specific to working on this package locally.
+
+### License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Support
 
