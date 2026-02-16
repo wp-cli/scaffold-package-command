@@ -52,6 +52,15 @@ Feature: Scaffold WP-CLI commands
       """
       Contributing
       """
+    And the {PACKAGE_PATH}/local/wp-cli/foo/LICENSE file should exist
+    And the {PACKAGE_PATH}/local/wp-cli/foo/LICENSE file should contain:
+      """
+      The MIT License (MIT)
+      """
+    And the {PACKAGE_PATH}/local/wp-cli/foo/LICENSE file should contain:
+      """
+      wp-cli/foo Contributors
+      """
     And the {PACKAGE_PATH}/local/wp-cli/foo/wp-cli.yml file should exist
     And the {PACKAGE_PATH}/local/wp-cli/foo/.travis.yml file should not exist
     And the {PACKAGE_PATH}/local/wp-cli/foo/.github/PULL_REQUEST_TEMPLATE file should exist
@@ -138,6 +147,7 @@ Feature: Scaffold WP-CLI commands
     And the custom-directory/.editorconfig file should exist
     And the custom-directory/phpcs.xml.dist file should exist
     And the custom-directory/composer.json file should exist
+    And the custom-directory/LICENSE file should exist
     And the custom-directory/hello-world-command.php file should exist
     And the custom-directory/wp-cli.yml file should exist
     And the custom-directory/.travis.yml file should not exist
@@ -158,6 +168,7 @@ Feature: Scaffold WP-CLI commands
     Given an empty directory
     And a session file:
       """
+      s
       s
       s
       s
