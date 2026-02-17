@@ -344,7 +344,7 @@ Once you've decided to commit the time to seeing your pull request through, [ple
 
 ### License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the  License. See the [LICENSE](LICENSE) file for details.
 
 ## Support
 
