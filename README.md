@@ -194,7 +194,7 @@ WP-CLI Behat framework uses Behat ~2.5, which is installed with Composer.
 Generate a README.md for your command.
 
 ~~~
-wp scaffold package-readme <dir> [--force] [--branch=<branch>]
+wp scaffold package-readme <dir> [--force] [--branch=<branch>] [--license=<license>]
 ~~~
 
 Creates a README.md with Using, Installing, and Contributing instructions
@@ -278,6 +278,12 @@ In this example:
 
 	[--branch=<branch>]
 		Name of default branch of the underlying repository. Defaults to main.
+
+	[--license=<license>]
+		License for the package.
+		---
+		default: MIT
+		---
 
 
 

@@ -250,6 +250,12 @@ EOT;
 	 * [--branch=<branch>]
 	 * : Name of default branch of the underlying repository. Defaults to main.
 	 *
+	 * [--license=<license>]
+	 * : License for the package.
+	 * ---
+	 * default: MIT
+	 * ---
+	 *
 	 * @when before_wp_load
 	 * @subcommand package-readme
 	 */
@@ -285,6 +291,7 @@ EOT;
 			'has_commands'                  => false,
 			'wp_cli_update_to_instructions' => 'the latest stable release with `wp cli update`',
 			'show_powered_by'               => isset( $composer_obj['extra']['readme']['show_powered_by'] ) ? (bool) $composer_obj['extra']['readme']['show_powered_by'] : true,
+			'license'                       => $assoc_args['license'],
 		];
 
 		if ( isset( $composer_obj['extra']['readme']['shields'] ) ) {
