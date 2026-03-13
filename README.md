@@ -53,7 +53,7 @@ WP-CLI `packages/local/` directory.
 	[--require_wp_cli=<version>]
 		Required WP-CLI version for the package.
 		---
-		default: ^2.12
+		default: ^2.13
 		---
 
 	[--require_wp_cli_tests=<version>]
