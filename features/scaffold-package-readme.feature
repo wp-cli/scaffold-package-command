@@ -386,3 +386,46 @@ Feature: Scaffold a README.md file for an existing package
       """
       **Alias:** `cpt`
       """
+
+  Scenario: README correctly indents multi-paragraph parameter descriptions
+    Given an empty directory
+    And a foo/command.php file:
+      """
+      <?php
+      /**
+       * Multi-paragraph test command.
+       */
+      class Multi_Para_Test_Command {
+          /**
+           * Test command with a multi-paragraph parameter description.
+           *
+           * ## OPTIONS
+           *
+           * [<file>]
+           * : Read content from <file>. If this value is present, the
+           *     `--content` argument will be ignored.
+           *
+           *   Passing `-` will cause content to
+           *   be read from STDIN.
+           *
+           * @when before_wp_load
+           */
+          public function __invoke( $args, $assoc_args ) {}
+      }
+      WP_CLI::add_command( 'multi-para-test', 'Multi_Para_Test_Command' );
+      """
+    And a foo/composer.json file:
+      """
+      {
+          "name": "wp-cli/multi-para-test",
+          "description": "Test",
+          "extra": {
+              "commands": ["multi-para-test"]
+          }
+      }
+      """
+
+    When I run `wp --require=foo/command.php scaffold package-readme foo`
+    Then the foo/README.md file should exist
+    And the contents of the foo/README.md file should match /\t\t.*Read content from/
+    And the contents of the foo/README.md file should match /\t\t.*Passing/
