@@ -365,7 +365,7 @@ EOT;
 				$longdesc = (string) preg_replace( '/##\s(.+)/', '**$1**', $longdesc );
 
 				// definition lists
-				$longdesc = preg_replace_callback( '/([^\n]+)\n: (.+?)(\n\n|$)/s', [ __CLASS__, 'rewrap_param_desc' ], $longdesc );
+				$longdesc = preg_replace_callback( '/([^\n]+)\n: (.+?)(\n\n(?=\S)|\n*$)/s', [ __CLASS__, 'rewrap_param_desc' ], $longdesc );
 
 				$command_data = [
 					'name'      => "wp {$command}",
@@ -777,14 +777,16 @@ EOT;
 
 	private static function rewrap_param_desc( $matches ) {
 		$param = $matches[1];
-		$desc  = self::indent( "\t\t", $matches[2] );
+		$desc  = self::indent( "\t\t", rtrim( $matches[2] ) );
 		return "\t$param\n$desc\n\n";
 	}
 
 	private static function indent( $whitespace, $text ) {
 		$lines = explode( "\n", $text );
 		foreach ( $lines as &$line ) {
-			$line = $whitespace . $line;
+			if ( '' !== $line ) {
+				$line = $whitespace . $line;
+			}
 		}
 		return implode( "\n", $lines );
 	}
