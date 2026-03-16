@@ -105,6 +105,11 @@ class ScaffoldPackageCommand {
 			}
 		}
 
+		// Convert to absolute path if relative.
+		if ( ! preg_match( '#^([a-zA-Z]:)?[\\\\/]#', $package_dir ) ) {
+			$package_dir = getcwd() . DIRECTORY_SEPARATOR . $package_dir;
+		}
+
 		if ( empty( $assoc_args['homepage'] ) ) {
 			$assoc_args['homepage'] = 'https://github.com/' . $assoc_args['name'];
 		}
@@ -156,8 +161,6 @@ EOT;
 			if ( ! Utils\get_flag_value( $assoc_args, 'skip-readme' ) ) {
 				WP_CLI::runcommand( "scaffold package-readme {$package_dir} {$force_flag}", array( 'launch' => true ) );
 			}
-		} elseif ( ! Utils\get_flag_value( $assoc_args, 'skip-readme' ) ) {
-			WP_CLI::warning( 'Skipping README generation because package is not installed. Commands must be loaded for complete documentation.' );
 		}
 
 		// Display next steps guidance for users.
@@ -461,7 +464,7 @@ EOT;
 				$readme_args['package_description'] = $value;
 			} else {
 				$readme_args['sections'][] = [
-					'heading' => $section_args['heading'],
+					'heading' => $section_args['heading'] ?? '',
 					'body'    => $value,
 				];
 			}
