@@ -16,7 +16,8 @@ class ScaffoldPackageCommand {
 	 * Default behavior is to create the following files:
 	 * - command.php
 	 * - composer.json (with package name, description, and license)
-	 * - .gitignore, .editorconfig, and .distignore
+	 * - LICENSE
+	 * - .gitignore, .editorconfig, .distignore, and phpcs.xml.dist
 	 * - README.md (via wp scaffold package-readme)
 	 * - Test harness (via wp scaffold package-tests)
 	 *
@@ -46,7 +47,7 @@ class ScaffoldPackageCommand {
 	 * [--require_wp_cli=<version>]
 	 * : Required WP-CLI version for the package.
 	 * ---
-	 * default: ^2.12
+	 * default: ^2.13
 	 * ---
 	 *
 	 * [--require_wp_cli_tests=<version>]
@@ -81,11 +82,15 @@ class ScaffoldPackageCommand {
 		];
 		$assoc_args         = array_merge( $defaults, $assoc_args );
 		$assoc_args['name'] = $args[0];
+		$assoc_args['year'] = gmdate( 'Y' );
 
 		$bits = explode( '/', $assoc_args['name'] );
 		if ( 2 !== count( $bits ) || empty( $bits[0] ) || empty( $bits[1] ) ) {
 			WP_CLI::error( "'{$assoc_args['name']}' is an invalid package name. Package scaffold expects '<author>/<package>'." );
 		}
+
+		// Generate a slug from the package name for use in prefixes.
+		$assoc_args['package_name_slug'] = str_replace( '-', '_', $bits[1] );
 
 		if ( ! empty( $assoc_args['dir'] ) ) {
 			$package_dir = $assoc_args['dir'];
@@ -118,7 +123,9 @@ EOT;
 				"{$package_dir}/.gitignore"                => file_get_contents( "{$package_root}/.gitignore" ),
 				"{$package_dir}/.editorconfig"             => file_get_contents( "{$package_root}/.editorconfig" ),
 				"{$package_dir}/.distignore"               => file_get_contents( "{$package_root}/.distignore" ),
+				"{$package_dir}/phpcs.xml.dist"            => Utils\mustache_render( "{$template_path}/phpcs.xml.dist.mustache", $assoc_args ),
 				"{$package_dir}/CONTRIBUTING.md"           => file_get_contents( "{$package_root}/CONTRIBUTING.md" ),
+				"{$package_dir}/LICENSE"                   => Utils\mustache_render( "{$template_path}/LICENSE.mustache", $assoc_args ),
 				"{$package_dir}/wp-cli.yml"                => $wp_cli_yml,
 				"{$package_dir}/hello-world-command.php"   => Utils\mustache_render( "{$template_path}/hello-world-command.mustache", $assoc_args ),
 				"{$package_dir}/src/HelloWorldCommand.php" => Utils\mustache_render( "{$template_path}/HelloWorldCommand.mustache", $assoc_args ),
@@ -152,6 +159,13 @@ EOT;
 		} elseif ( ! Utils\get_flag_value( $assoc_args, 'skip-readme' ) ) {
 			WP_CLI::warning( 'Skipping README generation because package is not installed. Commands must be loaded for complete documentation.' );
 		}
+
+		// Display next steps guidance for users.
+		WP_CLI::log( '' );
+		WP_CLI::log( 'Next steps:' );
+		WP_CLI::log( "  * Edit {$package_dir}/src/HelloWorldCommand.php to customize your command" );
+		WP_CLI::log( '  * After making changes, regenerate the autoloader with:' );
+		WP_CLI::log( "      composer dump-autoload --working-dir={$package_dir}" );
 	}
 
 	/**
@@ -191,7 +205,7 @@ EOT;
 	 *         ],
 	 *         "readme": {
 	 *             "shields": [
-	 *                 "[![Build Status](https://travis-ci.org/runcommand/reset-password.svg?branch=master)](https://travis-ci.org/runcommand/reset-password)"
+	 *                 "[![Build Status](https://travis-ci.org/runcommand/reset-password.svg?branch=main)](https://travis-ci.org/runcommand/reset-password)"
 	 *             ],
 	 *             "sections": [
 	 *                 "Using",
@@ -199,7 +213,7 @@ EOT;
 	 *                 "Support"
 	 *             ],
 	 *             "support": {
-	 *                 "body": "https://raw.githubusercontent.com/runcommand/runcommand-theme/master/bin/readme-partials/support-open-source.md"
+	 *                 "body": "https://raw.githubusercontent.com/runcommand/runcommand-theme/main/bin/readme-partials/support-open-source.md"
 	 *             },
 	 *             "show_powered_by": false
 	 *         }
@@ -218,7 +232,7 @@ EOT;
 	 * ```
 	 * "support": {
 	 *   "pre": "highlight.md",
-	 *   "body": "https://raw.githubusercontent.com/runcommand/runcommand-theme/master/bin/readme-partials/support-open-source.md",
+	 *   "body": "https://raw.githubusercontent.com/runcommand/runcommand-theme/main/bin/readme-partials/support-open-source.md",
 	 *   "post": "This is additional text to show after main body content."
 	 * },
 	 * ```
@@ -237,7 +251,13 @@ EOT;
 	 * : Overwrite the readme if it already exists.
 	 *
 	 * [--branch=<branch>]
-	 * : Name of default branch of the underlying repository. Defaults to master.
+	 * : Name of default branch of the underlying repository. Defaults to main.
+	 *
+	 * [--license=<license>]
+	 * : License for the package.
+	 * ---
+	 * default: MIT
+	 * ---
 	 *
 	 * @when before_wp_load
 	 * @subcommand package-readme
@@ -257,7 +277,7 @@ EOT;
 		}
 
 		$force  = Utils\get_flag_value( $assoc_args, 'force' );
-		$branch = Utils\get_flag_value( $assoc_args, 'branch', 'master' );
+		$branch = Utils\get_flag_value( $assoc_args, 'branch', 'main' );
 
 		$package_root  = dirname( __DIR__ );
 		$template_path = $package_root . '/templates/';
@@ -274,6 +294,7 @@ EOT;
 			'has_commands'                  => false,
 			'wp_cli_update_to_instructions' => 'the latest stable release with `wp cli update`',
 			'show_powered_by'               => isset( $composer_obj['extra']['readme']['show_powered_by'] ) ? (bool) $composer_obj['extra']['readme']['show_powered_by'] : true,
+			'license'                       => $assoc_args['license'],
 		];
 
 		if ( isset( $composer_obj['extra']['readme']['shields'] ) ) {
@@ -345,7 +366,7 @@ EOT;
 				$longdesc = (string) preg_replace( '/##\s(.+)/', '**$1**', $longdesc );
 
 				// definition lists
-				$longdesc = preg_replace_callback( '/([^\n]+)\n: (.+?)(\n\n|$)/s', [ __CLASS__, 'rewrap_param_desc' ], $longdesc );
+				$longdesc = preg_replace_callback( '/([^\n]+)\n: (.+?)(\n\n(?=\S)|\n*$)/s', [ __CLASS__, 'rewrap_param_desc' ], $longdesc );
 
 				$command_data = [
 					'name'      => "wp {$command}",
@@ -757,14 +778,16 @@ EOT;
 
 	private static function rewrap_param_desc( $matches ) {
 		$param = $matches[1];
-		$desc  = self::indent( "\t\t", $matches[2] );
+		$desc  = self::indent( "\t\t", rtrim( $matches[2] ) );
 		return "\t$param\n$desc\n\n";
 	}
 
 	private static function indent( $whitespace, $text ) {
 		$lines = explode( "\n", $text );
 		foreach ( $lines as &$line ) {
-			$line = $whitespace . $line;
+			if ( '' !== $line ) {
+				$line = $whitespace . $line;
+			}
 		}
 		return implode( "\n", $lines );
 	}

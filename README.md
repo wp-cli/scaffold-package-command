@@ -22,7 +22,8 @@ wp scaffold package <name> [--description=<description>] [--homepage=<homepage>]
 Default behavior is to create the following files:
 - command.php
 - composer.json (with package name, description, and license)
-- .gitignore, .editorconfig, and .distignore
+- LICENSE
+- .gitignore, .editorconfig, .distignore, and phpcs.xml.dist
 - README.md (via wp scaffold package-readme)
 - Test harness (via wp scaffold package-tests)
 
@@ -52,7 +53,7 @@ WP-CLI `packages/local/` directory.
 	[--require_wp_cli=<version>]
 		Required WP-CLI version for the package.
 		---
-		default: ^2.12
+		default: ^2.13
 		---
 
 	[--require_wp_cli_tests=<version>]
@@ -193,7 +194,7 @@ WP-CLI Behat framework uses Behat ~2.5, which is installed with Composer.
 Generate a README.md for your command.
 
 ~~~
-wp scaffold package-readme <dir> [--force] [--branch=<branch>]
+wp scaffold package-readme <dir> [--force] [--branch=<branch>] [--license=<license>]
 ~~~
 
 Creates a README.md with Using, Installing, and Contributing instructions
@@ -230,7 +231,7 @@ composer.json includes:
         ],
         "readme": {
             "shields": [
-                "[![Build Status](https://travis-ci.org/runcommand/reset-password.svg?branch=master)](https://travis-ci.org/runcommand/reset-password)"
+                "[![Build Status](https://travis-ci.org/runcommand/reset-password.svg?branch=main)](https://travis-ci.org/runcommand/reset-password)"
             ],
             "sections": [
                 "Using",
@@ -238,7 +239,7 @@ composer.json includes:
                 "Support"
             ],
             "support": {
-                "body": "https://raw.githubusercontent.com/runcommand/runcommand-theme/master/bin/readme-partials/support-open-source.md"
+                "body": "https://raw.githubusercontent.com/runcommand/runcommand-theme/main/bin/readme-partials/support-open-source.md"
             },
             "show_powered_by": false
         }
@@ -257,7 +258,7 @@ For sections, "pre", "body" and "post" are supported. Example:
 ```
 "support": {
   "pre": "highlight.md",
-  "body": "https://raw.githubusercontent.com/runcommand/runcommand-theme/master/bin/readme-partials/support-open-source.md",
+  "body": "https://raw.githubusercontent.com/runcommand/runcommand-theme/main/bin/readme-partials/support-open-source.md",
   "post": "This is additional text to show after main body content."
 },
 ```
@@ -276,7 +277,13 @@ In this example:
 		Overwrite the readme if it already exists.
 
 	[--branch=<branch>]
-		Name of default branch of the underlying repository. Defaults to master.
+		Name of default branch of the underlying repository. Defaults to main.
+
+	[--license=<license>]
+		License for the package.
+		---
+		default: MIT
+		---
 
 
 
@@ -340,6 +347,10 @@ Once you’ve done a bit of searching and discovered there isn’t an open or fi
 Want to contribute a new feature? Please first [open a new issue](https://github.com/wp-cli/scaffold-package-command/issues/new) to discuss whether the feature is a good fit for the project.
 
 Once you've decided to commit the time to seeing your pull request through, [please follow our guidelines for creating a pull request](https://make.wordpress.org/cli/handbook/pull-requests/) to make sure it's a pleasant experience. See "[Setting up](https://make.wordpress.org/cli/handbook/pull-requests/#setting-up)" for details specific to working on this package locally.
+
+### License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Support
 
