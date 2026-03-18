@@ -334,8 +334,10 @@ EOT;
 		if ( ! empty( $composer_obj['extra']['commands'] ) ) {
 			$readme_args['commands'] = [];
 
-			
 			// Make relative --require paths absolute, as they will be invalid after chdir().
+			/**
+			 * @var array{argv: array<string,string>} $GLOBALS
+			 */
 			$orig_argv = $GLOBALS['argv'];
 			foreach ( $GLOBALS['argv'] as &$arg ) {
 				if ( 0 === strpos( $arg, '--require=' ) ) {
@@ -347,7 +349,7 @@ EOT;
 			}
 			unset( $arg );
 
-			$cwd                     = getcwd();
+			$cwd = (string) getcwd();
 			chdir( $package_dir );
 
 			$cmd_dump = WP_CLI::runcommand(
@@ -366,7 +368,12 @@ EOT;
 				$cmd_dump = json_decode( $cmd_dump->stdout, true );
 			}
 
+			/**
+			 * @var null|array{name: string, description: string, longdesc: string, hook: string, alias?: string, subcommands: array<array{name: string, description: string, longdesc: string, hook: string}>} $cmd_dump
+			 */
+
 			chdir( $cwd );
+			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 			$GLOBALS['argv'] = $orig_argv;
 			foreach ( $composer_obj['extra']['commands'] as $command ) {
 				$bits           = explode( ' ', $command );
@@ -376,7 +383,8 @@ EOT;
 					do {
 						$cmd_bit = array_shift( $bits );
 						$found   = false;
-						foreach ( $parent_command['subcommands'] as $subcommand ) {
+
+						foreach ( $parent_command['subcommands'] ?? [] as $subcommand ) {
 							if ( $subcommand['name'] === $cmd_bit ) {
 								$parent_command = $subcommand;
 								$found          = true;
