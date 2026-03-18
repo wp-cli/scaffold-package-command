@@ -361,10 +361,13 @@ EOT;
 				]
 			);
 
-			if ( ! empty( $cmd_dump->stderr ) || 0 !== $cmd_dump->return_code ) {
+			if ( 0 !== $cmd_dump->return_code ) {
 				$cmd_dump = null;
 			} else {
 				$cmd_dump = json_decode( $cmd_dump->stdout, true );
+				if ( JSON_ERROR_NONE !== json_last_error() ) {
+					$cmd_dump = null;
+				}
 			}
 
 			/**
