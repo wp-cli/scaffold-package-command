@@ -340,17 +340,19 @@ EOT;
 			 * @var array{argv: array<string,string>} $GLOBALS
 			 */
 			$orig_argv = $GLOBALS['argv'];
+			$cwd = getcwd();
+			if ( false === $cwd ) {
+				WP_CLI::error( 'Could not determine current working directory.' );
+			}
 			foreach ( $GLOBALS['argv'] as &$arg ) {
 				if ( 0 === strpos( $arg, '--require=' ) ) {
 					$req_path = substr( $arg, 10 );
 					if ( ! \WP_CLI\Utils\is_path_absolute( $req_path ) ) {
-						$arg = '--require=' . getcwd() . '/' . $req_path;
+						$arg = '--require=' . $cwd . '/' . $req_path;
 					}
 				}
 			}
 			unset( $arg );
-
-			$cwd = (string) getcwd();
 			chdir( $package_dir );
 
 			$cmd_dump = WP_CLI::runcommand(
