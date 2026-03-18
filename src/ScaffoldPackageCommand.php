@@ -144,22 +144,24 @@ EOT;
 			WP_CLI::success( "Created package files in {$package_dir}" );
 		}
 
-		$force_flag = $force ? '--force' : '';
+		$force_flag         = $force ? '--force' : '';
+		$quoted_package_dir = escapeshellarg( $package_dir );
+
 		if ( ! Utils\get_flag_value( $assoc_args, 'skip-tests' ) ) {
-			WP_CLI::runcommand( "scaffold package-tests {$package_dir} {$force_flag}", array( 'launch' => false ) );
+			WP_CLI::runcommand( "scaffold package-tests {$quoted_package_dir} {$force_flag}", array( 'launch' => false ) );
 		}
 
 		if ( ! Utils\get_flag_value( $assoc_args, 'skip-github' ) ) {
-			WP_CLI::runcommand( "scaffold package-github {$package_dir} {$force_flag}", array( 'launch' => false ) );
+			WP_CLI::runcommand( "scaffold package-github {$quoted_package_dir} {$force_flag}", array( 'launch' => false ) );
 		}
 
 		if ( ! Utils\get_flag_value( $assoc_args, 'skip-install' ) ) {
-			Process::create( "composer install --working-dir {$package_dir}" )->run();
-			WP_CLI::runcommand( "package install {$package_dir}", array( 'launch' => false ) );
+			Process::create( Utils\esc_cmd( 'composer', 'install', '--working-dir', $package_dir ) )->run();
+			WP_CLI::runcommand( "package install {$quoted_package_dir}", array( 'launch' => false ) );
 		}
 
 		if ( ! Utils\get_flag_value( $assoc_args, 'skip-readme' ) ) {
-			WP_CLI::runcommand( "scaffold package-readme {$package_dir} {$force_flag}", array( 'launch' => false ) );
+			WP_CLI::runcommand( "scaffold package-readme {$quoted_package_dir} {$force_flag}", array( 'launch' => false ) );
 		}
 
 		// Display next steps guidance for users.
