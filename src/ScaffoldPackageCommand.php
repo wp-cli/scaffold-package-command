@@ -344,7 +344,7 @@ EOT;
 			 * @var array{argv: array<string,string>} $GLOBALS
 			 */
 			$orig_argv = $GLOBALS['argv'];
-			$cwd = getcwd();
+			$cwd       = getcwd();
 			if ( false === $cwd ) {
 				WP_CLI::error( 'Could not determine current working directory.' );
 			}

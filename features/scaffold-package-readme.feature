@@ -321,7 +321,7 @@ Feature: Scaffold a README.md file for an existing package
     Given an empty directory
     When I run `wp scaffold package wp-cli/foo --dir=foo`
     And I try `composer install -d foo`
-    And I run `wp scaffold package-readme foo`
+    And I run `wp scaffold package-readme foo --force`
     Then STDERR should not contain:
       """
       Error: Missing one or more commands defined in composer.json -> extra -> commands.
