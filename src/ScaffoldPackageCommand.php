@@ -150,10 +150,6 @@ EOT;
 			WP_CLI::runcommand( "scaffold package-tests {$package_dir} {$force_flag}", array( 'launch' => false ) );
 		}
 
-		if ( ! Utils\get_flag_value( $assoc_args, 'skip-readme' ) ) {
-			WP_CLI::runcommand( "scaffold package-readme {$package_dir} {$force_flag}", array( 'launch' => false ) );
-		}
-
 		if ( ! Utils\get_flag_value( $assoc_args, 'skip-github' ) ) {
 			WP_CLI::runcommand( "scaffold package-github {$package_dir} {$force_flag}", array( 'launch' => false ) );
 		}
@@ -161,6 +157,10 @@ EOT;
 		if ( ! Utils\get_flag_value( $assoc_args, 'skip-install' ) ) {
 			Process::create( "composer install --working-dir {$package_dir}" )->run();
 			WP_CLI::runcommand( "package install {$package_dir}", array( 'launch' => false ) );
+		}
+
+		if ( ! Utils\get_flag_value( $assoc_args, 'skip-readme' ) ) {
+			WP_CLI::runcommand( "scaffold package-readme {$package_dir} {$force_flag}", array( 'launch' => false ) );
 		}
 
 		// Display next steps guidance for users.
@@ -333,54 +333,91 @@ EOT;
 
 		if ( ! empty( $composer_obj['extra']['commands'] ) ) {
 			$readme_args['commands'] = [];
-			$cmd_dump                = WP_CLI::runcommand(
+
+			
+			// Make relative --require paths absolute, as they will be invalid after chdir().
+			$orig_argv = $GLOBALS['argv'];
+			foreach ( $GLOBALS['argv'] as &$arg ) {
+				if ( 0 === strpos( $arg, '--require=' ) ) {
+					$req_path = substr( $arg, 10 );
+					if ( ! \WP_CLI\Utils\is_path_absolute( $req_path ) ) {
+						$arg = '--require=' . getcwd() . '/' . $req_path;
+					}
+				}
+			}
+			unset( $arg );
+
+			$cwd                     = getcwd();
+			chdir( $package_dir );
+
+			$cmd_dump = WP_CLI::runcommand(
 				'cli cmd-dump',
 				[
-					'launch'       => false,
-					'return'       => true,
-					'parse'        => 'json',
-					'command_args' => [ "--path=$package_dir" ],
+					'launch'     => true,
+					'return'     => 'all',
+					'parse'      => false,
+					'exit_error' => false,
 				]
 			);
+
+			if ( ! empty( $cmd_dump->stderr ) || 0 !== $cmd_dump->return_code ) {
+				$cmd_dump = null;
+			} else {
+				$cmd_dump = json_decode( $cmd_dump->stdout, true );
+			}
+
+			chdir( $cwd );
+			$GLOBALS['argv'] = $orig_argv;
 			foreach ( $composer_obj['extra']['commands'] as $command ) {
 				$bits           = explode( ' ', $command );
 				$parent_command = $cmd_dump;
-				do {
-					$cmd_bit = array_shift( $bits );
-					$found   = false;
-					foreach ( $parent_command['subcommands'] as $subcommand ) {
-						if ( $subcommand['name'] === $cmd_bit ) {
-							$parent_command = $subcommand;
-							$found          = true;
-							break;
-						}
-					}
-					if ( ! $found ) {
-						$parent_command = false;
-					}
-				} while ( $parent_command && $bits );
 
-				if ( empty( $parent_command ) ) {
-					WP_CLI::error( 'Missing one or more commands defined in composer.json -> extra -> commands.' );
+				if ( $parent_command ) {
+					do {
+						$cmd_bit = array_shift( $bits );
+						$found   = false;
+						foreach ( $parent_command['subcommands'] as $subcommand ) {
+							if ( $subcommand['name'] === $cmd_bit ) {
+								$parent_command = $subcommand;
+								$found          = true;
+								break;
+							}
+						}
+						if ( ! $found ) {
+							$parent_command = false;
+						}
+					} while ( $parent_command && $bits );
 				}
 
-				$longdesc = isset( $parent_command['longdesc'] ) ? $parent_command['longdesc'] : '';
-				$longdesc = (string) preg_replace( '/## GLOBAL PARAMETERS(.+)/s', '', $longdesc );
-				$longdesc = (string) preg_replace( '/##\s(.+)/', '**$1**', $longdesc );
+				if ( empty( $parent_command ) ) {
+					if ( null !== $cmd_dump ) {
+						WP_CLI::error( 'Missing one or more commands defined in composer.json -> extra -> commands.' );
+					}
+					$command_data = [
+						'name'      => "wp {$command}",
+						'shortdesc' => '',
+						'synopsis'  => '',
+						'longdesc'  => '',
+					];
+				} else {
+					$longdesc = isset( $parent_command['longdesc'] ) ? $parent_command['longdesc'] : '';
+					$longdesc = (string) preg_replace( '/## GLOBAL PARAMETERS(.+)/s', '', $longdesc );
+					$longdesc = (string) preg_replace( '/##\s(.+)/', '**$1**', $longdesc );
 
-				// definition lists
-				$longdesc = preg_replace_callback( '/([^\n]+)\n: (.+?)(\n\n(?=\S)|\n*$)/s', [ __CLASS__, 'rewrap_param_desc' ], $longdesc );
+					// definition lists
+					$longdesc = preg_replace_callback( '/([^\n]+)\n: (.+?)(\n\n(?=\S)|\n*$)/s', [ __CLASS__, 'rewrap_param_desc' ], $longdesc );
 
-				$command_data = [
-					'name'      => "wp {$command}",
-					'shortdesc' => isset( $parent_command['description'] ) ? $parent_command['description'] : '',
-					'synopsis'  => "wp {$command}" . ( empty( $parent_command['subcommands'] ) ? ( isset( $parent_command['synopsis'] ) ? " {$parent_command['synopsis']}" : '' ) : '' ),
-					'longdesc'  => $longdesc,
-				];
+					$command_data = [
+						'name'      => "wp {$command}",
+						'shortdesc' => isset( $parent_command['description'] ) ? $parent_command['description'] : '',
+						'synopsis'  => "wp {$command}" . ( empty( $parent_command['subcommands'] ) ? ( isset( $parent_command['synopsis'] ) ? " {$parent_command['synopsis']}" : '' ) : '' ),
+						'longdesc'  => $longdesc,
+					];
 
-				// Add alias if present.
-				if ( ! empty( $parent_command['alias'] ) ) {
-					$command_data['alias'] = $parent_command['alias'];
+					// Add alias if present.
+					if ( ! empty( $parent_command['alias'] ) ) {
+						$command_data['alias'] = $parent_command['alias'];
+					}
 				}
 
 				$readme_args['commands'][] = $command_data;

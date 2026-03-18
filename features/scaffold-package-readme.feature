@@ -326,6 +326,7 @@ Feature: Scaffold a README.md file for an existing package
       """
       Error: Missing one or more commands defined in composer.json -> extra -> commands.
       """
+    And I run `wp package uninstall wp-cli/foo`
 
   Scenario: README for a bundled command
     Given an empty directory
