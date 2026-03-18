@@ -55,7 +55,6 @@ class ScaffoldPackageCommand {
 	 * ---
 	 * default: ^5.0.0
 	 * ---
-
 	 * [--skip-tests]
 	 * : Don't generate files for integration testing.
 	 *
