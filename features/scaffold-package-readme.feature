@@ -294,7 +294,6 @@ Feature: Scaffold a README.md file for an existing package
       *This README.md is generated dynamically from the project's codebase
       """
 
-  @broken
   Scenario: Error when commands are specified but not present
     Given an empty directory
     And a foo/composer.json file:
@@ -317,6 +316,17 @@ Feature: Scaffold a README.md file for an existing package
       Error: Missing one or more commands defined in composer.json -> extra -> commands.
       """
     And the return code should be 1
+
+  Scenario: Does not error when commands are specified and present
+    Given an empty directory
+    When I run `wp scaffold package wp-cli/foo --dir=foo`
+    And I try `composer install -d foo`
+    And I try `wp scaffold package-readme foo --force`
+    Then STDERR should not contain:
+      """
+      Error: Missing one or more commands defined in composer.json -> extra -> commands.
+      """
+    And I run `wp package uninstall wp-cli/foo`
 
   Scenario: README for a bundled command
     Given an empty directory

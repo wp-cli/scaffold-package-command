@@ -55,7 +55,6 @@ class ScaffoldPackageCommand {
 	 * ---
 	 * default: ^5.0.0
 	 * ---
-
 	 * [--skip-tests]
 	 * : Don't generate files for integration testing.
 	 *
@@ -105,6 +104,15 @@ class ScaffoldPackageCommand {
 			}
 		}
 
+		// Convert to absolute path if relative.
+		if ( ! preg_match( '#^([a-zA-Z]:)?[\\/]#', $package_dir ) ) {
+			$cwd = getcwd();
+			if ( false === $cwd ) {
+				WP_CLI::error( 'Could not determine current working directory.' );
+			}
+			$package_dir = $cwd . DIRECTORY_SEPARATOR . $package_dir;
+		}
+
 		if ( empty( $assoc_args['homepage'] ) ) {
 			$assoc_args['homepage'] = 'https://github.com/' . $assoc_args['name'];
 		}
@@ -140,21 +148,24 @@ EOT;
 			WP_CLI::success( "Created package files in {$package_dir}" );
 		}
 
-		$force_flag = $force ? '--force' : '';
-		if ( ! Utils\get_flag_value( $assoc_args, 'skip-tests' ) ) {
-			WP_CLI::runcommand( "scaffold package-tests {$package_dir} {$force_flag}", array( 'launch' => false ) );
-		}
+		$force_flag         = $force ? '--force' : '';
+		$quoted_package_dir = escapeshellarg( $package_dir );
 
-		if ( ! Utils\get_flag_value( $assoc_args, 'skip-readme' ) ) {
-			WP_CLI::runcommand( "scaffold package-readme {$package_dir} {$force_flag}", array( 'launch' => false ) );
+		if ( ! Utils\get_flag_value( $assoc_args, 'skip-tests' ) ) {
+			WP_CLI::runcommand( "scaffold package-tests {$quoted_package_dir} {$force_flag}", array( 'launch' => false ) );
 		}
 
 		if ( ! Utils\get_flag_value( $assoc_args, 'skip-github' ) ) {
-			WP_CLI::runcommand( "scaffold package-github {$package_dir} {$force_flag}", array( 'launch' => false ) );
+			WP_CLI::runcommand( "scaffold package-github {$quoted_package_dir} {$force_flag}", array( 'launch' => false ) );
 		}
 
 		if ( ! Utils\get_flag_value( $assoc_args, 'skip-install' ) ) {
-			WP_CLI::runcommand( "package install {$package_dir}", array( 'launch' => false ) );
+			Process::create( Utils\esc_cmd( 'composer', 'install', '--working-dir', $package_dir ) )->run();
+			WP_CLI::runcommand( "package install {$quoted_package_dir}", array( 'launch' => false ) );
+		}
+
+		if ( ! Utils\get_flag_value( $assoc_args, 'skip-readme' ) ) {
+			WP_CLI::runcommand( "scaffold package-readme {$quoted_package_dir} {$force_flag}", array( 'launch' => false ) );
 		}
 
 		// Display next steps guidance for users.
@@ -327,56 +338,104 @@ EOT;
 
 		if ( ! empty( $composer_obj['extra']['commands'] ) ) {
 			$readme_args['commands'] = [];
-			$cmd_dump                = WP_CLI::runcommand(
+
+			// Make relative --require paths absolute, as they will be invalid after chdir().
+			/**
+			 * @var array{argv: array<string,string>} $GLOBALS
+			 */
+			$orig_argv = $GLOBALS['argv'];
+			$cwd       = getcwd();
+			if ( false === $cwd ) {
+				WP_CLI::error( 'Could not determine current working directory.' );
+			}
+			foreach ( $GLOBALS['argv'] as &$arg ) {
+				if ( 0 === strpos( $arg, '--require=' ) ) {
+					$req_path = substr( $arg, 10 );
+					if ( ! \WP_CLI\Utils\is_path_absolute( $req_path ) ) {
+						$arg = '--require=' . $cwd . '/' . $req_path;
+					}
+				}
+			}
+			unset( $arg );
+			chdir( $package_dir );
+
+			$cmd_dump = WP_CLI::runcommand(
 				'cli cmd-dump',
 				[
-					'launch' => false,
-					'return' => true,
-					'parse'  => 'json',
+					'launch'     => true,
+					'return'     => 'all',
+					'parse'      => false,
+					'exit_error' => false,
 				]
 			);
+
+			if ( 0 !== $cmd_dump->return_code ) {
+				$cmd_dump = null;
+			} else {
+				$cmd_dump = json_decode( $cmd_dump->stdout, true );
+				if ( JSON_ERROR_NONE !== json_last_error() ) {
+					$cmd_dump = null;
+				}
+			}
+
+			/**
+			 * @var null|array{name: string, description: string, longdesc: string, hook: string, alias?: string, subcommands: array<array{name: string, description: string, longdesc: string, hook: string}>} $cmd_dump
+			 */
+
+			chdir( $cwd );
+			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+			$GLOBALS['argv'] = $orig_argv;
 			foreach ( $composer_obj['extra']['commands'] as $command ) {
 				$bits           = explode( ' ', $command );
 				$parent_command = $cmd_dump;
-				do {
-					$cmd_bit = array_shift( $bits );
-					$found   = false;
-					foreach ( $parent_command['subcommands'] as $subcommand ) {
-						if ( $subcommand['name'] === $cmd_bit ) {
-							$parent_command = $subcommand;
-							$found          = true;
-							break;
+
+				if ( $parent_command ) {
+					do {
+						$cmd_bit = array_shift( $bits );
+						$found   = false;
+
+						foreach ( $parent_command['subcommands'] ?? [] as $subcommand ) {
+							if ( $subcommand['name'] === $cmd_bit ) {
+								$parent_command = $subcommand;
+								$found          = true;
+								break;
+							}
 						}
-					}
-					if ( ! $found ) {
-						$parent_command = false;
-					}
-				} while ( $parent_command && $bits );
-
-				/* This check doesn't work because of the way the commands are fetched.
-				 * Needs bigger refactor to put this check back in.
-				if ( empty( $parent_command ) ) {
-					WP_CLI::error( 'Missing one or more commands defined in composer.json -> extra -> commands.' );
+						if ( ! $found ) {
+							$parent_command = false;
+						}
+					} while ( $parent_command && $bits );
 				}
-				 */
 
-				$longdesc = isset( $parent_command['longdesc'] ) ? $parent_command['longdesc'] : '';
-				$longdesc = (string) preg_replace( '/## GLOBAL PARAMETERS(.+)/s', '', $longdesc );
-				$longdesc = (string) preg_replace( '/##\s(.+)/', '**$1**', $longdesc );
+				if ( empty( $parent_command ) ) {
+					if ( null !== $cmd_dump ) {
+						WP_CLI::error( 'Missing one or more commands defined in composer.json -> extra -> commands.' );
+					}
+					$command_data = [
+						'name'      => "wp {$command}",
+						'shortdesc' => '',
+						'synopsis'  => '',
+						'longdesc'  => '',
+					];
+				} else {
+					$longdesc = isset( $parent_command['longdesc'] ) ? $parent_command['longdesc'] : '';
+					$longdesc = (string) preg_replace( '/## GLOBAL PARAMETERS(.+)/s', '', $longdesc );
+					$longdesc = (string) preg_replace( '/##\s(.+)/', '**$1**', $longdesc );
 
-				// definition lists
-				$longdesc = preg_replace_callback( '/([^\n]+)\n: (.+?)(\n\n(?=\S)|\n*$)/s', [ __CLASS__, 'rewrap_param_desc' ], $longdesc );
+					// definition lists
+					$longdesc = preg_replace_callback( '/([^\n]+)\n: (.+?)(\n\n(?=\S)|\n*$)/s', [ __CLASS__, 'rewrap_param_desc' ], $longdesc );
 
-				$command_data = [
-					'name'      => "wp {$command}",
-					'shortdesc' => isset( $parent_command['description'] ) ? $parent_command['description'] : '',
-					'synopsis'  => "wp {$command}" . ( empty( $parent_command['subcommands'] ) ? ( isset( $parent_command['synopsis'] ) ? " {$parent_command['synopsis']}" : '' ) : '' ),
-					'longdesc'  => $longdesc,
-				];
+					$command_data = [
+						'name'      => "wp {$command}",
+						'shortdesc' => isset( $parent_command['description'] ) ? $parent_command['description'] : '',
+						'synopsis'  => "wp {$command}" . ( empty( $parent_command['subcommands'] ) ? ( isset( $parent_command['synopsis'] ) ? " {$parent_command['synopsis']}" : '' ) : '' ),
+						'longdesc'  => $longdesc,
+					];
 
-				// Add alias if present.
-				if ( ! empty( $parent_command['alias'] ) ) {
-					$command_data['alias'] = $parent_command['alias'];
+					// Add alias if present.
+					if ( ! empty( $parent_command['alias'] ) ) {
+						$command_data['alias'] = $parent_command['alias'];
+					}
 				}
 
 				$readme_args['commands'][] = $command_data;
@@ -460,7 +519,7 @@ EOT;
 				$readme_args['package_description'] = $value;
 			} else {
 				$readme_args['sections'][] = [
-					'heading' => $section_args['heading'],
+					'heading' => $section_args['heading'] ?? '',
 					'body'    => $value,
 				];
 			}
