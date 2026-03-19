@@ -437,5 +437,89 @@ Feature: Scaffold a README.md file for an existing package
 
     When I run `wp --require=foo/command.php scaffold package-readme foo`
     Then the foo/README.md file should exist
-    And the contents of the foo/README.md file should match /\t\t.*Read content from/
-    And the contents of the foo/README.md file should match /\t\t.*Passing/
+    And the contents of the foo/README.md file should match /\t\tRead content from/
+    And the contents of the foo/README.md file should match /\t\tPassing/
+
+  Scenario: README correctly indents continuation paragraphs with zero leading spaces
+    Given an empty directory
+    And a foo/command.php file:
+      """
+      <?php
+      /**
+       * Zero-space continuation test command.
+       */
+      class Zero_Space_Test_Command {
+          /**
+           * Test command where continuation paragraph has no leading spaces.
+           *
+           * ## OPTIONS
+           *
+           * [--extra]
+           * : Show extended version information.
+           *
+           * Note: to retrieve the database revision for an individual subsite,
+           * use `wp option get db_version --url=<subsite>`.
+           *
+           * @when before_wp_load
+           */
+          public function __invoke( $args, $assoc_args ) {}
+      }
+      WP_CLI::add_command( 'zero-space-test', 'Zero_Space_Test_Command' );
+      """
+    And a foo/composer.json file:
+      """
+      {
+          "name": "wp-cli/zero-space-test",
+          "description": "Test",
+          "extra": {
+              "commands": ["zero-space-test"]
+          }
+      }
+      """
+
+    When I run `wp --require=foo/command.php scaffold package-readme foo`
+    Then the foo/README.md file should exist
+    And the contents of the foo/README.md file should match /\t\tShow extended version information/
+    And the contents of the foo/README.md file should match /\t\tNote: to retrieve/
+
+  Scenario: README correctly indents continuation paragraphs with one leading space
+    Given an empty directory
+    And a foo/command.php file:
+      """
+      <?php
+      /**
+       * One-space continuation test command.
+       */
+      class One_Space_Test_Command {
+          /**
+           * Test command where continuation paragraph has one leading space.
+           *
+           * ## OPTIONS
+           *
+           * [--extra]
+           * : Show extended version information.
+           *
+           *  Note: to retrieve the database revision for an individual subsite,
+           *  use `wp option get db_version --url=<subsite>`.
+           *
+           * @when before_wp_load
+           */
+          public function __invoke( $args, $assoc_args ) {}
+      }
+      WP_CLI::add_command( 'one-space-test', 'One_Space_Test_Command' );
+      """
+    And a foo/composer.json file:
+      """
+      {
+          "name": "wp-cli/one-space-test",
+          "description": "Test",
+          "extra": {
+              "commands": ["one-space-test"]
+          }
+      }
+      """
+
+    When I run `wp --require=foo/command.php scaffold package-readme foo`
+    Then the foo/README.md file should exist
+    And the contents of the foo/README.md file should match /\t\tShow extended version information/
+    And the contents of the foo/README.md file should match /\t\tNote: to retrieve/
