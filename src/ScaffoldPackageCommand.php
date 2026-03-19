@@ -423,7 +423,7 @@ EOT;
 					$longdesc = (string) preg_replace( '/##\s(.+)/', '**$1**', $longdesc );
 
 					// definition lists
-					$longdesc = preg_replace_callback( '/([^\n]+)\n: (.+?)(\n\n(?=\S)|\n*$)/s', [ __CLASS__, 'rewrap_param_desc' ], $longdesc );
+					$longdesc = preg_replace_callback( '/([^\n]+)\n: (.+?)(\n\n(?=[^\n]+\n: |\*\*)|\n*$)/s', [ __CLASS__, 'rewrap_param_desc' ], $longdesc );
 
 					$command_data = [
 						'name'      => "wp {$command}",
@@ -836,8 +836,36 @@ EOT;
 
 	private static function rewrap_param_desc( $matches ) {
 		$param = $matches[1];
-		$desc  = self::indent( "\t\t", rtrim( $matches[2] ) );
+		$desc  = self::indent( "\t\t", self::normalize_desc_indentation( rtrim( $matches[2] ) ) );
 		return "\t$param\n$desc\n\n";
+	}
+
+	private static function normalize_desc_indentation( $text ) {
+		$paragraphs = explode( "\n\n", $text );
+		foreach ( $paragraphs as &$paragraph ) {
+			$lines      = explode( "\n", $paragraph );
+			$min_indent = PHP_INT_MAX;
+			foreach ( $lines as $line ) {
+				if ( '' !== trim( $line ) ) {
+					$stripped = ltrim( $line );
+					$indent   = strlen( $line ) - strlen( $stripped );
+					if ( $indent < $min_indent ) {
+						$min_indent = $indent;
+					}
+				}
+			}
+			if ( $min_indent > 0 && PHP_INT_MAX !== $min_indent ) {
+				foreach ( $lines as &$line ) {
+					if ( '' !== $line ) {
+						$line = substr( $line, $min_indent );
+					}
+				}
+				unset( $line );
+				$paragraph = implode( "\n", $lines );
+			}
+		}
+		unset( $paragraph );
+		return implode( "\n\n", $paragraphs );
 	}
 
 	private static function indent( $whitespace, $text ) {
