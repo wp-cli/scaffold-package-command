@@ -61,9 +61,8 @@ WP-CLI `packages/local/` directory.
 		---
 		default: ^5.0.0
 		---
-
-	[--skip-tests]
-		Don't generate files for integration testing.
+		[--skip-tests]
+		: Don't generate files for integration testing.
 
 	[--skip-readme]
 		Don't generate a README.md for the package.
