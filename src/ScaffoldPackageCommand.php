@@ -4,6 +4,7 @@ namespace WP_CLI;
 
 use WP_CLI;
 use WP_CLI\Utils;
+use WP_CLI\Path;
 
 /**
  * @phpstan-type ComposerConfig array{name: string, description: string, extra: array{readme: array{shields: array<string>}, commands: array<string>}, require: array<string, string>, 'require-dev': array<string, string>}
@@ -351,7 +352,7 @@ EOT;
 			foreach ( $GLOBALS['argv'] as &$arg ) {
 				if ( 0 === strpos( $arg, '--require=' ) ) {
 					$req_path = substr( $arg, 10 );
-					if ( ! \WP_CLI\Utils\is_path_absolute( $req_path ) ) {
+					if ( ! Path::is_absolute( $req_path ) ) {
 						$arg = '--require=' . $cwd . '/' . $req_path;
 					}
 				}
