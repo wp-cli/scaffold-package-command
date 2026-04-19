@@ -300,7 +300,6 @@ EOT;
 	 * [--license=<license>]
 	 * : License for the package by SPDX code. Omit "-only" for GNU licenses.
 	 * ---
-	 * default: MIT
 	 * options:
 	 *   - MIT
 	 *   - Apache-2.0
