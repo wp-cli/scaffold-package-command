@@ -20,7 +20,6 @@ jobs:
       - checkout
       - run: |
           sudo apt-get update
-          sudo docker-php-ext-install mysqli
           sudo apt-get install -y mariadb-client
       - run: |
           echo -e "memory_limit = 1024M" | sudo tee /usr/local/etc/php/php.ini > /dev/null
