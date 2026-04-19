@@ -602,12 +602,16 @@ EOT;
 			WP_CLI::success( 'Created package readme.' );
 		}
 
+		// Only write to composer.json if the license has changed. This protects package_readme from
+		// overwriting files changed by package. Only when --license changes do we need to write. 
+		$existing_license        = isset( $composer_obj['license'] ) ? $composer_obj['license'] : '';
 		$composer_obj['license'] = $composer_license;
-		$composer_json_content   = json_encode( $composer_obj, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) . "\n";
-		$this->create_files(
-			[ "{$package_dir}/composer.json" => $composer_json_content ],
-			$force
-		);
+		if ( $composer_license !== $existing_license ) {
+			$composer_json_content = json_encode( $composer_obj, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) . "\n";
+			if ( false === file_put_contents( $package_dir . '/composer.json', $composer_json_content ) ) {
+				WP_CLI::error( "Error creating file: {$package_dir}/composer.json" );
+			}
+		}
 
 		if ( 'none' === strtolower( $license_input ) ) {
 			if ( is_file( $package_dir . '/LICENSE' ) ) {
