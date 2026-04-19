@@ -40,7 +40,7 @@ class ScaffoldPackageCommand {
 	 * : Specify a destination directory for the command. Defaults to WP-CLI's `packages/local/` directory.
 	 *
 	 * [--license=<license>]
-	 * : License for the package by SPDX code (omitting "-only" from GNU codes).
+	 * : License for the package by SPDX code. Omit "-only" for GNU licenses.
 	 * ---
 	 * default: MIT
 	 * options:
@@ -298,7 +298,7 @@ EOT;
 	 * : Name of default branch of the underlying repository. Defaults to main.
 	 *
 	 * [--license=<license>]
-	 * : License for the package by SPDX code (omitting "-only" from GNU codes).
+	 * : License for the package by SPDX code. Omit "-only" for GNU licenses.
 	 * ---
 	 * default: MIT
 	 * options:
@@ -923,12 +923,6 @@ EOT;
 		if ( file_exists( $license_path ) ) {
 			return $license_path;
 		}
-
-		$without_only = (string) preg_replace( '/-only$/', '', $normalized );
-		if ( $without_only !== $normalized && file_exists( $template_path . 'licenses/' . $without_only ) ) {
-			return $template_path . 'licenses/' . $without_only;
-		}
-
 		return null;
 	}
 

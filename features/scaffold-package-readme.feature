@@ -538,7 +538,7 @@ Feature: Scaffold a README.md file for an existing package
       }
       """
 
-    When I run `wp scaffold package-readme foo --license=GPL-2.0-only`
+    When I run `wp scaffold package-readme foo --license=GPL-2.0`
     Then the foo/README.md file should exist
     And the foo/LICENSE file should exist
     And the foo/LICENSE file should contain:
@@ -547,7 +547,7 @@ Feature: Scaffold a README.md file for an existing package
       """
     And the foo/composer.json file should contain:
       """
-      "license": "GPL-2.0-only"
+      "license": "GPL-2.0"
       """
 
   Scenario: Scaffold a README.md with --license=none removes LICENSE and sets proprietary
