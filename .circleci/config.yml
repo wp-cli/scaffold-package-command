@@ -10,8 +10,8 @@ jobs:
           WP_CLI_TEST_DBROOTPASS: root
           WP_CLI_TEST_DBUSER: wp_cli_test
           WP_CLI_TEST_DBPASS: password1
-      - image: cimg/mariadb:11.4
-        command: --skip-ssl
+      - image: mariadb:11.4
+        command: mariadbd --skip-ssl
         environment:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: wp_cli_test
