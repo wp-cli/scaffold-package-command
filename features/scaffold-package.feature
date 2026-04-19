@@ -55,11 +55,11 @@ Feature: Scaffold WP-CLI commands
     And the {PACKAGE_PATH}/local/wp-cli/foo/LICENSE file should exist
     And the {PACKAGE_PATH}/local/wp-cli/foo/LICENSE file should contain:
       """
-      The MIT License (MIT)
+      MIT License
       """
     And the {PACKAGE_PATH}/local/wp-cli/foo/LICENSE file should contain:
       """
-      wp-cli/foo Contributors
+      wp-cli/foo
       """
     And the {PACKAGE_PATH}/local/wp-cli/foo/wp-cli.yml file should exist
     And the {PACKAGE_PATH}/local/wp-cli/foo/.travis.yml file should not exist
@@ -319,4 +319,42 @@ Feature: Scaffold WP-CLI commands
     And STDOUT should contain:
       """
       https://getcomposer.org/doc/01-basic-usage.md#autoloading
+      """
+
+  Scenario: Scaffold a WP-CLI package with Apache-2.0 license
+    Given an empty directory
+
+    When I run `wp package path`
+    Then save STDOUT as {PACKAGE_PATH}
+
+    When I run `wp scaffold package wp-cli/apache-pkg --skip-tests --skip-github --skip-install --skip-readme --license=Apache-2.0`
+    Then STDOUT should contain:
+      """
+      Success: Created package files
+      """
+    And the {PACKAGE_PATH}/local/wp-cli/apache-pkg/LICENSE file should exist
+    And the {PACKAGE_PATH}/local/wp-cli/apache-pkg/LICENSE file should contain:
+      """
+      Apache License
+      """
+    And the {PACKAGE_PATH}/local/wp-cli/apache-pkg/composer.json file should contain:
+      """
+      "license": "Apache-2.0",
+      """
+
+  Scenario: Scaffold a WP-CLI package with no license
+    Given an empty directory
+
+    When I run `wp package path`
+    Then save STDOUT as {PACKAGE_PATH}
+
+    When I run `wp scaffold package wp-cli/no-license --skip-tests --skip-github --skip-install --skip-readme --license=none`
+    Then STDOUT should contain:
+      """
+      Success: Created package files
+      """
+    And the {PACKAGE_PATH}/local/wp-cli/no-license/LICENSE file should not exist
+    And the {PACKAGE_PATH}/local/wp-cli/no-license/composer.json file should contain:
+      """
+      "license": "proprietary",
       """

@@ -7,7 +7,7 @@ use WP_CLI\Utils;
 use WP_CLI\Path;
 
 /**
- * @phpstan-type ComposerConfig array{name: string, description: string, extra: array{readme: array{shields: array<string>}, commands: array<string>}, require: array<string, string>, 'require-dev': array<string, string>}
+ * @phpstan-type ComposerConfig array{name: string, description: string, license?: string, extra: array{readme: array{shields: array<string>}, commands: array<string>}, require: array<string, string>, 'require-dev': array<string, string>}
  */
 class ScaffoldPackageCommand {
 
@@ -40,9 +40,31 @@ class ScaffoldPackageCommand {
 	 * : Specify a destination directory for the command. Defaults to WP-CLI's `packages/local/` directory.
 	 *
 	 * [--license=<license>]
-	 * : License for the package.
+	 * : License for the package by SPDX code (omitting "-only" from GNU codes).
 	 * ---
 	 * default: MIT
+	 * options:
+	 *   - MIT
+	 *   - Apache-2.0
+	 *   - BSD-3-Clause
+	 *   - BSD-2-Clause
+	 *   - GPL-2.0
+	 *   - GPL-3.0
+	 *   - ISC
+	 *   - LGPL-3.0
+	 *   - LGPL-2.1
+	 *   - BSD0
+	 *   - AGPL-3.0
+	 *   - MPL-2.0
+	 *   - AFL-3.0
+	 *   - MS-PL
+	 *   - BSD-1-Clause
+	 *   - MIT-0
+	 *   - CPL-1.0
+	 *   - BSL-1.0
+	 *   - Unlicense
+	 *   - CC0-1.0
+	 *   - none
 	 * ---
 	 *
 	 * [--require_wp_cli=<version>]
@@ -83,6 +105,11 @@ class ScaffoldPackageCommand {
 		$assoc_args         = array_merge( $defaults, $assoc_args );
 		$assoc_args['name'] = $args[0];
 		$assoc_args['year'] = gmdate( 'Y' );
+
+		$license_input = Utils\get_flag_value( $assoc_args, 'license', 'MIT' );
+		if ( 'none' === strtolower( $license_input ) ) {
+			$assoc_args['license'] = 'proprietary';
+		}
 
 		$bits = explode( '/', $assoc_args['name'] );
 		if ( 2 !== count( $bits ) || empty( $bits[0] ) || empty( $bits[1] ) ) {
@@ -134,7 +161,7 @@ EOT;
 				"{$package_dir}/.distignore"               => file_get_contents( "{$package_root}/.distignore" ),
 				"{$package_dir}/phpcs.xml.dist"            => Utils\mustache_render( "{$template_path}/phpcs.xml.dist.mustache", $assoc_args ),
 				"{$package_dir}/CONTRIBUTING.md"           => file_get_contents( "{$package_root}/CONTRIBUTING.md" ),
-				"{$package_dir}/LICENSE"                   => Utils\mustache_render( "{$template_path}/LICENSE.mustache", $assoc_args ),
+
 				"{$package_dir}/wp-cli.yml"                => $wp_cli_yml,
 				"{$package_dir}/hello-world-command.php"   => Utils\mustache_render( "{$template_path}/hello-world-command.mustache", $assoc_args ),
 				"{$package_dir}/src/HelloWorldCommand.php" => Utils\mustache_render( "{$template_path}/HelloWorldCommand.mustache", $assoc_args ),
@@ -166,7 +193,15 @@ EOT;
 		}
 
 		if ( ! Utils\get_flag_value( $assoc_args, 'skip-readme' ) ) {
-			WP_CLI::runcommand( "scaffold package-readme {$quoted_package_dir} {$force_flag}", array( 'launch' => false ) );
+			WP_CLI::runcommand( "scaffold package-readme {$quoted_package_dir} {$force_flag} --license={$license_input}", array( 'launch' => false ) );
+		} elseif ( 'none' !== strtolower( $license_input ) ) {
+			$license_file_path = $this->resolve_license_file_path( $license_input, $template_path );
+			if ( null !== $license_file_path ) {
+				$this->create_files(
+					[ "{$package_dir}/LICENSE" => Utils\mustache_render( $license_file_path, $assoc_args ) ],
+					$force
+				);
+			}
 		}
 
 		// Display next steps guidance for users.
@@ -263,9 +298,31 @@ EOT;
 	 * : Name of default branch of the underlying repository. Defaults to main.
 	 *
 	 * [--license=<license>]
-	 * : License for the package.
+	 * : License for the package by SPDX code (omitting "-only" from GNU codes).
 	 * ---
 	 * default: MIT
+	 * options:
+	 *   - MIT
+	 *   - Apache-2.0
+	 *   - BSD-3-Clause
+	 *   - BSD-2-Clause
+	 *   - GPL-2.0
+	 *   - GPL-3.0
+	 *   - ISC
+	 *   - LGPL-3.0
+	 *   - LGPL-2.1
+	 *   - BSD0
+	 *   - AGPL-3.0
+	 *   - MPL-2.0
+	 *   - AFL-3.0
+	 *   - MS-PL
+	 *   - BSD-1-Clause
+	 *   - MIT-0
+	 *   - CPL-1.0
+	 *   - BSL-1.0
+	 *   - Unlicense
+	 *   - CC0-1.0
+	 *   - none
 	 * ---
 	 *
 	 * @when before_wp_load
@@ -291,6 +348,9 @@ EOT;
 		$package_root  = dirname( __DIR__ );
 		$template_path = $package_root . '/templates/';
 
+		$license_input    = Utils\get_flag_value( $assoc_args, 'license', 'MIT' );
+		$composer_license = 'none' === strtolower( $license_input ) ? 'proprietary' : $license_input;
+
 		$bits        = explode( '/', $composer_obj['name'] );
 		$readme_args = [
 			'package_name'                  => $composer_obj['name'],
@@ -303,7 +363,7 @@ EOT;
 			'has_commands'                  => false,
 			'wp_cli_update_to_instructions' => 'the latest stable release with `wp cli update`',
 			'show_powered_by'               => isset( $composer_obj['extra']['readme']['show_powered_by'] ) ? (bool) $composer_obj['extra']['readme']['show_powered_by'] : true,
-			'license'                       => $assoc_args['license'],
+			'license'                       => $composer_license,
 		];
 
 		if ( isset( $composer_obj['extra']['readme']['shields'] ) ) {
@@ -537,6 +597,28 @@ EOT;
 			WP_CLI::log( 'Package readme generation skipped.' );
 		} else {
 			WP_CLI::success( 'Created package readme.' );
+		}
+
+		$composer_obj['license'] = $composer_license;
+		$composer_json_content   = json_encode( $composer_obj, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) . "\n";
+		file_put_contents( $package_dir . '/composer.json', $composer_json_content );
+
+		if ( 'none' === strtolower( $license_input ) ) {
+			if ( file_exists( $package_dir . '/LICENSE' ) ) {
+				unlink( $package_dir . '/LICENSE' );
+			}
+		} else {
+			$license_file_path = $this->resolve_license_file_path( $license_input, $template_path );
+			if ( null !== $license_file_path ) {
+				$license_data = [
+					'year' => gmdate( 'Y' ),
+					'name' => $composer_obj['name'],
+				];
+				$this->create_files(
+					[ "{$package_dir}/LICENSE" => Utils\mustache_render( $license_file_path, $license_data ) ],
+					$force
+				);
+			}
 		}
 	}
 
@@ -833,6 +915,21 @@ EOT;
 		} else {
 			WP_CLI::success( 'Created package test files.' );
 		}
+	}
+
+	private function resolve_license_file_path( $license, $template_path ) {
+		$normalized   = strtolower( $license );
+		$license_path = $template_path . 'licenses/' . $normalized;
+		if ( file_exists( $license_path ) ) {
+			return $license_path;
+		}
+
+		$without_only = (string) preg_replace( '/-only$/', '', $normalized );
+		if ( $without_only !== $normalized && file_exists( $template_path . 'licenses/' . $without_only ) ) {
+			return $template_path . 'licenses/' . $without_only;
+		}
+
+		return null;
 	}
 
 	private static function rewrap_param_desc( $matches ) {
