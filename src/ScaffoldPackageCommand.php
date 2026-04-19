@@ -348,7 +348,10 @@ EOT;
 		$package_root  = dirname( __DIR__ );
 		$template_path = $package_root . '/templates/';
 
-		$license_input    = Utils\get_flag_value( $assoc_args, 'license', 'MIT' );
+		$license_input = Utils\get_flag_value( $assoc_args, 'license' );
+		if ( null === $license_input ) {
+			$license_input = isset( $composer_obj['license'] ) ? $composer_obj['license'] : 'MIT';
+		}
 		$composer_license = 'none' === strtolower( $license_input ) ? 'proprietary' : $license_input;
 
 		$bits        = explode( '/', $composer_obj['name'] );
@@ -601,10 +604,13 @@ EOT;
 
 		$composer_obj['license'] = $composer_license;
 		$composer_json_content   = json_encode( $composer_obj, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) . "\n";
-		file_put_contents( $package_dir . '/composer.json', $composer_json_content );
+		$this->create_files(
+			[ "{$package_dir}/composer.json" => $composer_json_content ],
+			$force
+		);
 
 		if ( 'none' === strtolower( $license_input ) ) {
-			if ( file_exists( $package_dir . '/LICENSE' ) ) {
+			if ( is_file( $package_dir . '/LICENSE' ) ) {
 				unlink( $package_dir . '/LICENSE' );
 			}
 		} else {
@@ -918,7 +924,10 @@ EOT;
 	}
 
 	private function resolve_license_file_path( $license, $template_path ) {
-		$normalized   = strtolower( $license );
+		$normalized = strtolower( $license );
+		if ( basename( $normalized ) !== $normalized ) {
+			return null;
+		}
 		$license_path = $template_path . 'licenses/' . $normalized;
 		if ( file_exists( $license_path ) ) {
 			return $license_path;
