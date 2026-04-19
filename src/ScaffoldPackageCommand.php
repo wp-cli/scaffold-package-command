@@ -603,7 +603,7 @@ EOT;
 		}
 
 		// Only write to composer.json if the license has changed. This protects package_readme from
-		// overwriting files changed by package. Only when --license changes do we need to write. 
+		// overwriting files changed by package. Only when --license changes do we need to write.
 		$existing_license        = isset( $composer_obj['license'] ) ? $composer_obj['license'] : '';
 		$composer_obj['license'] = $composer_license;
 		if ( $composer_license !== $existing_license ) {
