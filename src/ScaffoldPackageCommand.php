@@ -40,7 +40,7 @@ class ScaffoldPackageCommand {
 	 * : Specify a destination directory for the command. Defaults to WP-CLI's `packages/local/` directory.
 	 *
 	 * [--license=<license>]
-	 * : License for the package by SPDX code. Omit "-only" for GNU licenses.
+	 * : License for the package by SPDX code.
 	 * ---
 	 * default: MIT
 	 * options:
@@ -48,13 +48,13 @@ class ScaffoldPackageCommand {
 	 *   - Apache-2.0
 	 *   - BSD-3-Clause
 	 *   - BSD-2-Clause
-	 *   - GPL-2.0
-	 *   - GPL-3.0
+	 *   - GPL-2.0-only
+	 *   - GPL-3.0-only
 	 *   - ISC
-	 *   - LGPL-3.0
-	 *   - LGPL-2.1
-	 *   - BSD0
-	 *   - AGPL-3.0
+	 *   - LGPL-3.0-only
+	 *   - LGPL-2.1-only
+	 *   - 0BSD
+	 *   - AGPL-3.0-only
 	 *   - MPL-2.0
 	 *   - AFL-3.0
 	 *   - MS-PL
@@ -109,6 +109,8 @@ class ScaffoldPackageCommand {
 		$license_input = Utils\get_flag_value( $assoc_args, 'license', 'MIT' );
 		if ( 'none' === strtolower( $license_input ) ) {
 			$assoc_args['license'] = 'proprietary';
+		} else {
+			$assoc_args['license'] = $license_input;
 		}
 
 		$bits = explode( '/', $assoc_args['name'] );
@@ -298,20 +300,20 @@ EOT;
 	 * : Name of default branch of the underlying repository. Defaults to main.
 	 *
 	 * [--license=<license>]
-	 * : License for the package by SPDX code. Omit "-only" for GNU licenses.
+	 * : License for the package by SPDX code.
 	 * ---
 	 * options:
 	 *   - MIT
 	 *   - Apache-2.0
 	 *   - BSD-3-Clause
 	 *   - BSD-2-Clause
-	 *   - GPL-2.0
-	 *   - GPL-3.0
+	 *   - GPL-2.0-only
+	 *   - GPL-3.0-only
 	 *   - ISC
-	 *   - LGPL-3.0
-	 *   - LGPL-2.1
-	 *   - BSD0
-	 *   - AGPL-3.0
+	 *   - LGPL-3.0-only
+	 *   - LGPL-2.1-only
+	 *   - 0BSD
+	 *   - AGPL-3.0-only
 	 *   - MPL-2.0
 	 *   - AFL-3.0
 	 *   - MS-PL
@@ -932,7 +934,7 @@ EOT;
 			return null;
 		}
 		$license_path = $template_path . 'licenses/' . $normalized;
-		if ( file_exists( $license_path ) ) {
+		if ( is_file( $license_path ) ) {
 			return $license_path;
 		}
 		return null;
