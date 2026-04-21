@@ -349,8 +349,9 @@ EOT;
 		$package_root  = dirname( __DIR__ );
 		$template_path = $package_root . '/templates/';
 
-		$license_input = Utils\get_flag_value( $assoc_args, 'license' );
-		if ( null === $license_input ) {
+		$license_input    = Utils\get_flag_value( $assoc_args, 'license' );
+		$license_provided = null !== $license_input;
+		if ( ! $license_provided ) {
 			$license_input = isset( $composer_obj['license'] ) ? $composer_obj['license'] : 'MIT';
 		}
 		$composer_license = 'none' === strtolower( $license_input ) ? 'proprietary' : $license_input;
@@ -603,32 +604,36 @@ EOT;
 			WP_CLI::success( 'Created package readme.' );
 		}
 
-		// Only write to composer.json if the license has changed. This protects package_readme from
-		// overwriting files changed by package. Only when --license changes do we need to write.
-		$existing_license        = isset( $composer_obj['license'] ) ? $composer_obj['license'] : '';
-		$composer_obj['license'] = $composer_license;
-		if ( $composer_license !== $existing_license ) {
-			$composer_json_content = json_encode( $composer_obj, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) . "\n";
-			if ( false === file_put_contents( $package_dir . '/composer.json', $composer_json_content ) ) {
-				WP_CLI::error( "Error creating file: {$package_dir}/composer.json" );
+		// Only update composer.json license and generate the LICENSE file when --license was
+		// explicitly passed. Without it, leave both untouched.
+		if ( $license_provided ) {
+			// Only write to composer.json if the license has changed. This protects package_readme from
+			// overwriting files changed by package. Only when --license changes do we need to write.
+			$existing_license        = isset( $composer_obj['license'] ) ? $composer_obj['license'] : '';
+			$composer_obj['license'] = $composer_license;
+			if ( $composer_license !== $existing_license ) {
+				$composer_json_content = json_encode( $composer_obj, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) . "\n";
+				if ( false === file_put_contents( $package_dir . '/composer.json', $composer_json_content ) ) {
+					WP_CLI::error( "Error creating file: {$package_dir}/composer.json" );
+				}
 			}
-		}
 
-		if ( 'none' === strtolower( $license_input ) ) {
-			if ( is_file( $package_dir . '/LICENSE' ) ) {
-				unlink( $package_dir . '/LICENSE' );
-			}
-		} else {
-			$license_file_path = $this->resolve_license_file_path( $license_input, $template_path );
-			if ( null !== $license_file_path ) {
-				$license_data = [
-					'year' => gmdate( 'Y' ),
-					'name' => $composer_obj['name'],
-				];
-				$this->create_files(
-					[ "{$package_dir}/LICENSE" => Utils\mustache_render( $license_file_path, $license_data ) ],
-					$force
-				);
+			if ( 'none' === strtolower( $license_input ) ) {
+				if ( is_file( $package_dir . '/LICENSE' ) ) {
+					unlink( $package_dir . '/LICENSE' );
+				}
+			} else {
+				$license_file_path = $this->resolve_license_file_path( $license_input, $template_path );
+				if ( null !== $license_file_path ) {
+					$license_data = [
+						'year' => gmdate( 'Y' ),
+						'name' => $composer_obj['name'],
+					];
+					$this->create_files(
+						[ "{$package_dir}/LICENSE" => Utils\mustache_render( $license_file_path, $license_data ) ],
+						$force
+					);
+				}
 			}
 		}
 	}
