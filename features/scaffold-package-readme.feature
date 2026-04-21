@@ -523,3 +523,55 @@ Feature: Scaffold a README.md file for an existing package
     Then the foo/README.md file should exist
     And the contents of the foo/README.md file should match /\t\tShow extended version information/
     And the contents of the foo/README.md file should match /\t\tNote: to retrieve/
+
+  Scenario: Scaffold a README.md and generate a non-MIT license
+    Given an empty directory
+    And a foo/composer.json file:
+      """
+      {
+          "name": "wp-cli/foo",
+          "description": "A test package.",
+          "license": "MIT",
+          "require": {
+              "wp-cli/wp-cli": "^2.13"
+          }
+      }
+      """
+
+    When I run `wp scaffold package-readme foo --license=GPL-2.0-only`
+    Then the foo/README.md file should exist
+    And the foo/LICENSE file should exist
+    And the foo/LICENSE file should contain:
+      """
+      GNU GENERAL PUBLIC LICENSE
+      """
+    And the foo/composer.json file should contain:
+      """
+      "license": "GPL-2.0-only"
+      """
+
+  Scenario: Scaffold a README.md with --license=none removes LICENSE and sets proprietary
+    Given an empty directory
+    And a foo/composer.json file:
+      """
+      {
+          "name": "wp-cli/foo",
+          "description": "A test package.",
+          "license": "MIT",
+          "require": {
+              "wp-cli/wp-cli": "^2.13"
+          }
+      }
+      """
+    And a foo/LICENSE file:
+      """
+      Some existing license content.
+      """
+
+    When I run `wp scaffold package-readme foo --license=none`
+    Then the foo/README.md file should exist
+    And the foo/LICENSE file should not exist
+    And the foo/composer.json file should contain:
+      """
+      "license": "proprietary"
+      """

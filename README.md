@@ -45,9 +45,31 @@ WP-CLI `packages/local/` directory.
 		Specify a destination directory for the command. Defaults to WP-CLI's `packages/local/` directory.
 
 	[--license=<license>]
-		License for the package.
+		License for the package by SPDX code.
 		---
 		default: MIT
+		options:
+		  - MIT
+		  - Apache-2.0
+		  - BSD-3-Clause
+		  - BSD-2-Clause
+		  - GPL-2.0-only
+		  - GPL-3.0-only
+		  - ISC
+		  - LGPL-3.0-only
+		  - LGPL-2.1-only
+		  - 0BSD
+		  - AGPL-3.0-only
+		  - MPL-2.0
+		  - AFL-3.0
+		  - MS-PL
+		  - BSD-1-Clause
+		  - MIT-0
+		  - CPL-1.0
+		  - BSL-1.0
+		  - Unlicense
+		  - CC0-1.0
+		  - none
 		---
 
 	[--require_wp_cli=<version>]
@@ -279,9 +301,30 @@ In this example:
 		Name of default branch of the underlying repository. Defaults to main.
 
 	[--license=<license>]
-		License for the package.
+		License for the package by SPDX code.
 		---
-		default: MIT
+		options:
+		  - MIT
+		  - Apache-2.0
+		  - BSD-3-Clause
+		  - BSD-2-Clause
+		  - GPL-2.0-only
+		  - GPL-3.0-only
+		  - ISC
+		  - LGPL-3.0-only
+		  - LGPL-2.1-only
+		  - 0BSD
+		  - AGPL-3.0-only
+		  - MPL-2.0
+		  - AFL-3.0
+		  - MS-PL
+		  - BSD-1-Clause
+		  - MIT-0
+		  - CPL-1.0
+		  - BSL-1.0
+		  - Unlicense
+		  - CC0-1.0
+		  - none
 		---
 
 
