@@ -65,6 +65,10 @@ Feature: Scaffold WP-CLI commands
     And the {PACKAGE_PATH}/local/wp-cli/foo/.travis.yml file should not exist
     And the {PACKAGE_PATH}/local/wp-cli/foo/.github/PULL_REQUEST_TEMPLATE file should exist
     And the {PACKAGE_PATH}/local/wp-cli/foo/.github/ISSUE_TEMPLATE file should exist
+    And the {PACKAGE_PATH}/local/wp-cli/foo/.github/ISSUE_TEMPLATE file should contain:
+      """
+      For help with common problems, see the WP-CLI common issues guide: https://make.wordpress.org/cli/handbook/guides/common-issues/
+      """
 
     When I run `wp hello-world`
     Then STDOUT should be:

@@ -52,6 +52,10 @@ Feature: Scaffold a README.md file for an existing package
       """
     And the {PACKAGE_PATH}/local/wp-cli/default-readme/README.md file should contain:
       """
+      For help with common problems, see the WP-CLI common issues guide: https://make.wordpress.org/cli/handbook/guides/common-issues/
+      """
+    And the {PACKAGE_PATH}/local/wp-cli/default-readme/README.md file should contain:
+      """
       wp package install wp-cli/default-readme:dev-main
       """
     When I run `wp package uninstall wp-cli/default-readme`
