@@ -94,7 +94,17 @@ Feature: Scaffold a README.md file for an existing package
   Scenario: Scaffold a README.md requiring a nightly build
     Given an empty directory
 
-    When I run `wp scaffold package wp-cli/foo --dir=foo --require_wp_cli='>=0.24.0-alpha' --skip-install`
+    And a foo/composer.json file:
+      """
+      {
+          "name": "wp-cli/foo",
+          "require": {
+              "wp-cli/wp-cli": ">=0.24.0-alpha"
+          }
+      }
+      """
+
+    When I run `wp scaffold package-readme foo`
     Then STDOUT should contain:
       """
       Success: Created package readme.
@@ -103,7 +113,7 @@ Feature: Scaffold a README.md file for an existing package
       """
           "require": {
               "wp-cli/wp-cli": ">=0.24.0-alpha"
-          },
+          }
       """
     And the foo/README.md file should exist
     And the foo/README.md file should contain:
@@ -113,7 +123,17 @@ Feature: Scaffold a README.md file for an existing package
   Scenario: Scaffold a README.md requiring the latest stable release
     Given an empty directory
 
-    When I run `wp scaffold package wp-cli/foo --dir=foo --require_wp_cli='*' --skip-install`
+    And a foo/composer.json file:
+      """
+      {
+          "name": "wp-cli/foo",
+          "require": {
+              "wp-cli/wp-cli": "*"
+          }
+      }
+      """
+
+    When I run `wp scaffold package-readme foo`
     Then STDOUT should contain:
       """
       Success: Created package readme.
@@ -122,7 +142,7 @@ Feature: Scaffold a README.md file for an existing package
       """
           "require": {
               "wp-cli/wp-cli": "*"
-          },
+          }
       """
     And the foo/README.md file should exist
     And the foo/README.md file should contain:
