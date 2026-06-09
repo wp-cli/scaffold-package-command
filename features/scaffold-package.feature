@@ -67,7 +67,7 @@ Feature: Scaffold WP-CLI commands
     And the {PACKAGE_PATH}/local/wp-cli/foo/.github/ISSUE_TEMPLATE file should exist
     And the {PACKAGE_PATH}/local/wp-cli/foo/.github/ISSUE_TEMPLATE file should contain:
       """
-      For help with common problems, see the WP-CLI common issues guide: https://make.wordpress.org/cli/handbook/guides/common-issues/
+      For support resources and next steps, see the WP-CLI Support page: https://make.wordpress.org/cli/handbook/support/
       """
 
     When I run `wp hello-world`

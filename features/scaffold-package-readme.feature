@@ -52,7 +52,7 @@ Feature: Scaffold a README.md file for an existing package
       """
     And the {PACKAGE_PATH}/local/wp-cli/default-readme/README.md file should contain:
       """
-      For help with common problems, see the WP-CLI common issues guide: https://make.wordpress.org/cli/handbook/guides/common-issues/
+      For support resources and next steps, see the WP-CLI Support page: https://make.wordpress.org/cli/handbook/support/
       """
     And the {PACKAGE_PATH}/local/wp-cli/default-readme/README.md file should contain:
       """
