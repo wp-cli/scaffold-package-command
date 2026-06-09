@@ -94,7 +94,7 @@ Feature: Scaffold a README.md file for an existing package
   Scenario: Scaffold a README.md requiring a nightly build
     Given an empty directory
 
-    When I run `wp scaffold package wp-cli/foo --dir=foo --require_wp_cli='>=0.24.0-alpha'`
+    When I run `wp scaffold package wp-cli/foo --dir=foo --require_wp_cli='>=0.24.0-alpha' --skip-install`
     Then STDOUT should contain:
       """
       Success: Created package readme.
@@ -110,16 +110,10 @@ Feature: Scaffold a README.md file for an existing package
       """
       Installing this package requires WP-CLI v0.24.0-alpha or greater. Update to the latest nightly release with `wp cli update --nightly`.
       """
-    When I run `wp package uninstall wp-cli/foo`
-    Then STDOUT should contain:
-      """
-      Success: Uninstalled package.
-      """
-
   Scenario: Scaffold a README.md requiring the latest stable release
     Given an empty directory
 
-    When I run `wp scaffold package wp-cli/foo --dir=foo --require_wp_cli='*'`
+    When I run `wp scaffold package wp-cli/foo --dir=foo --require_wp_cli='*' --skip-install`
     Then STDOUT should contain:
       """
       Success: Created package readme.
@@ -135,12 +129,6 @@ Feature: Scaffold a README.md file for an existing package
       """
       Installing this package requires WP-CLI's latest stable release. Update to the latest stable release with `wp cli update`.
       """
-    When I run `wp package uninstall wp-cli/foo`
-    Then STDOUT should contain:
-      """
-      Success: Uninstalled package.
-      """
-
   Scenario: Scaffold a readme with custom shields
     Given an empty directory
     And a foo/composer.json file:
