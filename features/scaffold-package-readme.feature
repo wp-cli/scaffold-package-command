@@ -190,6 +190,13 @@ Feature: Scaffold a README.md file for an existing package
 
   Scenario: Scaffold a readme with a remote support body
     Given an empty directory
+    And that HTTP requests to https://gist.githubusercontent.com/danielbachhuber/bb652b1b744cea541705ee9c13605dad/raw/195c17ebb8cf25e947a9df6e02de1e96a084c287/support.md will respond with:
+      """
+      HTTP/1.1 200 OK
+      Content-Type: text/plain
+
+      Support isn't free!
+      """
     And a foo/composer.json file:
       """
       {
@@ -217,6 +224,13 @@ Feature: Scaffold a README.md file for an existing package
 
   Scenario: Scaffold a readme with a pre, post and body for the section
     Given an empty directory
+    And that HTTP requests to https://gist.githubusercontent.com/danielbachhuber/bb652b1b744cea541705ee9c13605dad/raw/195c17ebb8cf25e947a9df6e02de1e96a084c287/support.md will respond with:
+      """
+      HTTP/1.1 200 OK
+      Content-Type: text/plain
+
+      Support isn't free!
+      """
     And a foo/composer.json file:
       """
       {
