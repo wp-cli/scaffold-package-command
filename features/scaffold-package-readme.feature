@@ -94,7 +94,17 @@ Feature: Scaffold a README.md file for an existing package
   Scenario: Scaffold a README.md requiring a nightly build
     Given an empty directory
 
-    When I run `wp scaffold package wp-cli/foo --dir=foo --require_wp_cli='>=0.24.0-alpha'`
+    And a foo/composer.json file:
+      """
+      {
+          "name": "wp-cli/foo",
+          "require": {
+              "wp-cli/wp-cli": ">=0.24.0-alpha"
+          }
+      }
+      """
+
+    When I run `wp scaffold package-readme foo`
     Then STDOUT should contain:
       """
       Success: Created package readme.
@@ -103,23 +113,27 @@ Feature: Scaffold a README.md file for an existing package
       """
           "require": {
               "wp-cli/wp-cli": ">=0.24.0-alpha"
-          },
+          }
       """
     And the foo/README.md file should exist
     And the foo/README.md file should contain:
       """
       Installing this package requires WP-CLI v0.24.0-alpha or greater. Update to the latest nightly release with `wp cli update --nightly`.
       """
-    When I run `wp package uninstall wp-cli/foo`
-    Then STDOUT should contain:
-      """
-      Success: Uninstalled package.
-      """
-
   Scenario: Scaffold a README.md requiring the latest stable release
     Given an empty directory
 
-    When I run `wp scaffold package wp-cli/foo --dir=foo --require_wp_cli='*'`
+    And a foo/composer.json file:
+      """
+      {
+          "name": "wp-cli/foo",
+          "require": {
+              "wp-cli/wp-cli": "*"
+          }
+      }
+      """
+
+    When I run `wp scaffold package-readme foo`
     Then STDOUT should contain:
       """
       Success: Created package readme.
@@ -128,19 +142,13 @@ Feature: Scaffold a README.md file for an existing package
       """
           "require": {
               "wp-cli/wp-cli": "*"
-          },
+          }
       """
     And the foo/README.md file should exist
     And the foo/README.md file should contain:
       """
       Installing this package requires WP-CLI's latest stable release. Update to the latest stable release with `wp cli update`.
       """
-    When I run `wp package uninstall wp-cli/foo`
-    Then STDOUT should contain:
-      """
-      Success: Uninstalled package.
-      """
-
   Scenario: Scaffold a readme with custom shields
     Given an empty directory
     And a foo/composer.json file:
@@ -182,6 +190,13 @@ Feature: Scaffold a README.md file for an existing package
 
   Scenario: Scaffold a readme with a remote support body
     Given an empty directory
+    And that HTTP requests to https://gist.githubusercontent.com/danielbachhuber/bb652b1b744cea541705ee9c13605dad/raw/195c17ebb8cf25e947a9df6e02de1e96a084c287/support.md will respond with:
+      """
+      HTTP/1.1 200 OK
+      Content-Type: text/plain
+
+      Support isn't free!
+      """
     And a foo/composer.json file:
       """
       {
@@ -209,6 +224,13 @@ Feature: Scaffold a README.md file for an existing package
 
   Scenario: Scaffold a readme with a pre, post and body for the section
     Given an empty directory
+    And that HTTP requests to https://gist.githubusercontent.com/danielbachhuber/bb652b1b744cea541705ee9c13605dad/raw/195c17ebb8cf25e947a9df6e02de1e96a084c287/support.md will respond with:
+      """
+      HTTP/1.1 200 OK
+      Content-Type: text/plain
+
+      Support isn't free!
+      """
     And a foo/composer.json file:
       """
       {

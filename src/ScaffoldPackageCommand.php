@@ -135,7 +135,7 @@ class ScaffoldPackageCommand {
 		}
 
 		// Convert to absolute path if relative.
-		if ( ! preg_match( '#^([a-zA-Z]:)?[\\/]#', $package_dir ) ) {
+		if ( ! preg_match( '#^([a-zA-Z]:)?[\\\\/]#', $package_dir ) ) {
 			$cwd = getcwd();
 			if ( false === $cwd ) {
 				WP_CLI::error( 'Could not determine current working directory.' );
