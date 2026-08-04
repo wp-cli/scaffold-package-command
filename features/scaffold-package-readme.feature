@@ -40,7 +40,7 @@ Feature: Scaffold a README.md file for an existing package
     And the {PACKAGE_PATH}/local/wp-cli/default-readme/README.md file should exist
     And the {PACKAGE_PATH}/local/wp-cli/default-readme/README.md file should contain:
       """
-      Installing this package requires WP-CLI v2.13 or greater. Update to the latest stable release with `wp cli update`.
+      Installing this package requires WP-CLI v3.0 or greater. Update to the latest stable release with `wp cli update`.
       """
     And the {PACKAGE_PATH}/local/wp-cli/default-readme/README.md file should contain:
       """
@@ -80,7 +80,7 @@ Feature: Scaffold a README.md file for an existing package
     And the {PACKAGE_PATH}/local/wp-cli/custom-branch/README.md file should exist
     And the {PACKAGE_PATH}/local/wp-cli/custom-branch/README.md file should contain:
       """
-      Installing this package requires WP-CLI v2.13 or greater. Update to the latest stable release with `wp cli update`.
+      Installing this package requires WP-CLI v3.0 or greater. Update to the latest stable release with `wp cli update`.
       """
     And the {PACKAGE_PATH}/local/wp-cli/custom-branch/README.md file should contain:
       """
@@ -164,7 +164,7 @@ Feature: Scaffold a README.md file for an existing package
               "files": [ "command.php" ]
           },
           "require": {
-              "wp-cli/wp-cli": "^2.13"
+              "wp-cli/wp-cli": "^3.0"
           },
           "require-dev": {
               "wp-cli/wp-cli-tests": "^5.0.0"
@@ -403,7 +403,7 @@ Feature: Scaffold a README.md file for an existing package
               "files": [ "command.php" ]
           },
           "require": {
-              "wp-cli/wp-cli": "^2.13"
+              "wp-cli/wp-cli": "^3.0"
           },
           "require-dev": {
               "wp-cli/wp-cli-tests": "^5.0.0"
@@ -559,7 +559,7 @@ Feature: Scaffold a README.md file for an existing package
           "description": "A test package.",
           "license": "MIT",
           "require": {
-              "wp-cli/wp-cli": "^2.13"
+              "wp-cli/wp-cli": "^3.0"
           }
       }
       """
@@ -585,7 +585,7 @@ Feature: Scaffold a README.md file for an existing package
           "description": "A test package.",
           "license": "MIT",
           "require": {
-              "wp-cli/wp-cli": "^2.13"
+              "wp-cli/wp-cli": "^3.0"
           }
       }
       """
